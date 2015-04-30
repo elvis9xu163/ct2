@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjd.ct.dal.map.UserBindAccountDoMapper" >
+  <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.UserBindAccountDo" >
+    <id column="ACCOUNT_ID" property="accountId" jdbcType="BIGINT" />
+    <result column="USER_ID" property="userId" jdbcType="BIGINT" />
+    <result column="ACCOUNT_TYPE" property="accountType" jdbcType="TINYINT" />
+    <result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+    <result column="ACCESS_TOKEN" property="accessToken" jdbcType="VARCHAR" />
+    <result column="ACCESS_TOKEN_EXPIRE_TIME" property="accessTokenExpireTime" jdbcType="BIGINT" />
+    <result column="ADD_TIME" property="addTime" jdbcType="BIGINT" />
+    <result column="UPD_TIME" property="updTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ACCOUNT_ID, USER_ID, ACCOUNT_TYPE, OPEN_ID, ACCESS_TOKEN, ACCESS_TOKEN_EXPIRE_TIME, 
+    ADD_TIME, UPD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.UserBindAccountDoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_user_bind_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlPageSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_bind_account
+    where ACCOUNT_ID = #{accountId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_user_bind_account
+    where ACCOUNT_ID = #{accountId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xjd.ct.dal.dos.UserBindAccountDoExample" >
+    delete from t_user_bind_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xjd.ct.dal.dos.UserBindAccountDo" >
+    insert into t_user_bind_account (ACCOUNT_ID, USER_ID, ACCOUNT_TYPE, 
+      OPEN_ID, ACCESS_TOKEN, ACCESS_TOKEN_EXPIRE_TIME, 
+      ADD_TIME, UPD_TIME)
+    values (#{accountId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{accountType,jdbcType=TINYINT}, 
+      #{openId,jdbcType=VARCHAR}, #{accessToken,jdbcType=VARCHAR}, #{accessTokenExpireTime,jdbcType=BIGINT}, 
+      #{addTime,jdbcType=BIGINT}, #{updTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.UserBindAccountDo" >
+    insert into t_user_bind_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        ACCOUNT_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="accountType != null" >
+        ACCOUNT_TYPE,
+      </if>
+      <if test="openId != null" >
+        OPEN_ID,
+      </if>
+      <if test="accessToken != null" >
+        ACCESS_TOKEN,
+      </if>
+      <if test="accessTokenExpireTime != null" >
+        ACCESS_TOKEN_EXPIRE_TIME,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        #{accountId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="accountType != null" >
+        #{accountType,jdbcType=TINYINT},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="accessToken != null" >
+        #{accessToken,jdbcType=VARCHAR},
+      </if>
+      <if test="accessTokenExpireTime != null" >
+        #{accessTokenExpireTime,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xjd.ct.dal.dos.UserBindAccountDoExample" resultType="java.lang.Integer" >
+    select count(*) from t_user_bind_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_user_bind_account
+    <set >
+      <if test="record.accountId != null" >
+        ACCOUNT_ID = #{record.accountId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.accountType != null" >
+        ACCOUNT_TYPE = #{record.accountType,jdbcType=TINYINT},
+      </if>
+      <if test="record.openId != null" >
+        OPEN_ID = #{record.openId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accessToken != null" >
+        ACCESS_TOKEN = #{record.accessToken,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accessTokenExpireTime != null" >
+        ACCESS_TOKEN_EXPIRE_TIME = #{record.accessTokenExpireTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updTime != null" >
+        UPD_TIME = #{record.updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_user_bind_account
+    set ACCOUNT_ID = #{record.accountId,jdbcType=BIGINT},
+      USER_ID = #{record.userId,jdbcType=BIGINT},
+      ACCOUNT_TYPE = #{record.accountType,jdbcType=TINYINT},
+      OPEN_ID = #{record.openId,jdbcType=VARCHAR},
+      ACCESS_TOKEN = #{record.accessToken,jdbcType=VARCHAR},
+      ACCESS_TOKEN_EXPIRE_TIME = #{record.accessTokenExpireTime,jdbcType=BIGINT},
+      ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      UPD_TIME = #{record.updTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.UserBindAccountDo" >
+    update t_user_bind_account
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="accountType != null" >
+        ACCOUNT_TYPE = #{accountType,jdbcType=TINYINT},
+      </if>
+      <if test="openId != null" >
+        OPEN_ID = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="accessToken != null" >
+        ACCESS_TOKEN = #{accessToken,jdbcType=VARCHAR},
+      </if>
+      <if test="accessTokenExpireTime != null" >
+        ACCESS_TOKEN_EXPIRE_TIME = #{accessTokenExpireTime,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME = #{updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ACCOUNT_ID = #{accountId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.UserBindAccountDo" >
+    update t_user_bind_account
+    set USER_ID = #{userId,jdbcType=BIGINT},
+      ACCOUNT_TYPE = #{accountType,jdbcType=TINYINT},
+      OPEN_ID = #{openId,jdbcType=VARCHAR},
+      ACCESS_TOKEN = #{accessToken,jdbcType=VARCHAR},
+      ACCESS_TOKEN_EXPIRE_TIME = #{accessTokenExpireTime,jdbcType=BIGINT},
+      ADD_TIME = #{addTime,jdbcType=BIGINT},
+      UPD_TIME = #{updTime,jdbcType=BIGINT}
+    where ACCOUNT_ID = #{accountId,jdbcType=BIGINT}
+  </update>
+  <sql id="MysqlPageSuffix" >
+    <if test="page != null" >
+      <![CDATA[ limit #{page.offset}, #{page.limit} ]]>
+    </if>
+  </sql>
+</mapper>

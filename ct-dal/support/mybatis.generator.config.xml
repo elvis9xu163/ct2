@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+  <!-- 修改：jdbc jar包 -->
+  <classPathEntry location="C:/Program Files (x86)/MySQL/MySQL Tools for 5.0/java/lib/mysql-connector-java-5.0.4-bin.jar" />
+  <!-- <classPathEntry location="/Users/XJD/360yunpan/repo/maven_repository/mysql/mysql-connector-java/5.1.21/mysql-connector-java-5.1.21.jar"/> -->
+  <!-- 生成的class所在的根路径 -->
+  <classPathEntry location="target/classes" />
+
+  <context id="common" targetRuntime="MyBatis3">
+    <plugin type="org.mybatis.generator.enhance.MysqlPaginationPlugin"></plugin>
+
+    <commentGenerator>
+      <property name="suppressAllComments" value="true" />
+      <!-- <property name="suppressDate" value="true" /> -->
+    </commentGenerator>
+
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/ct2"
+      userId="root" password="root" />
+
+    <javaTypeResolver>
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <javaModelGenerator targetPackage="com.xjd.ct.dal.dos" targetProject="MAVEN">
+      <property name="enableSubPackages" value="true" />
+      <property name="constructorBased" value="false" />
+      <property name="rootClass" value="com.xjd.ct.dal.dos.BaseDo" />
+    </javaModelGenerator>
+
+    <sqlMapGenerator targetPackage="com.xjd.ct.dal.map" targetProject="MAVEN">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.xjd.ct.dal.map" targetProject="MAVEN">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+<!-- 
+    <table tableName="t_age_bracket" domainObjectName="AgeBracketDo" />
+    <table tableName="t_app_version" domainObjectName="AppVersionDo" />
+    <table tableName="t_banner" domainObjectName="BannerDo" />
+    <table tableName="t_feedback" domainObjectName="FeedbackDo" />
+    <table tableName="t_idol" domainObjectName="IdolDo" />
+    <table tableName="t_msg_inform" domainObjectName="MsgInformDo" />
+    <table tableName="t_object" domainObjectName="ObjectDo" />
+    <table tableName="t_object_comment" domainObjectName="ObjectCommentDo" />
+    <table tableName="t_object_comment_like" domainObjectName="ObjectCommentLikeDo" />
+    <table tableName="t_object_favor" domainObjectName="ObjectFavorDo" />
+    <table tableName="t_object_like" domainObjectName="ObjectLikeDo" />
+    <table tableName="t_object_resource" domainObjectName="ObjectResourceDo" />
+    <table tableName="t_object_tag" domainObjectName="ObjectTagDo" />
+    <table tableName="t_object_vote" domainObjectName="ObjectVoteDo" />
+    <table tableName="t_object_vote_opt" domainObjectName="ObjectVoteOptDo" />
+    <table tableName="t_recommend" domainObjectName="RecommendDo" />
+    <table tableName="t_resource" domainObjectName="ResourceDo" />
+    <table tableName="t_sequence" domainObjectName="SequenceDo" />
+    <table tableName="t_service_log" domainObjectName="ServiceLogDo" />
+    <table tableName="t_service" domainObjectName="ServiceDo" />
+    <table tableName="t_subscribe" domainObjectName="SubscribeDo" />
+    <table tableName="t_tag" domainObjectName="TagDo" />
+    <table tableName="t_token" domainObjectName="TokenDo" />
+    <table tableName="t_user" domainObjectName="UserDo" />
+    <table tableName="t_user_age_bracket" domainObjectName="UserAgeBracketDo" />
+    <table tableName="t_user_baby" domainObjectName="UserBabyDo" />
+    <table tableName="t_user_bind_account" domainObjectName="UserBindAccountDo" />
+    <table tableName="t_user_resource" domainObjectName="UserResourceDo" />
+    <table tableName="t_user_subscribe" domainObjectName="UserSubscribeDo" /> -->
+    <table tableName="t_report" domainObjectName="ReportDo" />
+
+  </context>
+
+</generatorConfiguration>

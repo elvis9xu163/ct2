@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjd.ct.dal.map.ObjectCommentDoMapper" >
+  <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.ObjectCommentDo" >
+    <id column="COMMENT_ID" property="commentId" jdbcType="BIGINT" />
+    <result column="OBJECT_ID" property="objectId" jdbcType="BIGINT" />
+    <result column="USER_ID" property="userId" jdbcType="BIGINT" />
+    <result column="TO_COMMENT_ID" property="toCommentId" jdbcType="BIGINT" />
+    <result column="COMMENT_CONTENT" property="commentContent" jdbcType="VARCHAR" />
+    <result column="ACCEPT_FLAG" property="acceptFlag" jdbcType="TINYINT" />
+    <result column="YES_COUNT" property="yesCount" jdbcType="INTEGER" />
+    <result column="NO_COUNT" property="noCount" jdbcType="INTEGER" />
+    <result column="ADD_TIME" property="addTime" jdbcType="BIGINT" />
+    <result column="UPD_TIME" property="updTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    COMMENT_ID, OBJECT_ID, USER_ID, TO_COMMENT_ID, COMMENT_CONTENT, ACCEPT_FLAG, YES_COUNT, 
+    NO_COUNT, ADD_TIME, UPD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.ObjectCommentDoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_object_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlPageSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_object_comment
+    where COMMENT_ID = #{commentId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_object_comment
+    where COMMENT_ID = #{commentId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xjd.ct.dal.dos.ObjectCommentDoExample" >
+    delete from t_object_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xjd.ct.dal.dos.ObjectCommentDo" >
+    insert into t_object_comment (COMMENT_ID, OBJECT_ID, USER_ID, 
+      TO_COMMENT_ID, COMMENT_CONTENT, ACCEPT_FLAG, 
+      YES_COUNT, NO_COUNT, ADD_TIME, 
+      UPD_TIME)
+    values (#{commentId,jdbcType=BIGINT}, #{objectId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{toCommentId,jdbcType=BIGINT}, #{commentContent,jdbcType=VARCHAR}, #{acceptFlag,jdbcType=TINYINT}, 
+      #{yesCount,jdbcType=INTEGER}, #{noCount,jdbcType=INTEGER}, #{addTime,jdbcType=BIGINT}, 
+      #{updTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.ObjectCommentDo" >
+    insert into t_object_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        COMMENT_ID,
+      </if>
+      <if test="objectId != null" >
+        OBJECT_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="toCommentId != null" >
+        TO_COMMENT_ID,
+      </if>
+      <if test="commentContent != null" >
+        COMMENT_CONTENT,
+      </if>
+      <if test="acceptFlag != null" >
+        ACCEPT_FLAG,
+      </if>
+      <if test="yesCount != null" >
+        YES_COUNT,
+      </if>
+      <if test="noCount != null" >
+        NO_COUNT,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="objectId != null" >
+        #{objectId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="toCommentId != null" >
+        #{toCommentId,jdbcType=BIGINT},
+      </if>
+      <if test="commentContent != null" >
+        #{commentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptFlag != null" >
+        #{acceptFlag,jdbcType=TINYINT},
+      </if>
+      <if test="yesCount != null" >
+        #{yesCount,jdbcType=INTEGER},
+      </if>
+      <if test="noCount != null" >
+        #{noCount,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xjd.ct.dal.dos.ObjectCommentDoExample" resultType="java.lang.Integer" >
+    select count(*) from t_object_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_object_comment
+    <set >
+      <if test="record.commentId != null" >
+        COMMENT_ID = #{record.commentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.objectId != null" >
+        OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.toCommentId != null" >
+        TO_COMMENT_ID = #{record.toCommentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.commentContent != null" >
+        COMMENT_CONTENT = #{record.commentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acceptFlag != null" >
+        ACCEPT_FLAG = #{record.acceptFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.yesCount != null" >
+        YES_COUNT = #{record.yesCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.noCount != null" >
+        NO_COUNT = #{record.noCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updTime != null" >
+        UPD_TIME = #{record.updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_object_comment
+    set COMMENT_ID = #{record.commentId,jdbcType=BIGINT},
+      OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      USER_ID = #{record.userId,jdbcType=BIGINT},
+      TO_COMMENT_ID = #{record.toCommentId,jdbcType=BIGINT},
+      COMMENT_CONTENT = #{record.commentContent,jdbcType=VARCHAR},
+      ACCEPT_FLAG = #{record.acceptFlag,jdbcType=TINYINT},
+      YES_COUNT = #{record.yesCount,jdbcType=INTEGER},
+      NO_COUNT = #{record.noCount,jdbcType=INTEGER},
+      ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      UPD_TIME = #{record.updTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.ObjectCommentDo" >
+    update t_object_comment
+    <set >
+      <if test="objectId != null" >
+        OBJECT_ID = #{objectId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="toCommentId != null" >
+        TO_COMMENT_ID = #{toCommentId,jdbcType=BIGINT},
+      </if>
+      <if test="commentContent != null" >
+        COMMENT_CONTENT = #{commentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptFlag != null" >
+        ACCEPT_FLAG = #{acceptFlag,jdbcType=TINYINT},
+      </if>
+      <if test="yesCount != null" >
+        YES_COUNT = #{yesCount,jdbcType=INTEGER},
+      </if>
+      <if test="noCount != null" >
+        NO_COUNT = #{noCount,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME = #{updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where COMMENT_ID = #{commentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.ObjectCommentDo" >
+    update t_object_comment
+    set OBJECT_ID = #{objectId,jdbcType=BIGINT},
+      USER_ID = #{userId,jdbcType=BIGINT},
+      TO_COMMENT_ID = #{toCommentId,jdbcType=BIGINT},
+      COMMENT_CONTENT = #{commentContent,jdbcType=VARCHAR},
+      ACCEPT_FLAG = #{acceptFlag,jdbcType=TINYINT},
+      YES_COUNT = #{yesCount,jdbcType=INTEGER},
+      NO_COUNT = #{noCount,jdbcType=INTEGER},
+      ADD_TIME = #{addTime,jdbcType=BIGINT},
+      UPD_TIME = #{updTime,jdbcType=BIGINT}
+    where COMMENT_ID = #{commentId,jdbcType=BIGINT}
+  </update>
+  <sql id="MysqlPageSuffix" >
+    <if test="page != null" >
+      <![CDATA[ limit #{page.offset}, #{page.limit} ]]>
+    </if>
+  </sql>
+</mapper>

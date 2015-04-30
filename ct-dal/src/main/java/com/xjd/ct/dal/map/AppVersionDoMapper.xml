@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjd.ct.dal.map.AppVersionDoMapper" >
+  <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.AppVersionDo" >
+    <id column="APP_TYPE" property="appType" jdbcType="TINYINT" />
+    <id column="VER_CODE" property="verCode" jdbcType="SMALLINT" />
+    <result column="VER_NAME" property="verName" jdbcType="VARCHAR" />
+    <result column="VER_DESC" property="verDesc" jdbcType="VARCHAR" />
+    <result column="DOWN_LINK" property="downLink" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SUPPORT_FLAG" property="supportFlag" jdbcType="TINYINT" />
+    <result column="ADD_TIME" property="addTime" jdbcType="BIGINT" />
+    <result column="UPD_TIME" property="updTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    APP_TYPE, VER_CODE, VER_NAME, VER_DESC, DOWN_LINK, STATUS, SUPPORT_FLAG, ADD_TIME, 
+    UPD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.AppVersionDoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_app_version
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlPageSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.AppVersionDoKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_app_version
+    where APP_TYPE = #{appType,jdbcType=TINYINT}
+      and VER_CODE = #{verCode,jdbcType=SMALLINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.xjd.ct.dal.dos.AppVersionDoKey" >
+    delete from t_app_version
+    where APP_TYPE = #{appType,jdbcType=TINYINT}
+      and VER_CODE = #{verCode,jdbcType=SMALLINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xjd.ct.dal.dos.AppVersionDoExample" >
+    delete from t_app_version
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xjd.ct.dal.dos.AppVersionDo" >
+    insert into t_app_version (APP_TYPE, VER_CODE, VER_NAME, 
+      VER_DESC, DOWN_LINK, STATUS, 
+      SUPPORT_FLAG, ADD_TIME, UPD_TIME
+      )
+    values (#{appType,jdbcType=TINYINT}, #{verCode,jdbcType=SMALLINT}, #{verName,jdbcType=VARCHAR}, 
+      #{verDesc,jdbcType=VARCHAR}, #{downLink,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{supportFlag,jdbcType=TINYINT}, #{addTime,jdbcType=BIGINT}, #{updTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.AppVersionDo" >
+    insert into t_app_version
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="appType != null" >
+        APP_TYPE,
+      </if>
+      <if test="verCode != null" >
+        VER_CODE,
+      </if>
+      <if test="verName != null" >
+        VER_NAME,
+      </if>
+      <if test="verDesc != null" >
+        VER_DESC,
+      </if>
+      <if test="downLink != null" >
+        DOWN_LINK,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="supportFlag != null" >
+        SUPPORT_FLAG,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="appType != null" >
+        #{appType,jdbcType=TINYINT},
+      </if>
+      <if test="verCode != null" >
+        #{verCode,jdbcType=SMALLINT},
+      </if>
+      <if test="verName != null" >
+        #{verName,jdbcType=VARCHAR},
+      </if>
+      <if test="verDesc != null" >
+        #{verDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="downLink != null" >
+        #{downLink,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="supportFlag != null" >
+        #{supportFlag,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xjd.ct.dal.dos.AppVersionDoExample" resultType="java.lang.Integer" >
+    select count(*) from t_app_version
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_app_version
+    <set >
+      <if test="record.appType != null" >
+        APP_TYPE = #{record.appType,jdbcType=TINYINT},
+      </if>
+      <if test="record.verCode != null" >
+        VER_CODE = #{record.verCode,jdbcType=SMALLINT},
+      </if>
+      <if test="record.verName != null" >
+        VER_NAME = #{record.verName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.verDesc != null" >
+        VER_DESC = #{record.verDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.downLink != null" >
+        DOWN_LINK = #{record.downLink,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.supportFlag != null" >
+        SUPPORT_FLAG = #{record.supportFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updTime != null" >
+        UPD_TIME = #{record.updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_app_version
+    set APP_TYPE = #{record.appType,jdbcType=TINYINT},
+      VER_CODE = #{record.verCode,jdbcType=SMALLINT},
+      VER_NAME = #{record.verName,jdbcType=VARCHAR},
+      VER_DESC = #{record.verDesc,jdbcType=VARCHAR},
+      DOWN_LINK = #{record.downLink,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=TINYINT},
+      SUPPORT_FLAG = #{record.supportFlag,jdbcType=TINYINT},
+      ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      UPD_TIME = #{record.updTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.AppVersionDo" >
+    update t_app_version
+    <set >
+      <if test="verName != null" >
+        VER_NAME = #{verName,jdbcType=VARCHAR},
+      </if>
+      <if test="verDesc != null" >
+        VER_DESC = #{verDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="downLink != null" >
+        DOWN_LINK = #{downLink,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="supportFlag != null" >
+        SUPPORT_FLAG = #{supportFlag,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME = #{updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where APP_TYPE = #{appType,jdbcType=TINYINT}
+      and VER_CODE = #{verCode,jdbcType=SMALLINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.AppVersionDo" >
+    update t_app_version
+    set VER_NAME = #{verName,jdbcType=VARCHAR},
+      VER_DESC = #{verDesc,jdbcType=VARCHAR},
+      DOWN_LINK = #{downLink,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=TINYINT},
+      SUPPORT_FLAG = #{supportFlag,jdbcType=TINYINT},
+      ADD_TIME = #{addTime,jdbcType=BIGINT},
+      UPD_TIME = #{updTime,jdbcType=BIGINT}
+    where APP_TYPE = #{appType,jdbcType=TINYINT}
+      and VER_CODE = #{verCode,jdbcType=SMALLINT}
+  </update>
+  <sql id="MysqlPageSuffix" >
+    <if test="page != null" >
+      <![CDATA[ limit #{page.offset}, #{page.limit} ]]>
+    </if>
+  </sql>
+</mapper>

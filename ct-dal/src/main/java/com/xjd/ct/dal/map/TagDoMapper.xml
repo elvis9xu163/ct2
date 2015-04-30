@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjd.ct.dal.map.TagDoMapper" >
+  <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.TagDo" >
+    <id column="TAG_ID" property="tagId" jdbcType="BIGINT" />
+    <result column="OBJECT_TYPE" property="objectType" jdbcType="TINYINT" />
+    <result column="TAG_NAME" property="tagName" jdbcType="VARCHAR" />
+    <result column="TAG_DESC" property="tagDesc" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="BIGINT" />
+    <result column="UPD_TIME" property="updTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    TAG_ID, OBJECT_TYPE, TAG_NAME, TAG_DESC, ADD_TIME, UPD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.TagDoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_tag
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlPageSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_tag
+    where TAG_ID = #{tagId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_tag
+    where TAG_ID = #{tagId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xjd.ct.dal.dos.TagDoExample" >
+    delete from t_tag
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xjd.ct.dal.dos.TagDo" >
+    insert into t_tag (TAG_ID, OBJECT_TYPE, TAG_NAME, 
+      TAG_DESC, ADD_TIME, UPD_TIME
+      )
+    values (#{tagId,jdbcType=BIGINT}, #{objectType,jdbcType=TINYINT}, #{tagName,jdbcType=VARCHAR}, 
+      #{tagDesc,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT}, #{updTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.TagDo" >
+    insert into t_tag
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tagId != null" >
+        TAG_ID,
+      </if>
+      <if test="objectType != null" >
+        OBJECT_TYPE,
+      </if>
+      <if test="tagName != null" >
+        TAG_NAME,
+      </if>
+      <if test="tagDesc != null" >
+        TAG_DESC,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tagId != null" >
+        #{tagId,jdbcType=BIGINT},
+      </if>
+      <if test="objectType != null" >
+        #{objectType,jdbcType=TINYINT},
+      </if>
+      <if test="tagName != null" >
+        #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="tagDesc != null" >
+        #{tagDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xjd.ct.dal.dos.TagDoExample" resultType="java.lang.Integer" >
+    select count(*) from t_tag
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_tag
+    <set >
+      <if test="record.tagId != null" >
+        TAG_ID = #{record.tagId,jdbcType=BIGINT},
+      </if>
+      <if test="record.objectType != null" >
+        OBJECT_TYPE = #{record.objectType,jdbcType=TINYINT},
+      </if>
+      <if test="record.tagName != null" >
+        TAG_NAME = #{record.tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tagDesc != null" >
+        TAG_DESC = #{record.tagDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updTime != null" >
+        UPD_TIME = #{record.updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_tag
+    set TAG_ID = #{record.tagId,jdbcType=BIGINT},
+      OBJECT_TYPE = #{record.objectType,jdbcType=TINYINT},
+      TAG_NAME = #{record.tagName,jdbcType=VARCHAR},
+      TAG_DESC = #{record.tagDesc,jdbcType=VARCHAR},
+      ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      UPD_TIME = #{record.updTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.TagDo" >
+    update t_tag
+    <set >
+      <if test="objectType != null" >
+        OBJECT_TYPE = #{objectType,jdbcType=TINYINT},
+      </if>
+      <if test="tagName != null" >
+        TAG_NAME = #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="tagDesc != null" >
+        TAG_DESC = #{tagDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME = #{updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where TAG_ID = #{tagId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.TagDo" >
+    update t_tag
+    set OBJECT_TYPE = #{objectType,jdbcType=TINYINT},
+      TAG_NAME = #{tagName,jdbcType=VARCHAR},
+      TAG_DESC = #{tagDesc,jdbcType=VARCHAR},
+      ADD_TIME = #{addTime,jdbcType=BIGINT},
+      UPD_TIME = #{updTime,jdbcType=BIGINT}
+    where TAG_ID = #{tagId,jdbcType=BIGINT}
+  </update>
+  <sql id="MysqlPageSuffix" >
+    <if test="page != null" >
+      <![CDATA[ limit #{page.offset}, #{page.limit} ]]>
+    </if>
+  </sql>
+</mapper>

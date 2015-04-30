@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjd.ct.dal.map.ServiceLogDoMapper" >
+  <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.ServiceLogDo" >
+    <id column="LOG_ID" property="logId" jdbcType="BIGINT" />
+    <result column="USER_IP" property="userIp" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="BIGINT" />
+    <result column="TOKEN" property="token" jdbcType="CHAR" />
+    <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+    <result column="SERVICE_VERSION" property="serviceVersion" jdbcType="VARCHAR" />
+    <result column="REQUEST_TIME" property="requestTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    LOG_ID, USER_IP, USER_ID, TOKEN, SERVICE_NAME, SERVICE_VERSION, REQUEST_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.ServiceLogDoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_service_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlPageSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_service_log
+    where LOG_ID = #{logId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_service_log
+    where LOG_ID = #{logId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xjd.ct.dal.dos.ServiceLogDoExample" >
+    delete from t_service_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xjd.ct.dal.dos.ServiceLogDo" >
+    insert into t_service_log (LOG_ID, USER_IP, USER_ID, 
+      TOKEN, SERVICE_NAME, SERVICE_VERSION, 
+      REQUEST_TIME)
+    values (#{logId,jdbcType=BIGINT}, #{userIp,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
+      #{token,jdbcType=CHAR}, #{serviceName,jdbcType=VARCHAR}, #{serviceVersion,jdbcType=VARCHAR}, 
+      #{requestTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.ServiceLogDo" >
+    insert into t_service_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        LOG_ID,
+      </if>
+      <if test="userIp != null" >
+        USER_IP,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="token != null" >
+        TOKEN,
+      </if>
+      <if test="serviceName != null" >
+        SERVICE_NAME,
+      </if>
+      <if test="serviceVersion != null" >
+        SERVICE_VERSION,
+      </if>
+      <if test="requestTime != null" >
+        REQUEST_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        #{logId,jdbcType=BIGINT},
+      </if>
+      <if test="userIp != null" >
+        #{userIp,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="token != null" >
+        #{token,jdbcType=CHAR},
+      </if>
+      <if test="serviceName != null" >
+        #{serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceVersion != null" >
+        #{serviceVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="requestTime != null" >
+        #{requestTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xjd.ct.dal.dos.ServiceLogDoExample" resultType="java.lang.Integer" >
+    select count(*) from t_service_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_service_log
+    <set >
+      <if test="record.logId != null" >
+        LOG_ID = #{record.logId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userIp != null" >
+        USER_IP = #{record.userIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.token != null" >
+        TOKEN = #{record.token,jdbcType=CHAR},
+      </if>
+      <if test="record.serviceName != null" >
+        SERVICE_NAME = #{record.serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceVersion != null" >
+        SERVICE_VERSION = #{record.serviceVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestTime != null" >
+        REQUEST_TIME = #{record.requestTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_service_log
+    set LOG_ID = #{record.logId,jdbcType=BIGINT},
+      USER_IP = #{record.userIp,jdbcType=VARCHAR},
+      USER_ID = #{record.userId,jdbcType=BIGINT},
+      TOKEN = #{record.token,jdbcType=CHAR},
+      SERVICE_NAME = #{record.serviceName,jdbcType=VARCHAR},
+      SERVICE_VERSION = #{record.serviceVersion,jdbcType=VARCHAR},
+      REQUEST_TIME = #{record.requestTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.ServiceLogDo" >
+    update t_service_log
+    <set >
+      <if test="userIp != null" >
+        USER_IP = #{userIp,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="token != null" >
+        TOKEN = #{token,jdbcType=CHAR},
+      </if>
+      <if test="serviceName != null" >
+        SERVICE_NAME = #{serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceVersion != null" >
+        SERVICE_VERSION = #{serviceVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="requestTime != null" >
+        REQUEST_TIME = #{requestTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where LOG_ID = #{logId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.ServiceLogDo" >
+    update t_service_log
+    set USER_IP = #{userIp,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=BIGINT},
+      TOKEN = #{token,jdbcType=CHAR},
+      SERVICE_NAME = #{serviceName,jdbcType=VARCHAR},
+      SERVICE_VERSION = #{serviceVersion,jdbcType=VARCHAR},
+      REQUEST_TIME = #{requestTime,jdbcType=BIGINT}
+    where LOG_ID = #{logId,jdbcType=BIGINT}
+  </update>
+  <sql id="MysqlPageSuffix" >
+    <if test="page != null" >
+      <![CDATA[ limit #{page.offset}, #{page.limit} ]]>
+    </if>
+  </sql>
+</mapper>

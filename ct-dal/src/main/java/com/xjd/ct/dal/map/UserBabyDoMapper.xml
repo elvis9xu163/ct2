@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjd.ct.dal.map.UserBabyDoMapper" >
+  <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.UserBabyDo" >
+    <id column="BABY_ID" property="babyId" jdbcType="BIGINT" />
+    <result column="USER_ID" property="userId" jdbcType="BIGINT" />
+    <result column="BABY_NICKNAME" property="babyNickname" jdbcType="VARCHAR" />
+    <result column="BABY_SEX" property="babySex" jdbcType="TINYINT" />
+    <result column="BABY_BIRTH" property="babyBirth" jdbcType="BIGINT" />
+    <result column="BABY_REALNAME" property="babyRealname" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="BIGINT" />
+    <result column="UPD_TIME" property="updTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    BABY_ID, USER_ID, BABY_NICKNAME, BABY_SEX, BABY_BIRTH, BABY_REALNAME, ADD_TIME, UPD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.UserBabyDoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_user_baby
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlPageSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_baby
+    where BABY_ID = #{babyId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_user_baby
+    where BABY_ID = #{babyId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xjd.ct.dal.dos.UserBabyDoExample" >
+    delete from t_user_baby
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xjd.ct.dal.dos.UserBabyDo" >
+    insert into t_user_baby (BABY_ID, USER_ID, BABY_NICKNAME, 
+      BABY_SEX, BABY_BIRTH, BABY_REALNAME, 
+      ADD_TIME, UPD_TIME)
+    values (#{babyId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{babyNickname,jdbcType=VARCHAR}, 
+      #{babySex,jdbcType=TINYINT}, #{babyBirth,jdbcType=BIGINT}, #{babyRealname,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=BIGINT}, #{updTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.UserBabyDo" >
+    insert into t_user_baby
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="babyId != null" >
+        BABY_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="babyNickname != null" >
+        BABY_NICKNAME,
+      </if>
+      <if test="babySex != null" >
+        BABY_SEX,
+      </if>
+      <if test="babyBirth != null" >
+        BABY_BIRTH,
+      </if>
+      <if test="babyRealname != null" >
+        BABY_REALNAME,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="babyId != null" >
+        #{babyId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="babyNickname != null" >
+        #{babyNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="babySex != null" >
+        #{babySex,jdbcType=TINYINT},
+      </if>
+      <if test="babyBirth != null" >
+        #{babyBirth,jdbcType=BIGINT},
+      </if>
+      <if test="babyRealname != null" >
+        #{babyRealname,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xjd.ct.dal.dos.UserBabyDoExample" resultType="java.lang.Integer" >
+    select count(*) from t_user_baby
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_user_baby
+    <set >
+      <if test="record.babyId != null" >
+        BABY_ID = #{record.babyId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.babyNickname != null" >
+        BABY_NICKNAME = #{record.babyNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.babySex != null" >
+        BABY_SEX = #{record.babySex,jdbcType=TINYINT},
+      </if>
+      <if test="record.babyBirth != null" >
+        BABY_BIRTH = #{record.babyBirth,jdbcType=BIGINT},
+      </if>
+      <if test="record.babyRealname != null" >
+        BABY_REALNAME = #{record.babyRealname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updTime != null" >
+        UPD_TIME = #{record.updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_user_baby
+    set BABY_ID = #{record.babyId,jdbcType=BIGINT},
+      USER_ID = #{record.userId,jdbcType=BIGINT},
+      BABY_NICKNAME = #{record.babyNickname,jdbcType=VARCHAR},
+      BABY_SEX = #{record.babySex,jdbcType=TINYINT},
+      BABY_BIRTH = #{record.babyBirth,jdbcType=BIGINT},
+      BABY_REALNAME = #{record.babyRealname,jdbcType=VARCHAR},
+      ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      UPD_TIME = #{record.updTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.UserBabyDo" >
+    update t_user_baby
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="babyNickname != null" >
+        BABY_NICKNAME = #{babyNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="babySex != null" >
+        BABY_SEX = #{babySex,jdbcType=TINYINT},
+      </if>
+      <if test="babyBirth != null" >
+        BABY_BIRTH = #{babyBirth,jdbcType=BIGINT},
+      </if>
+      <if test="babyRealname != null" >
+        BABY_REALNAME = #{babyRealname,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME = #{updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where BABY_ID = #{babyId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.UserBabyDo" >
+    update t_user_baby
+    set USER_ID = #{userId,jdbcType=BIGINT},
+      BABY_NICKNAME = #{babyNickname,jdbcType=VARCHAR},
+      BABY_SEX = #{babySex,jdbcType=TINYINT},
+      BABY_BIRTH = #{babyBirth,jdbcType=BIGINT},
+      BABY_REALNAME = #{babyRealname,jdbcType=VARCHAR},
+      ADD_TIME = #{addTime,jdbcType=BIGINT},
+      UPD_TIME = #{updTime,jdbcType=BIGINT}
+    where BABY_ID = #{babyId,jdbcType=BIGINT}
+  </update>
+  <sql id="MysqlPageSuffix" >
+    <if test="page != null" >
+      <![CDATA[ limit #{page.offset}, #{page.limit} ]]>
+    </if>
+  </sql>
+</mapper>

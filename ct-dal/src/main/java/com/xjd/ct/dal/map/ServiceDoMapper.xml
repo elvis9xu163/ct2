@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjd.ct.dal.map.ServiceDoMapper" >
+  <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.ServiceDo" >
+    <id column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+    <id column="SERVICE_VERSION" property="serviceVersion" jdbcType="VARCHAR" />
+    <result column="NEED_LOGIN_FLAG" property="needLoginFlag" jdbcType="TINYINT" />
+    <result column="IN_MAINTAIN_FLAG" property="inMaintainFlag" jdbcType="TINYINT" />
+    <result column="MAINTAIN_MSG" property="maintainMsg" jdbcType="VARCHAR" />
+    <result column="VALID_FLAG" property="validFlag" jdbcType="TINYINT" />
+    <result column="ADD_TIME" property="addTime" jdbcType="BIGINT" />
+    <result column="UPD_TIME" property="updTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    SERVICE_NAME, SERVICE_VERSION, NEED_LOGIN_FLAG, IN_MAINTAIN_FLAG, MAINTAIN_MSG, VALID_FLAG, 
+    ADD_TIME, UPD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.ServiceDoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlPageSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.ServiceDoKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_service
+    where SERVICE_NAME = #{serviceName,jdbcType=VARCHAR}
+      and SERVICE_VERSION = #{serviceVersion,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.xjd.ct.dal.dos.ServiceDoKey" >
+    delete from t_service
+    where SERVICE_NAME = #{serviceName,jdbcType=VARCHAR}
+      and SERVICE_VERSION = #{serviceVersion,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xjd.ct.dal.dos.ServiceDoExample" >
+    delete from t_service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xjd.ct.dal.dos.ServiceDo" >
+    insert into t_service (SERVICE_NAME, SERVICE_VERSION, NEED_LOGIN_FLAG, 
+      IN_MAINTAIN_FLAG, MAINTAIN_MSG, VALID_FLAG, 
+      ADD_TIME, UPD_TIME)
+    values (#{serviceName,jdbcType=VARCHAR}, #{serviceVersion,jdbcType=VARCHAR}, #{needLoginFlag,jdbcType=TINYINT}, 
+      #{inMaintainFlag,jdbcType=TINYINT}, #{maintainMsg,jdbcType=VARCHAR}, #{validFlag,jdbcType=TINYINT}, 
+      #{addTime,jdbcType=BIGINT}, #{updTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.ServiceDo" >
+    insert into t_service
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="serviceName != null" >
+        SERVICE_NAME,
+      </if>
+      <if test="serviceVersion != null" >
+        SERVICE_VERSION,
+      </if>
+      <if test="needLoginFlag != null" >
+        NEED_LOGIN_FLAG,
+      </if>
+      <if test="inMaintainFlag != null" >
+        IN_MAINTAIN_FLAG,
+      </if>
+      <if test="maintainMsg != null" >
+        MAINTAIN_MSG,
+      </if>
+      <if test="validFlag != null" >
+        VALID_FLAG,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="serviceName != null" >
+        #{serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceVersion != null" >
+        #{serviceVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="needLoginFlag != null" >
+        #{needLoginFlag,jdbcType=TINYINT},
+      </if>
+      <if test="inMaintainFlag != null" >
+        #{inMaintainFlag,jdbcType=TINYINT},
+      </if>
+      <if test="maintainMsg != null" >
+        #{maintainMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="validFlag != null" >
+        #{validFlag,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xjd.ct.dal.dos.ServiceDoExample" resultType="java.lang.Integer" >
+    select count(*) from t_service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_service
+    <set >
+      <if test="record.serviceName != null" >
+        SERVICE_NAME = #{record.serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceVersion != null" >
+        SERVICE_VERSION = #{record.serviceVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.needLoginFlag != null" >
+        NEED_LOGIN_FLAG = #{record.needLoginFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.inMaintainFlag != null" >
+        IN_MAINTAIN_FLAG = #{record.inMaintainFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.maintainMsg != null" >
+        MAINTAIN_MSG = #{record.maintainMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validFlag != null" >
+        VALID_FLAG = #{record.validFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updTime != null" >
+        UPD_TIME = #{record.updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_service
+    set SERVICE_NAME = #{record.serviceName,jdbcType=VARCHAR},
+      SERVICE_VERSION = #{record.serviceVersion,jdbcType=VARCHAR},
+      NEED_LOGIN_FLAG = #{record.needLoginFlag,jdbcType=TINYINT},
+      IN_MAINTAIN_FLAG = #{record.inMaintainFlag,jdbcType=TINYINT},
+      MAINTAIN_MSG = #{record.maintainMsg,jdbcType=VARCHAR},
+      VALID_FLAG = #{record.validFlag,jdbcType=TINYINT},
+      ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      UPD_TIME = #{record.updTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.ServiceDo" >
+    update t_service
+    <set >
+      <if test="needLoginFlag != null" >
+        NEED_LOGIN_FLAG = #{needLoginFlag,jdbcType=TINYINT},
+      </if>
+      <if test="inMaintainFlag != null" >
+        IN_MAINTAIN_FLAG = #{inMaintainFlag,jdbcType=TINYINT},
+      </if>
+      <if test="maintainMsg != null" >
+        MAINTAIN_MSG = #{maintainMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="validFlag != null" >
+        VALID_FLAG = #{validFlag,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME = #{updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where SERVICE_NAME = #{serviceName,jdbcType=VARCHAR}
+      and SERVICE_VERSION = #{serviceVersion,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.ServiceDo" >
+    update t_service
+    set NEED_LOGIN_FLAG = #{needLoginFlag,jdbcType=TINYINT},
+      IN_MAINTAIN_FLAG = #{inMaintainFlag,jdbcType=TINYINT},
+      MAINTAIN_MSG = #{maintainMsg,jdbcType=VARCHAR},
+      VALID_FLAG = #{validFlag,jdbcType=TINYINT},
+      ADD_TIME = #{addTime,jdbcType=BIGINT},
+      UPD_TIME = #{updTime,jdbcType=BIGINT}
+    where SERVICE_NAME = #{serviceName,jdbcType=VARCHAR}
+      and SERVICE_VERSION = #{serviceVersion,jdbcType=VARCHAR}
+  </update>
+  <sql id="MysqlPageSuffix" >
+    <if test="page != null" >
+      <![CDATA[ limit #{page.offset}, #{page.limit} ]]>
+    </if>
+  </sql>
+</mapper>

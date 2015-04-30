@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjd.ct.dal.map.AgeBracketDoMapper" >
+  <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.AgeBracketDo" >
+    <id column="AGE_BRACKET_ID" property="ageBracketId" jdbcType="BIGINT" />
+    <result column="AGE_BRACKET_NAME" property="ageBracketName" jdbcType="VARCHAR" />
+    <result column="AGE_BRACKET_DESC" property="ageBracketDesc" jdbcType="VARCHAR" />
+    <result column="AGE_START" property="ageStart" jdbcType="TINYINT" />
+    <result column="AGE_END" property="ageEnd" jdbcType="TINYINT" />
+    <result column="ADD_TIME" property="addTime" jdbcType="BIGINT" />
+    <result column="UPD_TIME" property="updTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    AGE_BRACKET_ID, AGE_BRACKET_NAME, AGE_BRACKET_DESC, AGE_START, AGE_END, ADD_TIME, 
+    UPD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.AgeBracketDoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_age_bracket
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlPageSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_age_bracket
+    where AGE_BRACKET_ID = #{ageBracketId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_age_bracket
+    where AGE_BRACKET_ID = #{ageBracketId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xjd.ct.dal.dos.AgeBracketDoExample" >
+    delete from t_age_bracket
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xjd.ct.dal.dos.AgeBracketDo" >
+    insert into t_age_bracket (AGE_BRACKET_ID, AGE_BRACKET_NAME, AGE_BRACKET_DESC, 
+      AGE_START, AGE_END, ADD_TIME, 
+      UPD_TIME)
+    values (#{ageBracketId,jdbcType=BIGINT}, #{ageBracketName,jdbcType=VARCHAR}, #{ageBracketDesc,jdbcType=VARCHAR}, 
+      #{ageStart,jdbcType=TINYINT}, #{ageEnd,jdbcType=TINYINT}, #{addTime,jdbcType=BIGINT}, 
+      #{updTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.AgeBracketDo" >
+    insert into t_age_bracket
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ageBracketId != null" >
+        AGE_BRACKET_ID,
+      </if>
+      <if test="ageBracketName != null" >
+        AGE_BRACKET_NAME,
+      </if>
+      <if test="ageBracketDesc != null" >
+        AGE_BRACKET_DESC,
+      </if>
+      <if test="ageStart != null" >
+        AGE_START,
+      </if>
+      <if test="ageEnd != null" >
+        AGE_END,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ageBracketId != null" >
+        #{ageBracketId,jdbcType=BIGINT},
+      </if>
+      <if test="ageBracketName != null" >
+        #{ageBracketName,jdbcType=VARCHAR},
+      </if>
+      <if test="ageBracketDesc != null" >
+        #{ageBracketDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="ageStart != null" >
+        #{ageStart,jdbcType=TINYINT},
+      </if>
+      <if test="ageEnd != null" >
+        #{ageEnd,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xjd.ct.dal.dos.AgeBracketDoExample" resultType="java.lang.Integer" >
+    select count(*) from t_age_bracket
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_age_bracket
+    <set >
+      <if test="record.ageBracketId != null" >
+        AGE_BRACKET_ID = #{record.ageBracketId,jdbcType=BIGINT},
+      </if>
+      <if test="record.ageBracketName != null" >
+        AGE_BRACKET_NAME = #{record.ageBracketName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ageBracketDesc != null" >
+        AGE_BRACKET_DESC = #{record.ageBracketDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ageStart != null" >
+        AGE_START = #{record.ageStart,jdbcType=TINYINT},
+      </if>
+      <if test="record.ageEnd != null" >
+        AGE_END = #{record.ageEnd,jdbcType=TINYINT},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updTime != null" >
+        UPD_TIME = #{record.updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_age_bracket
+    set AGE_BRACKET_ID = #{record.ageBracketId,jdbcType=BIGINT},
+      AGE_BRACKET_NAME = #{record.ageBracketName,jdbcType=VARCHAR},
+      AGE_BRACKET_DESC = #{record.ageBracketDesc,jdbcType=VARCHAR},
+      AGE_START = #{record.ageStart,jdbcType=TINYINT},
+      AGE_END = #{record.ageEnd,jdbcType=TINYINT},
+      ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      UPD_TIME = #{record.updTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.AgeBracketDo" >
+    update t_age_bracket
+    <set >
+      <if test="ageBracketName != null" >
+        AGE_BRACKET_NAME = #{ageBracketName,jdbcType=VARCHAR},
+      </if>
+      <if test="ageBracketDesc != null" >
+        AGE_BRACKET_DESC = #{ageBracketDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="ageStart != null" >
+        AGE_START = #{ageStart,jdbcType=TINYINT},
+      </if>
+      <if test="ageEnd != null" >
+        AGE_END = #{ageEnd,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME = #{updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where AGE_BRACKET_ID = #{ageBracketId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.AgeBracketDo" >
+    update t_age_bracket
+    set AGE_BRACKET_NAME = #{ageBracketName,jdbcType=VARCHAR},
+      AGE_BRACKET_DESC = #{ageBracketDesc,jdbcType=VARCHAR},
+      AGE_START = #{ageStart,jdbcType=TINYINT},
+      AGE_END = #{ageEnd,jdbcType=TINYINT},
+      ADD_TIME = #{addTime,jdbcType=BIGINT},
+      UPD_TIME = #{updTime,jdbcType=BIGINT}
+    where AGE_BRACKET_ID = #{ageBracketId,jdbcType=BIGINT}
+  </update>
+  <sql id="MysqlPageSuffix" >
+    <if test="page != null" >
+      <![CDATA[ limit #{page.offset}, #{page.limit} ]]>
+    </if>
+  </sql>
+</mapper>

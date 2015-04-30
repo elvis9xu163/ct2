@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjd.ct.dal.map.ObjectVoteDoMapper" >
+  <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.ObjectVoteDo" >
+    <id column="OBJECT_ID" property="objectId" jdbcType="BIGINT" />
+    <id column="OPT_CODE" property="optCode" jdbcType="TINYINT" />
+    <id column="USER_ID" property="userId" jdbcType="BIGINT" />
+    <result column="YES_NO" property="yesNo" jdbcType="TINYINT" />
+    <result column="ADD_TIME" property="addTime" jdbcType="BIGINT" />
+    <result column="UPD_TIME" property="updTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    OBJECT_ID, OPT_CODE, USER_ID, YES_NO, ADD_TIME, UPD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.ObjectVoteDoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_object_vote
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlPageSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.ObjectVoteDoKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_object_vote
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+      and OPT_CODE = #{optCode,jdbcType=TINYINT}
+      and USER_ID = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.xjd.ct.dal.dos.ObjectVoteDoKey" >
+    delete from t_object_vote
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+      and OPT_CODE = #{optCode,jdbcType=TINYINT}
+      and USER_ID = #{userId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xjd.ct.dal.dos.ObjectVoteDoExample" >
+    delete from t_object_vote
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xjd.ct.dal.dos.ObjectVoteDo" >
+    insert into t_object_vote (OBJECT_ID, OPT_CODE, USER_ID, 
+      YES_NO, ADD_TIME, UPD_TIME
+      )
+    values (#{objectId,jdbcType=BIGINT}, #{optCode,jdbcType=TINYINT}, #{userId,jdbcType=BIGINT}, 
+      #{yesNo,jdbcType=TINYINT}, #{addTime,jdbcType=BIGINT}, #{updTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.ObjectVoteDo" >
+    insert into t_object_vote
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="objectId != null" >
+        OBJECT_ID,
+      </if>
+      <if test="optCode != null" >
+        OPT_CODE,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="yesNo != null" >
+        YES_NO,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="objectId != null" >
+        #{objectId,jdbcType=BIGINT},
+      </if>
+      <if test="optCode != null" >
+        #{optCode,jdbcType=TINYINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="yesNo != null" >
+        #{yesNo,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xjd.ct.dal.dos.ObjectVoteDoExample" resultType="java.lang.Integer" >
+    select count(*) from t_object_vote
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_object_vote
+    <set >
+      <if test="record.objectId != null" >
+        OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.optCode != null" >
+        OPT_CODE = #{record.optCode,jdbcType=TINYINT},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.yesNo != null" >
+        YES_NO = #{record.yesNo,jdbcType=TINYINT},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updTime != null" >
+        UPD_TIME = #{record.updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_object_vote
+    set OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      OPT_CODE = #{record.optCode,jdbcType=TINYINT},
+      USER_ID = #{record.userId,jdbcType=BIGINT},
+      YES_NO = #{record.yesNo,jdbcType=TINYINT},
+      ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      UPD_TIME = #{record.updTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.ObjectVoteDo" >
+    update t_object_vote
+    <set >
+      <if test="yesNo != null" >
+        YES_NO = #{yesNo,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME = #{updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+      and OPT_CODE = #{optCode,jdbcType=TINYINT}
+      and USER_ID = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.ObjectVoteDo" >
+    update t_object_vote
+    set YES_NO = #{yesNo,jdbcType=TINYINT},
+      ADD_TIME = #{addTime,jdbcType=BIGINT},
+      UPD_TIME = #{updTime,jdbcType=BIGINT}
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+      and OPT_CODE = #{optCode,jdbcType=TINYINT}
+      and USER_ID = #{userId,jdbcType=BIGINT}
+  </update>
+  <sql id="MysqlPageSuffix" >
+    <if test="page != null" >
+      <![CDATA[ limit #{page.offset}, #{page.limit} ]]>
+    </if>
+  </sql>
+</mapper>

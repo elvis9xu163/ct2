@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjd.ct.dal.map.MsgInformDoMapper" >
+  <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.MsgInformDo" >
+    <id column="INFORM_ID" property="informId" jdbcType="BIGINT" />
+    <result column="USER_ID" property="userId" jdbcType="BIGINT" />
+    <result column="INFORM_TYPE" property="informType" jdbcType="TINYINT" />
+    <result column="INFORM_TITLE" property="informTitle" jdbcType="VARCHAR" />
+    <result column="INFORM_DETAIL" property="informDetail" jdbcType="VARCHAR" />
+    <result column="INFORM_INFO" property="informInfo" jdbcType="VARCHAR" />
+    <result column="READ_FLAG" property="readFlag" jdbcType="TINYINT" />
+    <result column="ADD_TIME" property="addTime" jdbcType="BIGINT" />
+    <result column="UPD_TIME" property="updTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    INFORM_ID, USER_ID, INFORM_TYPE, INFORM_TITLE, INFORM_DETAIL, INFORM_INFO, READ_FLAG, 
+    ADD_TIME, UPD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.MsgInformDoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_msg_inform
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlPageSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_msg_inform
+    where INFORM_ID = #{informId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_msg_inform
+    where INFORM_ID = #{informId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xjd.ct.dal.dos.MsgInformDoExample" >
+    delete from t_msg_inform
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xjd.ct.dal.dos.MsgInformDo" >
+    insert into t_msg_inform (INFORM_ID, USER_ID, INFORM_TYPE, 
+      INFORM_TITLE, INFORM_DETAIL, INFORM_INFO, 
+      READ_FLAG, ADD_TIME, UPD_TIME
+      )
+    values (#{informId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{informType,jdbcType=TINYINT}, 
+      #{informTitle,jdbcType=VARCHAR}, #{informDetail,jdbcType=VARCHAR}, #{informInfo,jdbcType=VARCHAR}, 
+      #{readFlag,jdbcType=TINYINT}, #{addTime,jdbcType=BIGINT}, #{updTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.MsgInformDo" >
+    insert into t_msg_inform
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="informId != null" >
+        INFORM_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="informType != null" >
+        INFORM_TYPE,
+      </if>
+      <if test="informTitle != null" >
+        INFORM_TITLE,
+      </if>
+      <if test="informDetail != null" >
+        INFORM_DETAIL,
+      </if>
+      <if test="informInfo != null" >
+        INFORM_INFO,
+      </if>
+      <if test="readFlag != null" >
+        READ_FLAG,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="informId != null" >
+        #{informId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="informType != null" >
+        #{informType,jdbcType=TINYINT},
+      </if>
+      <if test="informTitle != null" >
+        #{informTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="informDetail != null" >
+        #{informDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="informInfo != null" >
+        #{informInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="readFlag != null" >
+        #{readFlag,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xjd.ct.dal.dos.MsgInformDoExample" resultType="java.lang.Integer" >
+    select count(*) from t_msg_inform
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_msg_inform
+    <set >
+      <if test="record.informId != null" >
+        INFORM_ID = #{record.informId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.informType != null" >
+        INFORM_TYPE = #{record.informType,jdbcType=TINYINT},
+      </if>
+      <if test="record.informTitle != null" >
+        INFORM_TITLE = #{record.informTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.informDetail != null" >
+        INFORM_DETAIL = #{record.informDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.informInfo != null" >
+        INFORM_INFO = #{record.informInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.readFlag != null" >
+        READ_FLAG = #{record.readFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updTime != null" >
+        UPD_TIME = #{record.updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_msg_inform
+    set INFORM_ID = #{record.informId,jdbcType=BIGINT},
+      USER_ID = #{record.userId,jdbcType=BIGINT},
+      INFORM_TYPE = #{record.informType,jdbcType=TINYINT},
+      INFORM_TITLE = #{record.informTitle,jdbcType=VARCHAR},
+      INFORM_DETAIL = #{record.informDetail,jdbcType=VARCHAR},
+      INFORM_INFO = #{record.informInfo,jdbcType=VARCHAR},
+      READ_FLAG = #{record.readFlag,jdbcType=TINYINT},
+      ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      UPD_TIME = #{record.updTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.MsgInformDo" >
+    update t_msg_inform
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="informType != null" >
+        INFORM_TYPE = #{informType,jdbcType=TINYINT},
+      </if>
+      <if test="informTitle != null" >
+        INFORM_TITLE = #{informTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="informDetail != null" >
+        INFORM_DETAIL = #{informDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="informInfo != null" >
+        INFORM_INFO = #{informInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="readFlag != null" >
+        READ_FLAG = #{readFlag,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME = #{updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where INFORM_ID = #{informId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.MsgInformDo" >
+    update t_msg_inform
+    set USER_ID = #{userId,jdbcType=BIGINT},
+      INFORM_TYPE = #{informType,jdbcType=TINYINT},
+      INFORM_TITLE = #{informTitle,jdbcType=VARCHAR},
+      INFORM_DETAIL = #{informDetail,jdbcType=VARCHAR},
+      INFORM_INFO = #{informInfo,jdbcType=VARCHAR},
+      READ_FLAG = #{readFlag,jdbcType=TINYINT},
+      ADD_TIME = #{addTime,jdbcType=BIGINT},
+      UPD_TIME = #{updTime,jdbcType=BIGINT}
+    where INFORM_ID = #{informId,jdbcType=BIGINT}
+  </update>
+  <sql id="MysqlPageSuffix" >
+    <if test="page != null" >
+      <![CDATA[ limit #{page.offset}, #{page.limit} ]]>
+    </if>
+  </sql>
+</mapper>

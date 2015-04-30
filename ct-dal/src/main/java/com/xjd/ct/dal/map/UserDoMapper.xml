@@ -1,0 +1,708 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjd.ct.dal.map.UserDoMapper" >
+  <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.UserDo" >
+    <id column="USER_ID" property="userId" jdbcType="BIGINT" />
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+    <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="VERIFY_MOBILE_FLAG" property="verifyMobileFlag" jdbcType="TINYINT" />
+    <result column="VERIFY_EMAIL_FLAG" property="verifyEmailFlag" jdbcType="TINYINT" />
+    <result column="BIND_QQ_FLAG" property="bindQqFlag" jdbcType="TINYINT" />
+    <result column="BIND_WEIXIN_FLAG" property="bindWeixinFlag" jdbcType="TINYINT" />
+    <result column="BIND_SINA_WEIBO_FLAG" property="bindSinaWeiboFlag" jdbcType="TINYINT" />
+    <result column="BIND_TECENT_WEIBO_FLAG" property="bindTecentWeiboFlag" jdbcType="TINYINT" />
+    <result column="REAL_NAME" property="realName" jdbcType="VARCHAR" />
+    <result column="CERT_TYPE" property="certType" jdbcType="TINYINT" />
+    <result column="CERT_NO" property="certNo" jdbcType="VARCHAR" />
+    <result column="FAIL_TIMES" property="failTimes" jdbcType="SMALLINT" />
+    <result column="LAST_IP" property="lastIp" jdbcType="VARCHAR" />
+    <result column="LAST_TIME" property="lastTime" jdbcType="BIGINT" />
+    <result column="LAST_LON" property="lastLon" jdbcType="DECIMAL" />
+    <result column="LAST_LAT" property="lastLat" jdbcType="DECIMAL" />
+    <result column="LAST_ADDR" property="lastAddr" jdbcType="VARCHAR" />
+    <result column="USER_STATUS" property="userStatus" jdbcType="TINYINT" />
+    <result column="USER_TYPE" property="userType" jdbcType="TINYINT" />
+    <result column="GRADE_EXP" property="gradeExp" jdbcType="INTEGER" />
+    <result column="GRADE_LEVEL" property="gradeLevel" jdbcType="TINYINT" />
+    <result column="POINT" property="point" jdbcType="INTEGER" />
+    <result column="NICKNAME" property="nickname" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="TINYINT" />
+    <result column="BIRTH" property="birth" jdbcType="BIGINT" />
+    <result column="MOOD_WORDS" property="moodWords" jdbcType="VARCHAR" />
+    <result column="MOOD_WORDS_TIME" property="moodWordsTime" jdbcType="BIGINT" />
+    <result column="COUNT_INFORM" property="countInform" jdbcType="INTEGER" />
+    <result column="COUNT_FAVOR" property="countFavor" jdbcType="INTEGER" />
+    <result column="COUNT_PUBLISH" property="countPublish" jdbcType="INTEGER" />
+    <result column="COUNT_IDOL" property="countIdol" jdbcType="INTEGER" />
+    <result column="COUNT_FANS" property="countFans" jdbcType="INTEGER" />
+    <result column="ADD_TIME" property="addTime" jdbcType="BIGINT" />
+    <result column="UPD_TIME" property="updTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    USER_ID, PASSWORD, MOBILE, EMAIL, VERIFY_MOBILE_FLAG, VERIFY_EMAIL_FLAG, BIND_QQ_FLAG, 
+    BIND_WEIXIN_FLAG, BIND_SINA_WEIBO_FLAG, BIND_TECENT_WEIBO_FLAG, REAL_NAME, CERT_TYPE, 
+    CERT_NO, FAIL_TIMES, LAST_IP, LAST_TIME, LAST_LON, LAST_LAT, LAST_ADDR, USER_STATUS, 
+    USER_TYPE, GRADE_EXP, GRADE_LEVEL, POINT, NICKNAME, SEX, BIRTH, MOOD_WORDS, MOOD_WORDS_TIME, 
+    COUNT_INFORM, COUNT_FAVOR, COUNT_PUBLISH, COUNT_IDOL, COUNT_FANS, ADD_TIME, UPD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.UserDoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlPageSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where USER_ID = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_user
+    where USER_ID = #{userId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xjd.ct.dal.dos.UserDoExample" >
+    delete from t_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xjd.ct.dal.dos.UserDo" >
+    insert into t_user (USER_ID, PASSWORD, MOBILE, 
+      EMAIL, VERIFY_MOBILE_FLAG, VERIFY_EMAIL_FLAG, 
+      BIND_QQ_FLAG, BIND_WEIXIN_FLAG, BIND_SINA_WEIBO_FLAG, 
+      BIND_TECENT_WEIBO_FLAG, REAL_NAME, CERT_TYPE, 
+      CERT_NO, FAIL_TIMES, LAST_IP, 
+      LAST_TIME, LAST_LON, LAST_LAT, 
+      LAST_ADDR, USER_STATUS, USER_TYPE, 
+      GRADE_EXP, GRADE_LEVEL, POINT, 
+      NICKNAME, SEX, BIRTH, 
+      MOOD_WORDS, MOOD_WORDS_TIME, COUNT_INFORM, 
+      COUNT_FAVOR, COUNT_PUBLISH, COUNT_IDOL, 
+      COUNT_FANS, ADD_TIME, UPD_TIME
+      )
+    values (#{userId,jdbcType=BIGINT}, #{password,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{verifyMobileFlag,jdbcType=TINYINT}, #{verifyEmailFlag,jdbcType=TINYINT}, 
+      #{bindQqFlag,jdbcType=TINYINT}, #{bindWeixinFlag,jdbcType=TINYINT}, #{bindSinaWeiboFlag,jdbcType=TINYINT}, 
+      #{bindTecentWeiboFlag,jdbcType=TINYINT}, #{realName,jdbcType=VARCHAR}, #{certType,jdbcType=TINYINT}, 
+      #{certNo,jdbcType=VARCHAR}, #{failTimes,jdbcType=SMALLINT}, #{lastIp,jdbcType=VARCHAR}, 
+      #{lastTime,jdbcType=BIGINT}, #{lastLon,jdbcType=DECIMAL}, #{lastLat,jdbcType=DECIMAL}, 
+      #{lastAddr,jdbcType=VARCHAR}, #{userStatus,jdbcType=TINYINT}, #{userType,jdbcType=TINYINT}, 
+      #{gradeExp,jdbcType=INTEGER}, #{gradeLevel,jdbcType=TINYINT}, #{point,jdbcType=INTEGER}, 
+      #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{birth,jdbcType=BIGINT}, 
+      #{moodWords,jdbcType=VARCHAR}, #{moodWordsTime,jdbcType=BIGINT}, #{countInform,jdbcType=INTEGER}, 
+      #{countFavor,jdbcType=INTEGER}, #{countPublish,jdbcType=INTEGER}, #{countIdol,jdbcType=INTEGER}, 
+      #{countFans,jdbcType=INTEGER}, #{addTime,jdbcType=BIGINT}, #{updTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.UserDo" >
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="password != null" >
+        PASSWORD,
+      </if>
+      <if test="mobile != null" >
+        MOBILE,
+      </if>
+      <if test="email != null" >
+        EMAIL,
+      </if>
+      <if test="verifyMobileFlag != null" >
+        VERIFY_MOBILE_FLAG,
+      </if>
+      <if test="verifyEmailFlag != null" >
+        VERIFY_EMAIL_FLAG,
+      </if>
+      <if test="bindQqFlag != null" >
+        BIND_QQ_FLAG,
+      </if>
+      <if test="bindWeixinFlag != null" >
+        BIND_WEIXIN_FLAG,
+      </if>
+      <if test="bindSinaWeiboFlag != null" >
+        BIND_SINA_WEIBO_FLAG,
+      </if>
+      <if test="bindTecentWeiboFlag != null" >
+        BIND_TECENT_WEIBO_FLAG,
+      </if>
+      <if test="realName != null" >
+        REAL_NAME,
+      </if>
+      <if test="certType != null" >
+        CERT_TYPE,
+      </if>
+      <if test="certNo != null" >
+        CERT_NO,
+      </if>
+      <if test="failTimes != null" >
+        FAIL_TIMES,
+      </if>
+      <if test="lastIp != null" >
+        LAST_IP,
+      </if>
+      <if test="lastTime != null" >
+        LAST_TIME,
+      </if>
+      <if test="lastLon != null" >
+        LAST_LON,
+      </if>
+      <if test="lastLat != null" >
+        LAST_LAT,
+      </if>
+      <if test="lastAddr != null" >
+        LAST_ADDR,
+      </if>
+      <if test="userStatus != null" >
+        USER_STATUS,
+      </if>
+      <if test="userType != null" >
+        USER_TYPE,
+      </if>
+      <if test="gradeExp != null" >
+        GRADE_EXP,
+      </if>
+      <if test="gradeLevel != null" >
+        GRADE_LEVEL,
+      </if>
+      <if test="point != null" >
+        POINT,
+      </if>
+      <if test="nickname != null" >
+        NICKNAME,
+      </if>
+      <if test="sex != null" >
+        SEX,
+      </if>
+      <if test="birth != null" >
+        BIRTH,
+      </if>
+      <if test="moodWords != null" >
+        MOOD_WORDS,
+      </if>
+      <if test="moodWordsTime != null" >
+        MOOD_WORDS_TIME,
+      </if>
+      <if test="countInform != null" >
+        COUNT_INFORM,
+      </if>
+      <if test="countFavor != null" >
+        COUNT_FAVOR,
+      </if>
+      <if test="countPublish != null" >
+        COUNT_PUBLISH,
+      </if>
+      <if test="countIdol != null" >
+        COUNT_IDOL,
+      </if>
+      <if test="countFans != null" >
+        COUNT_FANS,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyMobileFlag != null" >
+        #{verifyMobileFlag,jdbcType=TINYINT},
+      </if>
+      <if test="verifyEmailFlag != null" >
+        #{verifyEmailFlag,jdbcType=TINYINT},
+      </if>
+      <if test="bindQqFlag != null" >
+        #{bindQqFlag,jdbcType=TINYINT},
+      </if>
+      <if test="bindWeixinFlag != null" >
+        #{bindWeixinFlag,jdbcType=TINYINT},
+      </if>
+      <if test="bindSinaWeiboFlag != null" >
+        #{bindSinaWeiboFlag,jdbcType=TINYINT},
+      </if>
+      <if test="bindTecentWeiboFlag != null" >
+        #{bindTecentWeiboFlag,jdbcType=TINYINT},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="certType != null" >
+        #{certType,jdbcType=TINYINT},
+      </if>
+      <if test="certNo != null" >
+        #{certNo,jdbcType=VARCHAR},
+      </if>
+      <if test="failTimes != null" >
+        #{failTimes,jdbcType=SMALLINT},
+      </if>
+      <if test="lastIp != null" >
+        #{lastIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastTime != null" >
+        #{lastTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastLon != null" >
+        #{lastLon,jdbcType=DECIMAL},
+      </if>
+      <if test="lastLat != null" >
+        #{lastLat,jdbcType=DECIMAL},
+      </if>
+      <if test="lastAddr != null" >
+        #{lastAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null" >
+        #{userStatus,jdbcType=TINYINT},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=TINYINT},
+      </if>
+      <if test="gradeExp != null" >
+        #{gradeExp,jdbcType=INTEGER},
+      </if>
+      <if test="gradeLevel != null" >
+        #{gradeLevel,jdbcType=TINYINT},
+      </if>
+      <if test="point != null" >
+        #{point,jdbcType=INTEGER},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="birth != null" >
+        #{birth,jdbcType=BIGINT},
+      </if>
+      <if test="moodWords != null" >
+        #{moodWords,jdbcType=VARCHAR},
+      </if>
+      <if test="moodWordsTime != null" >
+        #{moodWordsTime,jdbcType=BIGINT},
+      </if>
+      <if test="countInform != null" >
+        #{countInform,jdbcType=INTEGER},
+      </if>
+      <if test="countFavor != null" >
+        #{countFavor,jdbcType=INTEGER},
+      </if>
+      <if test="countPublish != null" >
+        #{countPublish,jdbcType=INTEGER},
+      </if>
+      <if test="countIdol != null" >
+        #{countIdol,jdbcType=INTEGER},
+      </if>
+      <if test="countFans != null" >
+        #{countFans,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xjd.ct.dal.dos.UserDoExample" resultType="java.lang.Integer" >
+    select count(*) from t_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_user
+    <set >
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.password != null" >
+        PASSWORD = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        MOBILE = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        EMAIL = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.verifyMobileFlag != null" >
+        VERIFY_MOBILE_FLAG = #{record.verifyMobileFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.verifyEmailFlag != null" >
+        VERIFY_EMAIL_FLAG = #{record.verifyEmailFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.bindQqFlag != null" >
+        BIND_QQ_FLAG = #{record.bindQqFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.bindWeixinFlag != null" >
+        BIND_WEIXIN_FLAG = #{record.bindWeixinFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.bindSinaWeiboFlag != null" >
+        BIND_SINA_WEIBO_FLAG = #{record.bindSinaWeiboFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.bindTecentWeiboFlag != null" >
+        BIND_TECENT_WEIBO_FLAG = #{record.bindTecentWeiboFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.realName != null" >
+        REAL_NAME = #{record.realName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.certType != null" >
+        CERT_TYPE = #{record.certType,jdbcType=TINYINT},
+      </if>
+      <if test="record.certNo != null" >
+        CERT_NO = #{record.certNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.failTimes != null" >
+        FAIL_TIMES = #{record.failTimes,jdbcType=SMALLINT},
+      </if>
+      <if test="record.lastIp != null" >
+        LAST_IP = #{record.lastIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastTime != null" >
+        LAST_TIME = #{record.lastTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastLon != null" >
+        LAST_LON = #{record.lastLon,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastLat != null" >
+        LAST_LAT = #{record.lastLat,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastAddr != null" >
+        LAST_ADDR = #{record.lastAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userStatus != null" >
+        USER_STATUS = #{record.userStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.userType != null" >
+        USER_TYPE = #{record.userType,jdbcType=TINYINT},
+      </if>
+      <if test="record.gradeExp != null" >
+        GRADE_EXP = #{record.gradeExp,jdbcType=INTEGER},
+      </if>
+      <if test="record.gradeLevel != null" >
+        GRADE_LEVEL = #{record.gradeLevel,jdbcType=TINYINT},
+      </if>
+      <if test="record.point != null" >
+        POINT = #{record.point,jdbcType=INTEGER},
+      </if>
+      <if test="record.nickname != null" >
+        NICKNAME = #{record.nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null" >
+        SEX = #{record.sex,jdbcType=TINYINT},
+      </if>
+      <if test="record.birth != null" >
+        BIRTH = #{record.birth,jdbcType=BIGINT},
+      </if>
+      <if test="record.moodWords != null" >
+        MOOD_WORDS = #{record.moodWords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.moodWordsTime != null" >
+        MOOD_WORDS_TIME = #{record.moodWordsTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.countInform != null" >
+        COUNT_INFORM = #{record.countInform,jdbcType=INTEGER},
+      </if>
+      <if test="record.countFavor != null" >
+        COUNT_FAVOR = #{record.countFavor,jdbcType=INTEGER},
+      </if>
+      <if test="record.countPublish != null" >
+        COUNT_PUBLISH = #{record.countPublish,jdbcType=INTEGER},
+      </if>
+      <if test="record.countIdol != null" >
+        COUNT_IDOL = #{record.countIdol,jdbcType=INTEGER},
+      </if>
+      <if test="record.countFans != null" >
+        COUNT_FANS = #{record.countFans,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updTime != null" >
+        UPD_TIME = #{record.updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_user
+    set USER_ID = #{record.userId,jdbcType=BIGINT},
+      PASSWORD = #{record.password,jdbcType=VARCHAR},
+      MOBILE = #{record.mobile,jdbcType=VARCHAR},
+      EMAIL = #{record.email,jdbcType=VARCHAR},
+      VERIFY_MOBILE_FLAG = #{record.verifyMobileFlag,jdbcType=TINYINT},
+      VERIFY_EMAIL_FLAG = #{record.verifyEmailFlag,jdbcType=TINYINT},
+      BIND_QQ_FLAG = #{record.bindQqFlag,jdbcType=TINYINT},
+      BIND_WEIXIN_FLAG = #{record.bindWeixinFlag,jdbcType=TINYINT},
+      BIND_SINA_WEIBO_FLAG = #{record.bindSinaWeiboFlag,jdbcType=TINYINT},
+      BIND_TECENT_WEIBO_FLAG = #{record.bindTecentWeiboFlag,jdbcType=TINYINT},
+      REAL_NAME = #{record.realName,jdbcType=VARCHAR},
+      CERT_TYPE = #{record.certType,jdbcType=TINYINT},
+      CERT_NO = #{record.certNo,jdbcType=VARCHAR},
+      FAIL_TIMES = #{record.failTimes,jdbcType=SMALLINT},
+      LAST_IP = #{record.lastIp,jdbcType=VARCHAR},
+      LAST_TIME = #{record.lastTime,jdbcType=BIGINT},
+      LAST_LON = #{record.lastLon,jdbcType=DECIMAL},
+      LAST_LAT = #{record.lastLat,jdbcType=DECIMAL},
+      LAST_ADDR = #{record.lastAddr,jdbcType=VARCHAR},
+      USER_STATUS = #{record.userStatus,jdbcType=TINYINT},
+      USER_TYPE = #{record.userType,jdbcType=TINYINT},
+      GRADE_EXP = #{record.gradeExp,jdbcType=INTEGER},
+      GRADE_LEVEL = #{record.gradeLevel,jdbcType=TINYINT},
+      POINT = #{record.point,jdbcType=INTEGER},
+      NICKNAME = #{record.nickname,jdbcType=VARCHAR},
+      SEX = #{record.sex,jdbcType=TINYINT},
+      BIRTH = #{record.birth,jdbcType=BIGINT},
+      MOOD_WORDS = #{record.moodWords,jdbcType=VARCHAR},
+      MOOD_WORDS_TIME = #{record.moodWordsTime,jdbcType=BIGINT},
+      COUNT_INFORM = #{record.countInform,jdbcType=INTEGER},
+      COUNT_FAVOR = #{record.countFavor,jdbcType=INTEGER},
+      COUNT_PUBLISH = #{record.countPublish,jdbcType=INTEGER},
+      COUNT_IDOL = #{record.countIdol,jdbcType=INTEGER},
+      COUNT_FANS = #{record.countFans,jdbcType=INTEGER},
+      ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      UPD_TIME = #{record.updTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.UserDo" >
+    update t_user
+    <set >
+      <if test="password != null" >
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyMobileFlag != null" >
+        VERIFY_MOBILE_FLAG = #{verifyMobileFlag,jdbcType=TINYINT},
+      </if>
+      <if test="verifyEmailFlag != null" >
+        VERIFY_EMAIL_FLAG = #{verifyEmailFlag,jdbcType=TINYINT},
+      </if>
+      <if test="bindQqFlag != null" >
+        BIND_QQ_FLAG = #{bindQqFlag,jdbcType=TINYINT},
+      </if>
+      <if test="bindWeixinFlag != null" >
+        BIND_WEIXIN_FLAG = #{bindWeixinFlag,jdbcType=TINYINT},
+      </if>
+      <if test="bindSinaWeiboFlag != null" >
+        BIND_SINA_WEIBO_FLAG = #{bindSinaWeiboFlag,jdbcType=TINYINT},
+      </if>
+      <if test="bindTecentWeiboFlag != null" >
+        BIND_TECENT_WEIBO_FLAG = #{bindTecentWeiboFlag,jdbcType=TINYINT},
+      </if>
+      <if test="realName != null" >
+        REAL_NAME = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="certType != null" >
+        CERT_TYPE = #{certType,jdbcType=TINYINT},
+      </if>
+      <if test="certNo != null" >
+        CERT_NO = #{certNo,jdbcType=VARCHAR},
+      </if>
+      <if test="failTimes != null" >
+        FAIL_TIMES = #{failTimes,jdbcType=SMALLINT},
+      </if>
+      <if test="lastIp != null" >
+        LAST_IP = #{lastIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastTime != null" >
+        LAST_TIME = #{lastTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastLon != null" >
+        LAST_LON = #{lastLon,jdbcType=DECIMAL},
+      </if>
+      <if test="lastLat != null" >
+        LAST_LAT = #{lastLat,jdbcType=DECIMAL},
+      </if>
+      <if test="lastAddr != null" >
+        LAST_ADDR = #{lastAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null" >
+        USER_STATUS = #{userStatus,jdbcType=TINYINT},
+      </if>
+      <if test="userType != null" >
+        USER_TYPE = #{userType,jdbcType=TINYINT},
+      </if>
+      <if test="gradeExp != null" >
+        GRADE_EXP = #{gradeExp,jdbcType=INTEGER},
+      </if>
+      <if test="gradeLevel != null" >
+        GRADE_LEVEL = #{gradeLevel,jdbcType=TINYINT},
+      </if>
+      <if test="point != null" >
+        POINT = #{point,jdbcType=INTEGER},
+      </if>
+      <if test="nickname != null" >
+        NICKNAME = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        SEX = #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="birth != null" >
+        BIRTH = #{birth,jdbcType=BIGINT},
+      </if>
+      <if test="moodWords != null" >
+        MOOD_WORDS = #{moodWords,jdbcType=VARCHAR},
+      </if>
+      <if test="moodWordsTime != null" >
+        MOOD_WORDS_TIME = #{moodWordsTime,jdbcType=BIGINT},
+      </if>
+      <if test="countInform != null" >
+        COUNT_INFORM = #{countInform,jdbcType=INTEGER},
+      </if>
+      <if test="countFavor != null" >
+        COUNT_FAVOR = #{countFavor,jdbcType=INTEGER},
+      </if>
+      <if test="countPublish != null" >
+        COUNT_PUBLISH = #{countPublish,jdbcType=INTEGER},
+      </if>
+      <if test="countIdol != null" >
+        COUNT_IDOL = #{countIdol,jdbcType=INTEGER},
+      </if>
+      <if test="countFans != null" >
+        COUNT_FANS = #{countFans,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME = #{updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where USER_ID = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.UserDo" >
+    update t_user
+    set PASSWORD = #{password,jdbcType=VARCHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      VERIFY_MOBILE_FLAG = #{verifyMobileFlag,jdbcType=TINYINT},
+      VERIFY_EMAIL_FLAG = #{verifyEmailFlag,jdbcType=TINYINT},
+      BIND_QQ_FLAG = #{bindQqFlag,jdbcType=TINYINT},
+      BIND_WEIXIN_FLAG = #{bindWeixinFlag,jdbcType=TINYINT},
+      BIND_SINA_WEIBO_FLAG = #{bindSinaWeiboFlag,jdbcType=TINYINT},
+      BIND_TECENT_WEIBO_FLAG = #{bindTecentWeiboFlag,jdbcType=TINYINT},
+      REAL_NAME = #{realName,jdbcType=VARCHAR},
+      CERT_TYPE = #{certType,jdbcType=TINYINT},
+      CERT_NO = #{certNo,jdbcType=VARCHAR},
+      FAIL_TIMES = #{failTimes,jdbcType=SMALLINT},
+      LAST_IP = #{lastIp,jdbcType=VARCHAR},
+      LAST_TIME = #{lastTime,jdbcType=BIGINT},
+      LAST_LON = #{lastLon,jdbcType=DECIMAL},
+      LAST_LAT = #{lastLat,jdbcType=DECIMAL},
+      LAST_ADDR = #{lastAddr,jdbcType=VARCHAR},
+      USER_STATUS = #{userStatus,jdbcType=TINYINT},
+      USER_TYPE = #{userType,jdbcType=TINYINT},
+      GRADE_EXP = #{gradeExp,jdbcType=INTEGER},
+      GRADE_LEVEL = #{gradeLevel,jdbcType=TINYINT},
+      POINT = #{point,jdbcType=INTEGER},
+      NICKNAME = #{nickname,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=TINYINT},
+      BIRTH = #{birth,jdbcType=BIGINT},
+      MOOD_WORDS = #{moodWords,jdbcType=VARCHAR},
+      MOOD_WORDS_TIME = #{moodWordsTime,jdbcType=BIGINT},
+      COUNT_INFORM = #{countInform,jdbcType=INTEGER},
+      COUNT_FAVOR = #{countFavor,jdbcType=INTEGER},
+      COUNT_PUBLISH = #{countPublish,jdbcType=INTEGER},
+      COUNT_IDOL = #{countIdol,jdbcType=INTEGER},
+      COUNT_FANS = #{countFans,jdbcType=INTEGER},
+      ADD_TIME = #{addTime,jdbcType=BIGINT},
+      UPD_TIME = #{updTime,jdbcType=BIGINT}
+    where USER_ID = #{userId,jdbcType=BIGINT}
+  </update>
+  <sql id="MysqlPageSuffix" >
+    <if test="page != null" >
+      <![CDATA[ limit #{page.offset}, #{page.limit} ]]>
+    </if>
+  </sql>
+</mapper>

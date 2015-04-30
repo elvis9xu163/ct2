@@ -1,0 +1,70 @@
+package com.xjd.ct.dal.dao;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.xjd.ct.dal.dos.ServiceDo;
+import com.xjd.ct.dal.dos.ServiceDoKey;
+import com.xjd.ct.dal.dos.ServiceLogDo;
+import com.xjd.ct.dal.map.ServiceDoMapper;
+import com.xjd.ct.dal.map.ServiceLogDoMapper;
+
+/**
+ * 接口数据Dao
+ * 
+ * @author elvis.xu
+ * @since 2015-03-20 14:52
+ */
+@Repository
+@Transactional
+public class ServiceDao {
+	@Autowired
+	SequenceDao sequenceDao;
+	@Autowired
+	ServiceDoMapper serviceDoMapper;
+	@Autowired
+	ServiceLogDoMapper serviceLogDoMapper;
+
+	/**
+	 * 根据Name和Version查询接口信息
+	 * 
+	 * @param name
+	 * @param version
+	 * @return
+	 */
+	public ServiceDo selectByNameAndVersion(String name, String version) {
+		ServiceDoKey key = new ServiceDoKey();
+		key.setServiceName(name);
+		key.setServiceVersion(version);
+
+		return serviceDoMapper.selectByPrimaryKey(key);
+	}
+
+	/**
+	 * 插入一条接口调用日志
+	 * 
+	 * @param userIp
+	 * @param userId
+	 * @param token
+	 * @param serviceName
+	 * @param serviceVersion
+	 * @param requestTimestamp
+	 * @return
+	 */
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public int serviceLog(String userIp, Long userId, String token, String serviceName, String serviceVersion,
+			Long requestTimestamp) {
+		ServiceLogDo serviceLogDo = new ServiceLogDo();
+		serviceLogDo.setLogId(sequenceDao.getSequence(SequenceDao.SEQ_SERVICE_LOG_ID));
+		serviceLogDo.setUserIp(userIp);
+		serviceLogDo.setUserId(userId);
+		serviceLogDo.setToken(token);
+		serviceLogDo.setServiceName(serviceName);
+		serviceLogDo.setServiceVersion(serviceVersion);
+		serviceLogDo.setRequestTime(requestTimestamp);
+
+		return serviceLogDoMapper.insert(serviceLogDo);
+	}
+}

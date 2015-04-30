@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjd.ct.dal.map.ObjectDoMapper" >
+  <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.ObjectDo" >
+    <id column="OBJECT_ID" property="objectId" jdbcType="BIGINT" />
+    <result column="USER_ID" property="userId" jdbcType="BIGINT" />
+    <result column="OBJECT_TYPE" property="objectType" jdbcType="TINYINT" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="SUMMARY" property="summary" jdbcType="VARCHAR" />
+    <result column="CONTENT_TYPE" property="contentType" jdbcType="TINYINT" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="VOTE_FLAG" property="voteFlag" jdbcType="TINYINT" />
+    <result column="VOTE_MULTI_FLAG" property="voteMultiFlag" jdbcType="TINYINT" />
+    <result column="LIKE_YES_FLAG" property="likeYesFlag" jdbcType="TINYINT" />
+    <result column="LIKE_YES_COUNT" property="likeYesCount" jdbcType="INTEGER" />
+    <result column="LIKE_NO_FLAG" property="likeNoFlag" jdbcType="TINYINT" />
+    <result column="LIKE_NO_COUNT" property="likeNoCount" jdbcType="INTEGER" />
+    <result column="COMMENT_FLAG" property="commentFlag" jdbcType="TINYINT" />
+    <result column="COMMENT_COUNT" property="commentCount" jdbcType="INTEGER" />
+    <result column="FAVOR_FLAG" property="favorFlag" jdbcType="TINYINT" />
+    <result column="FAVOR_COUNT" property="favorCount" jdbcType="INTEGER" />
+    <result column="ADD_TIME" property="addTime" jdbcType="BIGINT" />
+    <result column="UPD_TIME" property="updTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    OBJECT_ID, USER_ID, OBJECT_TYPE, TITLE, SUMMARY, CONTENT_TYPE, CONTENT, VOTE_FLAG, 
+    VOTE_MULTI_FLAG, LIKE_YES_FLAG, LIKE_YES_COUNT, LIKE_NO_FLAG, LIKE_NO_COUNT, COMMENT_FLAG, 
+    COMMENT_COUNT, FAVOR_FLAG, FAVOR_COUNT, ADD_TIME, UPD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.ObjectDoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_object
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlPageSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_object
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_object
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xjd.ct.dal.dos.ObjectDoExample" >
+    delete from t_object
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xjd.ct.dal.dos.ObjectDo" >
+    insert into t_object (OBJECT_ID, USER_ID, OBJECT_TYPE, 
+      TITLE, SUMMARY, CONTENT_TYPE, 
+      CONTENT, VOTE_FLAG, VOTE_MULTI_FLAG, 
+      LIKE_YES_FLAG, LIKE_YES_COUNT, LIKE_NO_FLAG, 
+      LIKE_NO_COUNT, COMMENT_FLAG, COMMENT_COUNT, 
+      FAVOR_FLAG, FAVOR_COUNT, ADD_TIME, 
+      UPD_TIME)
+    values (#{objectId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{objectType,jdbcType=TINYINT}, 
+      #{title,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{contentType,jdbcType=TINYINT}, 
+      #{content,jdbcType=VARCHAR}, #{voteFlag,jdbcType=TINYINT}, #{voteMultiFlag,jdbcType=TINYINT}, 
+      #{likeYesFlag,jdbcType=TINYINT}, #{likeYesCount,jdbcType=INTEGER}, #{likeNoFlag,jdbcType=TINYINT}, 
+      #{likeNoCount,jdbcType=INTEGER}, #{commentFlag,jdbcType=TINYINT}, #{commentCount,jdbcType=INTEGER}, 
+      #{favorFlag,jdbcType=TINYINT}, #{favorCount,jdbcType=INTEGER}, #{addTime,jdbcType=BIGINT}, 
+      #{updTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.ObjectDo" >
+    insert into t_object
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="objectId != null" >
+        OBJECT_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="objectType != null" >
+        OBJECT_TYPE,
+      </if>
+      <if test="title != null" >
+        TITLE,
+      </if>
+      <if test="summary != null" >
+        SUMMARY,
+      </if>
+      <if test="contentType != null" >
+        CONTENT_TYPE,
+      </if>
+      <if test="content != null" >
+        CONTENT,
+      </if>
+      <if test="voteFlag != null" >
+        VOTE_FLAG,
+      </if>
+      <if test="voteMultiFlag != null" >
+        VOTE_MULTI_FLAG,
+      </if>
+      <if test="likeYesFlag != null" >
+        LIKE_YES_FLAG,
+      </if>
+      <if test="likeYesCount != null" >
+        LIKE_YES_COUNT,
+      </if>
+      <if test="likeNoFlag != null" >
+        LIKE_NO_FLAG,
+      </if>
+      <if test="likeNoCount != null" >
+        LIKE_NO_COUNT,
+      </if>
+      <if test="commentFlag != null" >
+        COMMENT_FLAG,
+      </if>
+      <if test="commentCount != null" >
+        COMMENT_COUNT,
+      </if>
+      <if test="favorFlag != null" >
+        FAVOR_FLAG,
+      </if>
+      <if test="favorCount != null" >
+        FAVOR_COUNT,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="objectId != null" >
+        #{objectId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="objectType != null" >
+        #{objectType,jdbcType=TINYINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="contentType != null" >
+        #{contentType,jdbcType=TINYINT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="voteFlag != null" >
+        #{voteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="voteMultiFlag != null" >
+        #{voteMultiFlag,jdbcType=TINYINT},
+      </if>
+      <if test="likeYesFlag != null" >
+        #{likeYesFlag,jdbcType=TINYINT},
+      </if>
+      <if test="likeYesCount != null" >
+        #{likeYesCount,jdbcType=INTEGER},
+      </if>
+      <if test="likeNoFlag != null" >
+        #{likeNoFlag,jdbcType=TINYINT},
+      </if>
+      <if test="likeNoCount != null" >
+        #{likeNoCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentFlag != null" >
+        #{commentFlag,jdbcType=TINYINT},
+      </if>
+      <if test="commentCount != null" >
+        #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="favorFlag != null" >
+        #{favorFlag,jdbcType=TINYINT},
+      </if>
+      <if test="favorCount != null" >
+        #{favorCount,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xjd.ct.dal.dos.ObjectDoExample" resultType="java.lang.Integer" >
+    select count(*) from t_object
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_object
+    <set >
+      <if test="record.objectId != null" >
+        OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.objectType != null" >
+        OBJECT_TYPE = #{record.objectType,jdbcType=TINYINT},
+      </if>
+      <if test="record.title != null" >
+        TITLE = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.summary != null" >
+        SUMMARY = #{record.summary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contentType != null" >
+        CONTENT_TYPE = #{record.contentType,jdbcType=TINYINT},
+      </if>
+      <if test="record.content != null" >
+        CONTENT = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.voteFlag != null" >
+        VOTE_FLAG = #{record.voteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.voteMultiFlag != null" >
+        VOTE_MULTI_FLAG = #{record.voteMultiFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.likeYesFlag != null" >
+        LIKE_YES_FLAG = #{record.likeYesFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.likeYesCount != null" >
+        LIKE_YES_COUNT = #{record.likeYesCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.likeNoFlag != null" >
+        LIKE_NO_FLAG = #{record.likeNoFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.likeNoCount != null" >
+        LIKE_NO_COUNT = #{record.likeNoCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.commentFlag != null" >
+        COMMENT_FLAG = #{record.commentFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.commentCount != null" >
+        COMMENT_COUNT = #{record.commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.favorFlag != null" >
+        FAVOR_FLAG = #{record.favorFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.favorCount != null" >
+        FAVOR_COUNT = #{record.favorCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updTime != null" >
+        UPD_TIME = #{record.updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_object
+    set OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      USER_ID = #{record.userId,jdbcType=BIGINT},
+      OBJECT_TYPE = #{record.objectType,jdbcType=TINYINT},
+      TITLE = #{record.title,jdbcType=VARCHAR},
+      SUMMARY = #{record.summary,jdbcType=VARCHAR},
+      CONTENT_TYPE = #{record.contentType,jdbcType=TINYINT},
+      CONTENT = #{record.content,jdbcType=VARCHAR},
+      VOTE_FLAG = #{record.voteFlag,jdbcType=TINYINT},
+      VOTE_MULTI_FLAG = #{record.voteMultiFlag,jdbcType=TINYINT},
+      LIKE_YES_FLAG = #{record.likeYesFlag,jdbcType=TINYINT},
+      LIKE_YES_COUNT = #{record.likeYesCount,jdbcType=INTEGER},
+      LIKE_NO_FLAG = #{record.likeNoFlag,jdbcType=TINYINT},
+      LIKE_NO_COUNT = #{record.likeNoCount,jdbcType=INTEGER},
+      COMMENT_FLAG = #{record.commentFlag,jdbcType=TINYINT},
+      COMMENT_COUNT = #{record.commentCount,jdbcType=INTEGER},
+      FAVOR_FLAG = #{record.favorFlag,jdbcType=TINYINT},
+      FAVOR_COUNT = #{record.favorCount,jdbcType=INTEGER},
+      ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      UPD_TIME = #{record.updTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.ObjectDo" >
+    update t_object
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="objectType != null" >
+        OBJECT_TYPE = #{objectType,jdbcType=TINYINT},
+      </if>
+      <if test="title != null" >
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        SUMMARY = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="contentType != null" >
+        CONTENT_TYPE = #{contentType,jdbcType=TINYINT},
+      </if>
+      <if test="content != null" >
+        CONTENT = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="voteFlag != null" >
+        VOTE_FLAG = #{voteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="voteMultiFlag != null" >
+        VOTE_MULTI_FLAG = #{voteMultiFlag,jdbcType=TINYINT},
+      </if>
+      <if test="likeYesFlag != null" >
+        LIKE_YES_FLAG = #{likeYesFlag,jdbcType=TINYINT},
+      </if>
+      <if test="likeYesCount != null" >
+        LIKE_YES_COUNT = #{likeYesCount,jdbcType=INTEGER},
+      </if>
+      <if test="likeNoFlag != null" >
+        LIKE_NO_FLAG = #{likeNoFlag,jdbcType=TINYINT},
+      </if>
+      <if test="likeNoCount != null" >
+        LIKE_NO_COUNT = #{likeNoCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentFlag != null" >
+        COMMENT_FLAG = #{commentFlag,jdbcType=TINYINT},
+      </if>
+      <if test="commentCount != null" >
+        COMMENT_COUNT = #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="favorFlag != null" >
+        FAVOR_FLAG = #{favorFlag,jdbcType=TINYINT},
+      </if>
+      <if test="favorCount != null" >
+        FAVOR_COUNT = #{favorCount,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME = #{updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.ObjectDo" >
+    update t_object
+    set USER_ID = #{userId,jdbcType=BIGINT},
+      OBJECT_TYPE = #{objectType,jdbcType=TINYINT},
+      TITLE = #{title,jdbcType=VARCHAR},
+      SUMMARY = #{summary,jdbcType=VARCHAR},
+      CONTENT_TYPE = #{contentType,jdbcType=TINYINT},
+      CONTENT = #{content,jdbcType=VARCHAR},
+      VOTE_FLAG = #{voteFlag,jdbcType=TINYINT},
+      VOTE_MULTI_FLAG = #{voteMultiFlag,jdbcType=TINYINT},
+      LIKE_YES_FLAG = #{likeYesFlag,jdbcType=TINYINT},
+      LIKE_YES_COUNT = #{likeYesCount,jdbcType=INTEGER},
+      LIKE_NO_FLAG = #{likeNoFlag,jdbcType=TINYINT},
+      LIKE_NO_COUNT = #{likeNoCount,jdbcType=INTEGER},
+      COMMENT_FLAG = #{commentFlag,jdbcType=TINYINT},
+      COMMENT_COUNT = #{commentCount,jdbcType=INTEGER},
+      FAVOR_FLAG = #{favorFlag,jdbcType=TINYINT},
+      FAVOR_COUNT = #{favorCount,jdbcType=INTEGER},
+      ADD_TIME = #{addTime,jdbcType=BIGINT},
+      UPD_TIME = #{updTime,jdbcType=BIGINT}
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </update>
+  <sql id="MysqlPageSuffix" >
+    <if test="page != null" >
+      <![CDATA[ limit #{page.offset}, #{page.limit} ]]>
+    </if>
+  </sql>
+</mapper>

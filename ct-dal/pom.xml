@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>ct-dal</artifactId>
+  <parent>
+    <artifactId>ct</artifactId>
+    <groupId>com.xjd.ct</groupId>
+    <version>1.0.0</version>
+    <relativePath>..</relativePath>
+  </parent>
+
+  <properties>
+    <!-- mybatis generator -->
+    <mybatis.generator.outputDirectory>${basedir}/target/mybatis-generate</mybatis.generator.outputDirectory>
+    <mybatis.generator.configurationFile>${basedir}/support/mybatis.generator.config.xml</mybatis.generator.configurationFile>
+    <mybatis.generator.overwrite>true</mybatis.generator.overwrite>
+    <mybatis.generator.verbose>true</mybatis.generator.verbose>
+  </properties>
+
+  <dependencies>
+    <!-- ===DAO=== -->
+    <!-- Spring JDBC -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>${org.springframework-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>${org.springframework-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-oxm</artifactId>
+      <version>${org.springframework-version}</version>
+    </dependency>
+    <!-- mybatis -->
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+      <version>3.2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>3.0.8</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis-spring</artifactId>
+      <version>1.2.0</version>
+    </dependency>
+    <!-- c3p0连接池 -->
+    <dependency>
+      <groupId>c3p0</groupId>
+      <artifactId>c3p0</artifactId>
+      <version>0.9.1.2</version>
+    </dependency>
+    <!-- jdbc driver -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.19</version>
+    </dependency>
+
+    <!-- ===model=== -->
+    <dependency>
+      <groupId>com.xjd.ct</groupId>
+      <artifactId>ct-utl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <!-- MyBatis Generator -->
+      <plugin>
+        <groupId>org.mybatis.generator</groupId>
+        <artifactId>mybatis-generator-maven-plugin</artifactId>
+        <version>1.3.2</version>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <profile>
+      <id>develop</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <!-- data -->
+        <data.dataSource.type>jdbc</data.dataSource.type>
+        <data.jdbc.driverClass>com.mysql.jdbc.Driver</data.jdbc.driverClass>
+        <data.jdbc.url>jdbc:mysql://localhost/ct?useUnicode=true&amp;amp;characterEncoding=utf-8</data.jdbc.url>
+        <data.jdbc.username>root</data.jdbc.username>
+        <data.jdbc.password>root</data.jdbc.password>
+      </properties>
+    </profile>
+    <profile>
+      <id>test</id>
+      <properties>
+        <!-- data -->
+        <data.dataSource.type>jdbc</data.dataSource.type>
+        <data.jdbc.driverClass>com.mysql.jdbc.Driver</data.jdbc.driverClass>
+        <data.jdbc.url>jdbc:mysql://172.246.220.254:3306/ct?useUnicode=true&amp;amp;characterEncoding=utf-8</data.jdbc.url>
+        <data.jdbc.username>xjd</data.jdbc.username>
+        <data.jdbc.password>Elvis9xu</data.jdbc.password>
+      </properties>
+    </profile>
+    <profile>
+      <id>product</id>
+      <properties>
+        <!-- data -->
+        <data.dataSource.type>jndi</data.dataSource.type>
+      </properties>
+    </profile>
+  </profiles>
+</project>
