@@ -1,12 +1,10 @@
-package com.xjd.ct.app.view.vo;
-
-import java.util.Date;
+package com.xjd.ct.biz.bo;
 
 /**
  * @author elvis.xu
- * @since 2015-03-23 18:11
+ * @since 2015-04-30 23:54
  */
-public class UserBabyForOtherVo {
+public class UserBabyBo {
 	private Long babyId;
 
 	private Long userId;
@@ -15,11 +13,13 @@ public class UserBabyForOtherVo {
 
 	private Byte babySex;
 
-	private Date babyBirth;
+	private Long babyBirth;
 
-	private Date addTime;
+	private String babyRealname;
 
-	private Date updTime;
+	private Long addTime;
+
+	private Long updTime;
 
 	public Long getBabyId() {
 		return babyId;
@@ -53,27 +53,35 @@ public class UserBabyForOtherVo {
 		this.babySex = babySex;
 	}
 
-	public Date getBabyBirth() {
+	public Long getBabyBirth() {
 		return babyBirth;
 	}
 
-	public void setBabyBirth(Date babyBirth) {
+	public void setBabyBirth(Long babyBirth) {
 		this.babyBirth = babyBirth;
 	}
 
-	public Date getAddTime() {
+	public String getBabyRealname() {
+		return babyRealname;
+	}
+
+	public void setBabyRealname(String babyRealname) {
+		this.babyRealname = babyRealname;
+	}
+
+	public Long getAddTime() {
 		return addTime;
 	}
 
-	public void setAddTime(Date addTime) {
+	public void setAddTime(Long addTime) {
 		this.addTime = addTime;
 	}
 
-	public Date getUpdTime() {
+	public Long getUpdTime() {
 		return updTime;
 	}
 
-	public void setUpdTime(Date updTime) {
+	public void setUpdTime(Long updTime) {
 		this.updTime = updTime;
 	}
 }

@@ -1,19 +1,19 @@
 package com.xjd.ct.utl.enums;
 
 /**
- * 用户状态
+ * 资源用途大类
  * 
  * @author elvis.xu
  * @since 2014-9-18
  */
-public enum UserStatusEnum {
+public enum EntityTypeEnum {
 
-	NORMAL((byte) 0, "正常"), NO_INFO((byte) 1, "尚未设置用户信息");
+	OBJECT((byte) 1, "业务对象"), USER((byte) 2, "用户");
 
 	byte code;
 	String desc;
 
-	UserStatusEnum(byte code, String desc) {
+	EntityTypeEnum(byte code, String desc) {
 		this.code = code;
 		this.desc = desc;
 	}
@@ -27,14 +27,14 @@ public enum UserStatusEnum {
 	}
 
 	public String toString() {
-		return UserStatusEnum.class.getSimpleName() + "[code=" + code + ", desc=" + desc + "]";
+		return EntityTypeEnum.class.getSimpleName() + "[code=" + code + ", desc=" + desc + "]";
 	}
 
-	public static UserStatusEnum valueOfCode(Byte code) {
+	public static EntityTypeEnum valueOfCode(Byte code) {
 		if (code == null) {
 			return null;
 		}
-		for (UserStatusEnum e : UserStatusEnum.values()) {
+		for (EntityTypeEnum e : EntityTypeEnum.values()) {
 			if (e.getCode() == code.byteValue()) {
 				return e;
 			}

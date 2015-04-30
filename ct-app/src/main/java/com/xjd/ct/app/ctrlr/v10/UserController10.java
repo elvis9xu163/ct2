@@ -1,26 +1,29 @@
 package com.xjd.ct.app.ctrlr.v10;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.xjd.ct.app.biz.UserBiz;
 import com.xjd.ct.app.util.RequestContext;
 import com.xjd.ct.app.view.View;
 import com.xjd.ct.app.view.ViewUtil;
 import com.xjd.ct.app.view.body.ExistsBody;
 import com.xjd.ct.app.view.body.TokenBody;
-import com.xjd.ct.app.view.body.UserInfoBody;
-import com.xjd.ct.app.view.vo.UserForOtherVo;
-import com.xjd.ct.app.view.vo.UserForSelfVo;
+import com.xjd.ct.app.view.body.UserInfoForOtherBody;
+import com.xjd.ct.app.view.body.UserInfoForSelfBody;
+import com.xjd.ct.app.view.vo.*;
 import com.xjd.ct.biz.bo.TokenBo;
+import com.xjd.ct.biz.bo.UserBabyBo;
+import com.xjd.ct.biz.bo.UserBindAccountBo;
+import com.xjd.ct.biz.bo.UserBo;
 import com.xjd.ct.biz.service.UserService;
-import com.xjd.ct.utl.DateUtil;
 import com.xjd.ct.utl.enums.BoolEnum;
 import com.xjd.ct.utl.enums.UserSexEnum;
 import com.xjd.ct.utl.exception.BusinessException;
@@ -38,8 +41,6 @@ import com.xjd.ct.utl.valid.ValidationUtil;
 public class UserController10 {
 	@Autowired
 	UserService userService;
-	@Autowired
-	UserBiz userBiz;
 
 	@RequestMapping("/getToken")
 	@ResponseBody
@@ -120,7 +121,6 @@ public class UserController10 {
 
 		// 结果封装
 		View view = ViewUtil.defaultView();
-
 		return view;
 	}
 
@@ -136,7 +136,6 @@ public class UserController10 {
 
 		// 结果封装
 		View view = ViewUtil.defaultView();
-
 		return view;
 	}
 
@@ -144,15 +143,18 @@ public class UserController10 {
 	@ResponseBody
 	public View getUserInfo() {
 		// 业务调用
-		UserForSelfVo userForSelfVo = userBiz.getUserInfoForSelf(RequestContext.checkAndGetUserId());
+		UserBo userBo = userService.getUserInfo(RequestContext.checkAndGetUserId());
 
-		if (userForSelfVo == null) {
+		if (userBo == null) {
 			throw new BusinessException(RespCode.RESP_0110);
 		}
 
 		// 结果封装
-		UserInfoBody body = new UserInfoBody();
-		body.setUserInfo(userForSelfVo);
+		UserInfoForSelfVo vo = new UserInfoForSelfVo();
+		copyTo(userBo, vo);
+
+		UserInfoForSelfBody body = new UserInfoForSelfBody();
+		body.setUserInfo(vo);
 
 		View view = ViewUtil.defaultView();
 		view.setBody(body);
@@ -169,15 +171,18 @@ public class UserController10 {
 		Long userIdL = Long.valueOf(userId);
 
 		// 业务调用
-		UserForOtherVo userForOtherVo = userBiz.getUserInfoForOther(userIdL);
+		UserBo userBo = userService.getUserInfo(userIdL);
 
-		if (userForOtherVo == null) {
+		if (userBo == null) {
 			throw new BusinessException(RespCode.RESP_0110);
 		}
 
 		// 结果封装
-		UserInfoBody body = new UserInfoBody();
-		body.setUserInfo(userForOtherVo);
+		UserInfoForOtherVo vo = new UserInfoForOtherVo();
+		copyTo(userBo, vo);
+
+		UserInfoForOtherBody body = new UserInfoForOtherBody();
+		body.setUserInfo(vo);
 
 		View view = ViewUtil.defaultView();
 		view.setBody(body);
@@ -205,10 +210,10 @@ public class UserController10 {
 			ValidationUtil.check(ValidationUtil.SEX, babySex);
 			babySexB = Byte.valueOf(babySex);
 		}
-		Date babyBirthDate = null;
+		Long babyBirthDate = null;
 		if (StringUtils.isNotEmpty(babyBirth)) {
 			ValidationUtil.check(ValidationUtil.BABY_BIRTH, babyBirth);
-			babyBirthDate = DateUtil.parse(babyBirth, DateUtil.PATTERN_YEAR2DAY);
+			babyBirthDate = Long.valueOf(babyBirth + "000000");
 		}
 
 		userService.setUserInfo(RequestContext.checkAndGetUserId(), headImgRes, nickname, sexB, moodWords,
@@ -216,6 +221,52 @@ public class UserController10 {
 
 		View view = ViewUtil.defaultView();
 		return view;
+	}
+
+	protected void copyTo(UserBo bo, UserInfoForSelfVo vo) {
+		BeanUtils.copyProperties(bo, vo);
+		if (bo.getBabyList() != null) {
+			List<UserBabyForSelfVo> babyVoList = new ArrayList<UserBabyForSelfVo>(bo.getBabyList().size());
+			for (UserBabyBo babyBo : bo.getBabyList()) {
+				UserBabyForSelfVo babyVo = new UserBabyForSelfVo();
+				BeanUtils.copyProperties(babyBo, babyVo);
+				babyVoList.add(babyVo);
+			}
+			vo.setBabyList(babyVoList);
+		}
+		if (bo.getBindAccountList() != null) {
+			List<UserBindAccountForSelfVo> actVoList = new ArrayList<UserBindAccountForSelfVo>(bo.getBindAccountList()
+					.size());
+			for (UserBindAccountBo actBo : bo.getBindAccountList()) {
+				UserBindAccountForSelfVo actVo = new UserBindAccountForSelfVo();
+				BeanUtils.copyProperties(actBo, actVo);
+				actVoList.add(actVo);
+			}
+			vo.setBindAccountList(actVoList);
+		}
+	}
+
+	protected void copyTo(UserBo bo, UserInfoForOtherVo vo) {
+		BeanUtils.copyProperties(bo, vo);
+		if (bo.getBabyList() != null) {
+			List<UserBabyForOtherVo> babyVoList = new ArrayList<UserBabyForOtherVo>(bo.getBabyList().size());
+			for (UserBabyBo babyBo : bo.getBabyList()) {
+				UserBabyForOtherVo babyVo = new UserBabyForOtherVo();
+				BeanUtils.copyProperties(babyBo, babyVo);
+				babyVoList.add(babyVo);
+			}
+			vo.setBabyList(babyVoList);
+		}
+		if (bo.getBindAccountList() != null) {
+			List<UserBindAccountForOtherVo> actVoList = new ArrayList<UserBindAccountForOtherVo>(bo
+					.getBindAccountList().size());
+			for (UserBindAccountBo actBo : bo.getBindAccountList()) {
+				UserBindAccountForOtherVo actVo = new UserBindAccountForOtherVo();
+				BeanUtils.copyProperties(actBo, actVo);
+				actVoList.add(actVo);
+			}
+			vo.setBindAccountList(actVoList);
+		}
 	}
 
 }

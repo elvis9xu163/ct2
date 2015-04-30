@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xjd.ct.dal.dos.*;
-import com.xjd.ct.dal.map.*;
+import com.xjd.ct.dal.map.UserBabyDoMapper;
+import com.xjd.ct.dal.map.UserBindAccountDoMapper;
+import com.xjd.ct.dal.map.UserDoMapper;
 import com.xjd.ct.utl.DateUtil;
 import com.xjd.ct.utl.QueryResultUtil;
 
@@ -22,15 +24,11 @@ import com.xjd.ct.utl.QueryResultUtil;
 public class UserDao {
 
 	@Autowired
-	UserModelMapper userModelMapper;
+	UserDoMapper userDoMapper;
 	@Autowired
-	UserInfoModelMapper userInfoModelMapper;
+	UserBabyDoMapper userBabyDoMapper;
 	@Autowired
-	UserSummaryModelMapper userSummaryModelMapper;
-	@Autowired
-	UserBabyModelMapper userBabyModelMapper;
-	@Autowired
-	UserBindAccountModelMapper userBindAccountModelMapper;
+	UserBindAccountDoMapper userBindAccountDoMapper;
 
 	// ==============用户基本信息=============== //
 
@@ -40,8 +38,8 @@ public class UserDao {
 	 * @param userId
 	 * @return
 	 */
-	public UserModel selectUserByUserId(Long userId) {
-		return userModelMapper.selectByPrimaryKey(userId);
+	public UserDo selectUserByUserId(Long userId) {
+		return userDoMapper.selectByPrimaryKey(userId);
 	}
 
 	/**
@@ -50,12 +48,12 @@ public class UserDao {
 	 * @param username
 	 * @return
 	 */
-	public UserModel selectUserByUsername(String username) {
-		UserModelExample example = new UserModelExample();
+	public UserDo selectUserByUsername(String username) {
+		UserDoExample example = new UserDoExample();
 		example.or().andMobileEqualTo(username);
 		example.or().andEmailEqualTo(username);
 
-		List<UserModel> list = userModelMapper.selectByExample(example);
+		List<UserDo> list = userDoMapper.selectByExample(example);
 		QueryResultUtil.assertMaxOne(list, username);
 
 		return list.size() > 0 ? list.get(0) : null;
@@ -69,12 +67,12 @@ public class UserDao {
 	 * @return
 	 */
 	public Long selectUserIdByUsernameAndPassword(String username, String password) {
-		UserModelExample example = new UserModelExample();
+		UserDoExample example = new UserDoExample();
 		example.or().andMobileEqualTo(username).andPasswordEqualTo(password);
 		example.or().andEmailEqualTo(username).andPasswordEqualTo(password);
 
-		List<UserModel> list = userModelMapper.selectByExample(example);
-		QueryResultUtil.assertReturn0Or1(list, username, password);
+		List<UserDo> list = userDoMapper.selectByExample(example);
+		QueryResultUtil.assertMaxOne(list, username, password);
 
 		return list.size() > 0 ? list.get(0).getUserId() : null;
 	}
@@ -87,11 +85,11 @@ public class UserDao {
 	 * @return
 	 */
 	public int updatePasswordByUserId(String password, Long userId) {
-		UserModel userModel = new UserModel();
+		UserDo userModel = new UserDo();
 		userModel.setPassword(password);
 		userModel.setUserId(userId);
-		userModel.setUpdTime(DateUtil.now());
-		return userModelMapper.updateByPrimaryKeySelective(userModel);
+		userModel.setUpdTime(DateUtil.nowInMilliseconds());
+		return userDoMapper.updateByPrimaryKeySelective(userModel);
 	}
 
 	/**
@@ -101,11 +99,11 @@ public class UserDao {
 	 * @return
 	 */
 	public boolean isMobileOrEmailExists(String mobileOrEmail) {
-		UserModelExample example = new UserModelExample();
+		UserDoExample example = new UserDoExample();
 		example.or().andMobileEqualTo(mobileOrEmail);
 		example.or().andEmailEqualTo(mobileOrEmail);
 
-		return userModelMapper.countByExample(example) > 0 ? true : false;
+		return userDoMapper.countByExample(example) > 0 ? true : false;
 	}
 
 	/**
@@ -113,8 +111,8 @@ public class UserDao {
 	 * 
 	 * @param userDo
 	 */
-	public int insertUser(UserModel userDo) {
-		return userModelMapper.insert(userDo);
+	public int insertUser(UserDo userDo) {
+		return userDoMapper.insert(userDo);
 	}
 
 	/**
@@ -124,14 +122,14 @@ public class UserDao {
 	 * @return
 	 */
 	public int increaseFailTimesByUserId(Long userId) {
-		UserModel userModel = userModelMapper.selectByPrimaryKey(userId);
+		UserDo userModel = userDoMapper.selectByPrimaryKey(userId);
 
-		UserModel upd = new UserModel();
+		UserDo upd = new UserDo();
 		upd.setUserId(userId);
 		upd.setFailTimes((short) (userModel.getFailTimes() + 1));
-		upd.setUpdTime(DateUtil.now());
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
 
-		return userModelMapper.updateByPrimaryKeySelective(upd);
+		return userDoMapper.updateByPrimaryKeySelective(upd);
 	}
 
 	/**
@@ -141,193 +139,47 @@ public class UserDao {
 	 * @return
 	 */
 	public int clearFailTimesByUserId(Long userId) {
-		UserModel upd = new UserModel();
+		UserDo upd = new UserDo();
 		upd.setUserId(userId);
 		upd.setFailTimes((short) 0);
-		upd.setUpdTime(DateUtil.now());
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
 
-		return userModelMapper.updateByPrimaryKeySelective(upd);
+		return userDoMapper.updateByPrimaryKeySelective(upd);
 	}
 
 	public int updateUserStatusByUserId(byte userStatus, Long userId) {
-		UserModel upd = new UserModel();
+		UserDo upd = new UserDo();
 		upd.setUserId(userId);
 		upd.setUserStatus(userStatus);
-		upd.setUpdTime(DateUtil.now());
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
 
-		return userModelMapper.updateByPrimaryKeySelective(upd);
-
-	}
-
-	// ==============用户信息=============== //
-
-	/**
-	 * 插入一个用户信息
-	 * 
-	 * @param userInfoModel
-	 */
-	public int insertUserInfo(UserInfoModel userInfoModel) {
-		return userInfoModelMapper.insert(userInfoModel);
-	}
-
-	/**
-	 * 根据用户ID查询用户信息
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	public UserInfoModel selectUserInfoByUserId(Long userId) {
-		return userInfoModelMapper.selectByPrimaryKey(userId);
-	}
-
-	/**
-	 * 根据用户ID更新用户信息
-	 * 
-	 * @param userInfoModel
-	 * @return
-	 */
-	public int updateUserInfoByUserId(UserInfoModel userInfoModel) {
-		return userInfoModelMapper.updateByPrimaryKey(userInfoModel);
-	}
-
-	// ==============用户记数=============== //
-
-	/**
-	 * 插入一条用户记数
-	 * 
-	 * @param userSummaryModel
-	 */
-	public int insertUserSummary(UserSummaryModel userSummaryModel) {
-		return userSummaryModelMapper.insert(userSummaryModel);
-	}
-
-	/**
-	 * 用户关注记数加1
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	public int increaseIdolCountByUserId(Long userId) {
-		UserSummaryModel userSummaryModel = userSummaryModelMapper.selectByPrimaryKey(userId);
-
-		UserSummaryModel upd = new UserSummaryModel();
-		upd.setUserId(userId);
-		upd.setIdolCount(userSummaryModel.getIdolCount() + 1);
-		upd.setUpdTime(DateUtil.now());
-
-		return userSummaryModelMapper.updateByPrimaryKeySelective(upd);
-	}
-
-	/**
-	 * 用户粉丝记数加1
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	public int increaseFansCountByUserId(Long userId) {
-		UserSummaryModel userSummaryModel = userSummaryModelMapper.selectByPrimaryKey(userId);
-
-		UserSummaryModel upd = new UserSummaryModel();
-		upd.setUserId(userId);
-		upd.setFansCount(userSummaryModel.getFansCount() + 1);
-		upd.setUpdTime(DateUtil.now());
-
-		return userSummaryModelMapper.updateByPrimaryKeySelective(upd);
-	}
-
-	/**
-	 * 用户关注记数减1
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	public int decreaseIdolCountByUserId(Long userId) {
-		UserSummaryModel userSummaryModel = userSummaryModelMapper.selectByPrimaryKey(userId);
-
-		UserSummaryModel upd = new UserSummaryModel();
-		upd.setUserId(userId);
-		upd.setIdolCount(userSummaryModel.getIdolCount() - 1);
-		upd.setUpdTime(DateUtil.now());
-
-		return userSummaryModelMapper.updateByPrimaryKeySelective(upd);
-	}
-
-	/**
-	 * 用户粉丝记数减1
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	public int decreaseFansCountByUserId(Long userId) {
-		UserSummaryModel userSummaryModel = userSummaryModelMapper.selectByPrimaryKey(userId);
-
-		UserSummaryModel upd = new UserSummaryModel();
-		upd.setUserId(userId);
-		upd.setFansCount(userSummaryModel.getFansCount() - 1);
-		upd.setUpdTime(DateUtil.now());
-
-		return userSummaryModelMapper.updateByPrimaryKeySelective(upd);
-	}
-
-	public int increaseFavorCount(Long userId) {
-		UserSummaryModel userSummaryModel = userSummaryModelMapper.selectByPrimaryKey(userId);
-
-		UserSummaryModel upd = new UserSummaryModel();
-		upd.setUserId(userId);
-		upd.setFavorCount(userSummaryModel.getFavorCount() + 1);
-		upd.setUpdTime(DateUtil.now());
-
-		return userSummaryModelMapper.updateByPrimaryKeySelective(upd);
+		return userDoMapper.updateByPrimaryKeySelective(upd);
 
 	}
 
-	public int decreaseFavorCount(Long userId) {
-		UserSummaryModel userSummaryModel = userSummaryModelMapper.selectByPrimaryKey(userId);
-
-		UserSummaryModel upd = new UserSummaryModel();
-		upd.setUserId(userId);
-		upd.setFavorCount(userSummaryModel.getFavorCount() - 1);
-		upd.setUpdTime(DateUtil.now());
-
-		return userSummaryModelMapper.updateByPrimaryKeySelective(upd);
-	}
-
-
-	// ==============用户宝宝=============== //
-	/**
-	 * 根据用户ID查询用户的Baby
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	public List<UserBabyModel> selectUserBabyByUserId(Long userId) {
-		UserBabyModelExample example = new UserBabyModelExample();
+	public List<UserBabyDo> selectUserBabyByUserId(Long userId) {
+		UserBabyDoExample example = new UserBabyDoExample();
 		example.or().andUserIdEqualTo(userId);
 
-		return userBabyModelMapper.selectByExample(example);
+		return userBabyDoMapper.selectByExample(example);
 	}
 
-	/**
-	 * 根据宝宝ID更新宝宝信息
-	 * 
-	 * @param babyModel
-	 * @return
-	 */
-	public int updateUserBabyByBabyId(UserBabyModel babyModel) {
-		return userBabyModelMapper.updateByPrimaryKey(babyModel);
+	public List<UserBindAccountDo> selectUserBindAccountByUserId(Long userId) {
+		UserBindAccountDoExample example = new UserBindAccountDoExample();
+		example.or().andUserIdEqualTo(userId);
+
+		return userBindAccountDoMapper.selectByExample(example);
 	}
 
-	/**
-	 * 插入宝宝信息
-	 * 
-	 * @param babyModel
-	 * @return
-	 */
-	public int insertUserBaby(UserBabyModel babyModel) {
-		return userBabyModelMapper.insert(babyModel);
+	public int updateByUserId(UserDo userDo) {
+		return userDoMapper.updateByPrimaryKey(userDo);
 	}
 
+	public int updateUserBaby(UserBabyDo userBabyDo) {
+		return userBabyDoMapper.updateByPrimaryKey(userBabyDo);
+	}
 
-	// ==============用户绑定账号=============== //
-
+	public int insertUserBaby(UserBabyDo userBabyDo) {
+		return userBabyDoMapper.insert(userBabyDo);
+	}
 }

@@ -13,7 +13,7 @@ import com.xjd.ct.app.biz.IdolBiz;
 import com.xjd.ct.app.util.RequestContext;
 import com.xjd.ct.app.view.View;
 import com.xjd.ct.app.view.ViewUtil;
-import com.xjd.ct.app.view.body.UserListBody;
+import com.xjd.ct.app.view.body.UserInfoForOtherListBody;
 import com.xjd.ct.app.view.vo.UserForOtherVo;
 import com.xjd.ct.biz.service.UserRelationService;
 import com.xjd.ct.utl.enums.IdolOperEnum;
@@ -91,7 +91,7 @@ public class UserRelationController10 {
 
 		// 返回结果
 
-		UserListBody body = new UserListBody();
+		UserInfoForOtherListBody body = new UserInfoForOtherListBody();
 		body.setUserInfoList(idols);
 
 		View view = ViewUtil.defaultView();

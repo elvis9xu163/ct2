@@ -1,30 +1,30 @@
 package com.xjd.ct.biz.service;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xjd.ct.biz.bo.TokenBo;
+import com.xjd.ct.biz.bo.UserBabyBo;
+import com.xjd.ct.biz.bo.UserBindAccountBo;
 import com.xjd.ct.biz.bo.UserBo;
+import com.xjd.ct.dal.dao.ResourceDao;
 import com.xjd.ct.dal.dao.SequenceDao;
 import com.xjd.ct.dal.dao.TokenDao;
 import com.xjd.ct.dal.dao.UserDao;
+import com.xjd.ct.dal.dos.*;
 import com.xjd.ct.utl.AppUtil;
 import com.xjd.ct.utl.DateUtil;
 import com.xjd.ct.utl.DigestUtil;
 import com.xjd.ct.utl.constant.AppConstant;
-import com.xjd.ct.utl.enums.BoolEnum;
-import com.xjd.ct.utl.enums.ObjectTypeEnum;
-import com.xjd.ct.utl.enums.ResForClassEnum;
-import com.xjd.ct.utl.enums.UserSexEnum;
-import com.xjd.ct.utl.enums.UserStatusEnum;
-import com.xjd.ct.utl.enums.UserTypeEnum;
+import com.xjd.ct.utl.enums.*;
 import com.xjd.ct.utl.exception.BusinessException;
 import com.xjd.ct.utl.respcode.RespCode;
 
@@ -46,9 +46,7 @@ public class UserService {
 	@Autowired
 	UserDao userDao;
 	@Autowired
-	ObjectResourceDao objectResourceDao;
-
-	// ===============TOKEN=============== //
+	ResourceDao resourceDao;
 
 	/**
 	 * 根据用户IP生成Token
@@ -64,17 +62,20 @@ public class UserService {
 		}
 
 		// 生成新的Token
-		TokenModel tokenModel = new TokenModel();
-		tokenModel.setToken(generateToken());
-		tokenModel.setSalt(generateSalt());
-		tokenModel.setUserIp(userIp);
-		tokenModel.setUserId(AppConstant.ANONYMOUS_USERID);
-		Date now = DateUtil.now();
-		tokenModel.setAddTime(now);
-		tokenModel.setUpdTime(now);
-		tokenDao.insert(tokenModel);
+		TokenDo tokenDo = new TokenDo();
+		tokenDo.setToken(generateToken());
+		tokenDo.setSalt(generateSalt());
+		tokenDo.setUserIp(userIp);
+		tokenDo.setUserId(AppConstant.ANONYMOUS_USERID);
+		Long now = DateUtil.nowInMilliseconds();
+		tokenDo.setAddTime(now);
+		tokenDo.setUpdTime(now);
+		tokenDao.insert(tokenDo);
 
-		return BeanTansferUtil.transferTokenDoToTokenBo(tokenModel);
+		TokenBo tokenBo = new TokenBo();
+		BeanUtils.copyProperties(tokenDo, tokenBo);
+
+		return tokenBo;
 	}
 
 	/**
@@ -92,17 +93,20 @@ public class UserService {
 		}
 
 		// 生成新的Token
-		TokenModel tokenModel = new TokenModel();
-		tokenModel.setToken(generateToken());
-		tokenModel.setSalt(generateSalt());
-		tokenModel.setUserIp(userIp);
-		tokenModel.setUserId(userId);
-		Date now = DateUtil.now();
-		tokenModel.setAddTime(now);
-		tokenModel.setUpdTime(now);
-		tokenDao.insert(tokenModel);
+		TokenDo tokenDo = new TokenDo();
+		tokenDo.setToken(generateToken());
+		tokenDo.setSalt(generateSalt());
+		tokenDo.setUserIp(userIp);
+		tokenDo.setUserId(userId);
+		Long now = DateUtil.nowInMilliseconds();
+		tokenDo.setAddTime(now);
+		tokenDo.setUpdTime(now);
+		tokenDao.insert(tokenDo);
 
-		return BeanTansferUtil.transferTokenDoToTokenBo(tokenModel);
+		TokenBo tokenBo = new TokenBo();
+		BeanUtils.copyProperties(tokenDo, tokenBo);
+
+		return tokenBo;
 	}
 
 	/**
@@ -113,8 +117,15 @@ public class UserService {
 	 */
 	@Transactional(readOnly = true)
 	public TokenBo queryTokenByToken(String token) {
-		TokenModel tokenDo = tokenDao.selectByToken(token);
-		return BeanTansferUtil.transferTokenDoToTokenBo(tokenDo);
+		TokenDo tokenDo = tokenDao.selectByToken(token);
+
+		TokenBo tokenBo = null;
+		if (tokenDo != null) {
+			tokenBo = new TokenBo();
+			BeanUtils.copyProperties(tokenDo, tokenBo);
+		}
+
+		return tokenBo;
 	}
 
 	/**
@@ -136,7 +147,7 @@ public class UserService {
 	 */
 	@Transactional
 	public void updateToken(String token) {
-		tokenDao.updateUpdTimeByToken(DateUtil.now(), token);
+		tokenDao.updateUpdTimeByToken(DateUtil.nowInMilliseconds(), token);
 	}
 
 	/**
@@ -177,9 +188,15 @@ public class UserService {
 	 */
 	@Transactional(readOnly = true)
 	public UserBo queryUserByUserId(Long userId) {
-		UserModel userDo = userDao.selectUserByUserId(userId);
+		UserDo userDo = userDao.selectUserByUserId(userId);
 
-		return BeanTansferUtil.transferUserDoToUserBo(userDo);
+		UserBo userBo = null;
+		if (userDo != null) {
+			userBo = new UserBo();
+			BeanUtils.copyProperties(userDo, userBo);
+		}
+
+		return userBo;
 	}
 
 	/**
@@ -192,226 +209,6 @@ public class UserService {
 		return userDao.isMobileOrEmailExists(username);
 	}
 
-	/**
-	 * 注册
-	 * 
-	 * @param username
-	 * @param password
-	 */
-	@Transactional
-	public void signup(String username, String password) {
-		// 校验用户名是否可用
-		int mobileOrEmail = AppUtil.mobileOrEmail(username);
-		if (isUserExists(username)) {
-			if (mobileOrEmail == 1) {
-				throw new BusinessException(RespCode.RESP_0121);
-			} else {
-				throw new BusinessException(RespCode.RESP_0122);
-			}
-		}
-
-		Date now = DateUtil.now();
-		// 用户基本信息
-		UserModel userDo = new UserModel();
-		userDo.setUserId(generateUserId());
-		userDo.setPassword(encryptPassword(password));
-		userDo.setMobile(mobileOrEmail == 1 ? username : "");
-		userDo.setMobileVerifyFlag(BoolEnum.FALSE.getCode());
-		userDo.setEmail(mobileOrEmail == 2 ? username : "");
-		userDo.setEmailVerifyFlag(BoolEnum.FALSE.getCode());
-		userDo.setQqBindFlag(BoolEnum.FALSE.getCode());
-		userDo.setWeixinBindFlag(BoolEnum.FALSE.getCode());
-		userDo.setSinaWeiboBindFlag(BoolEnum.FALSE.getCode());
-		userDo.setTecentWeiboFlag(BoolEnum.FALSE.getCode());
-		userDo.setFailTimes((short) 0);
-		userDo.setUserStatus(UserStatusEnum.NO_INFO.getCode());
-		userDo.setAddTime(now);
-		userDao.insertUser(userDo);
-
-		// 用户信息
-		UserInfoModel userInfoModel = new UserInfoModel();
-		userInfoModel.setUserId(userDo.getUserId());
-		userInfoModel.setUserType(UserTypeEnum.NORMAL.getCode());
-		userInfoModel.setGradeExp(0);
-		userInfoModel.setGradeLevel((byte) 0);
-		userInfoModel.setPoint(0);
-		userInfoModel.setNickname(generateNickname(UserSexEnum.FEMALE));
-		userInfoModel.setSex(UserSexEnum.FEMALE.getCode());
-		userInfoModel.setAddTime(now);
-		userInfoModel.setUpdTime(now);
-		userDao.insertUserInfo(userInfoModel);
-
-		// 用户计数信息
-		UserSummaryModel userSummaryModel = new UserSummaryModel();
-		userSummaryModel.setUserId(userDo.getUserId());
-		userSummaryModel.setInformCount(0);
-		userSummaryModel.setFavorCount(0);
-		userSummaryModel.setPublishCount(0);
-		userSummaryModel.setIdolCount(0);
-		userSummaryModel.setFansCount(0);
-		userSummaryModel.setAddTime(now);
-		userSummaryModel.setUpdTime(now);
-		userDao.insertUserSummary(userSummaryModel);
-
-		// TODO 发送验证信息
-	}
-
-	/**
-	 * 登录
-	 * 
-	 * @param username
-	 * @param password
-	 * @param userIp
-	 * @param originalToken
-	 * @return
-	 */
-	public TokenBo signin(String username, String password, String userIp, String originalToken) {
-		UserModel userModel = userDao.selectUserByUsername(username);
-		if (userModel == null) { // 用户名或密码错误
-			throw new BusinessException(RespCode.RESP_0112);
-		}
-
-		UserStatusEnum statusEnum = UserStatusEnum.valueOfCode(userModel.getUserStatus());
-		// if (statusEnum == UserStatusEnum.LOCKED) {
-		// throw new BusinessException(RespCode.RESP_0114);
-		// }
-		if (statusEnum == UserStatusEnum.NON_ACTIVE) {
-			throw new BusinessException(RespCode.RESP_0115);
-		}
-
-		String pwd = encryptPassword(password);
-		if (!StringUtils.equals(pwd, userModel.getPassword())) {
-			// 更新登录失败次数
-			userDao.increaseFailTimesByUserId(userModel.getUserId());
-			// 超过指定次数锁定账户 TODO
-
-			throw new BusinessException(RespCode.RESP_0112);
-		}
-
-		if (userModel.getFailTimes() > 0) {
-			// 清零
-			userDao.clearFailTimesByUserId(userModel.getUserId());
-		}
-
-		TokenBo tokenBo = genTokenForUser(userIp, userModel.getUserId());
-
-		// 作废原有的TOKEN
-		deleteToken(originalToken);
-
-		return tokenBo;
-	}
-
-	/**
-	 * 登出
-	 * 
-	 * @param userId
-	 */
-	@Transactional
-	public void signout(Long userId) {
-		tokenDao.deleteByUserId(userId);
-	}
-
-	/**
-	 * 修改密码
-	 * 
-	 * @param userId
-	 * @param password
-	 * @param newPassword
-	 */
-	@Transactional
-	public void changePassword(Long userId, String password, String newPassword) {
-		UserModel userModel = userDao.selectUserByUserId(userId);
-
-		if (userModel == null) {
-			throw new BusinessException(RespCode.RESP_0110);
-		}
-
-		if (!StringUtils.equals(encryptPassword(password), userModel.getPassword())) {
-			throw new BusinessException(RespCode.RESP_0113);
-		}
-
-		userDao.updatePasswordByUserId(encryptPassword(newPassword), userId);
-	}
-
-	/**
-	 * 设置用户信息
-	 * 
-	 * @param userId
-	 * @param headImgRes
-	 * @param nickname
-	 * @param sex
-	 * @param moodWords
-	 * @param babyBirth
-	 * @param babySex
-	 */
-	@Transactional
-	public void setUserInfo(Long userId, String headImgRes, String nickname, Byte sex, String moodWords,
-			Date babyBirth, Byte babySex) {
-		// 更新用户信息
-		UserInfoModel userInfoModel = userDao.selectUserInfoByUserId(userId);
-
-		if (userInfoModel == null) {
-			throw new BusinessException(RespCode.RESP_0110);
-		}
-
-		Date now = DateUtil.now();
-		userInfoModel.setNickname(nickname);
-		userInfoModel.setSex(sex);
-		userInfoModel.setMoodWords(moodWords);
-		userInfoModel.setMoodWordsTime(now);
-		userInfoModel.setUpdTime(now);
-		userDao.updateUserInfoByUserId(userInfoModel);
-
-		// 更新用户头像信息
-		objectResourceDao.deleteByObjectTypeAndObjectRefId(ObjectTypeEnum.USER.getCode(), userId);
-		if (StringUtils.isNotBlank(headImgRes)) {
-			String[] headImgArray = headImgRes.split(";");
-			for (String headImg : headImgArray) {
-				headImg = StringUtils.trim(headImg);
-				String[] parts = headImg.split(",");
-				ObjectResourceModel objectResourceModel = new ObjectResourceModel();
-				objectResourceModel.setObjectType(ObjectTypeEnum.USER.getCode());
-				objectResourceModel.setObjectRefId(userId);
-				objectResourceModel.setResId(parts[0].trim());
-				objectResourceModel.setForClass(ResForClassEnum.HEAD_IMG.getCode());
-				objectResourceModel.setForSubclass(parts.length > 1 ? parts[1].trim() : "");
-				objectResourceModel.setAddTime(now);
-				objectResourceDao.insert(objectResourceModel);
-			}
-		}
-
-		// 更新用户宝宝信息
-		List<UserBabyModel> babyModelList = userDao.selectUserBabyByUserId(userId);
-		if (babyModelList.size() > 0) {
-			// 更新
-			UserBabyModel babyModel = babyModelList.get(0);
-			babyModel.setBabySex(babySex);
-			babyModel.setBabyBirth(babyBirth);
-			babyModel.setUpdTime(now);
-			userDao.updateUserBabyByBabyId(babyModel);
-		} else {
-			// 插入
-			UserBabyModel babyModel = new UserBabyModel();
-			babyModel.setBabyId(generateBabyId());
-			babyModel.setUserId(userId);
-			babyModel.setBabySex(babySex);
-			babyModel.setBabyBirth(babyBirth);
-			babyModel.setAddTime(now);
-			babyModel.setUpdTime(now);
-			userDao.insertUserBaby(babyModel);
-		}
-
-		// 查看用户的状态是否为未设置个人信息
-		UserModel userModel = userDao.selectUserByUserId(userId);
-
-		if (userModel == null) {
-			throw new BusinessException(RespCode.RESP_0110);
-		}
-
-		if (UserStatusEnum.valueOfCode(userModel.getUserStatus()) == UserStatusEnum.NO_INFO) {
-			userDao.updateUserStatusByUserId(UserStatusEnum.NORMAL.getCode(), userId);
-		}
-	}
 
 	/**
 	 * 生成一个新的UserId
@@ -465,4 +262,258 @@ public class UserService {
 		String rt = day + StringUtils.leftPad(seq, 10, '0');
 		return Long.valueOf(rt);
 	}
+
+	/**
+	 * 注册
+	 *
+	 * @param username
+	 * @param password
+	 */
+	@Transactional
+	public void signup(String username, String password) {
+		// 校验用户名是否可用
+		int mobileOrEmail = AppUtil.mobileOrEmail(username);
+		if (isUserExists(username)) {
+			if (mobileOrEmail == 1) {
+				throw new BusinessException(RespCode.RESP_0121);
+			} else {
+				throw new BusinessException(RespCode.RESP_0122);
+			}
+		}
+
+		UserDo userDo = new UserDo();
+		userDo.setUserId(generateUserId());
+		userDo.setPassword(encryptPassword(password));
+		userDo.setMobile(mobileOrEmail == 1 ? username : "");
+		userDo.setVerifyMobileFlag(BoolEnum.FALSE.getCode());
+		userDo.setEmail(mobileOrEmail == 2 ? username : "");
+		userDo.setVerifyEmailFlag(BoolEnum.FALSE.getCode());
+		userDo.setBindQqFlag(BoolEnum.FALSE.getCode());
+		userDo.setBindWeixinFlag(BoolEnum.FALSE.getCode());
+		userDo.setBindSinaWeiboFlag(BoolEnum.FALSE.getCode());
+		userDo.setBindTecentWeiboFlag(BoolEnum.FALSE.getCode());
+		userDo.setFailTimes((short) 0);
+		userDo.setUserStatus(UserStatusEnum.NO_INFO.getCode());
+		userDo.setUserType(UserTypeEnum.NORMAL.getCode());
+		userDo.setGradeExp(0);
+		userDo.setGradeLevel((byte) 0);
+		userDo.setPoint(0);
+		userDo.setNickname(generateNickname(UserSexEnum.FEMALE));
+		userDo.setSex(UserSexEnum.FEMALE.getCode());
+		userDo.setCountInform(0);
+		userDo.setCountFavor(0);
+		userDo.setCountPublish(0);
+		userDo.setCountIdol(0);
+		userDo.setCountFans(0);
+		Long now = DateUtil.nowInMilliseconds();
+		userDo.setAddTime(now);
+		userDo.setUpdTime(now);
+		userDao.insertUser(userDo);
+
+		// TODO 发送验证信息
+	}
+
+	/**
+	 * 登录
+	 *
+	 * @param username
+	 * @param password
+	 * @param userIp
+	 * @param originalToken
+	 * @return
+	 */
+	public TokenBo signin(String username, String password, String userIp, String originalToken) {
+		UserDo userDo = userDao.selectUserByUsername(username);
+		// 用户不存在
+		if (userDo == null) { // 用户名或密码错误
+			throw new BusinessException(RespCode.RESP_0112);
+		}
+
+		// 用户密码校验和错误次数
+		String pwd = encryptPassword(password);
+		if (!StringUtils.equals(pwd, userDo.getPassword())) {
+			// 更新登录失败次数
+			userDao.increaseFailTimesByUserId(userDo.getUserId());
+			// 超过指定次数锁定账户 TODO
+
+			throw new BusinessException(RespCode.RESP_0112);
+		}
+		if (userDo.getFailTimes() > 0) {
+			// 清零
+			userDao.clearFailTimesByUserId(userDo.getUserId());
+		}
+
+		// 用户状态校验
+		// UserStatusEnum statusEnum = UserStatusEnum.valueOfCode(userDo.getUserStatus());
+		// if (statusEnum == UserStatusEnum.LOCKED) {
+		// throw new BusinessException(RespCode.RESP_0114);
+		// }
+		// if (statusEnum == UserStatusEnum.NON_ACTIVE) {
+		// throw new BusinessException(RespCode.RESP_0115);
+		// }
+
+		// 登录成功生成新的TOKEN
+		TokenBo tokenBo = genTokenForUser(userIp, userDo.getUserId());
+
+		// 作废原有的TOKEN
+		deleteToken(originalToken);
+
+		return tokenBo;
+	}
+
+	/**
+	 * 登出
+	 *
+	 * @param userId
+	 */
+	public void signout(Long userId) {
+		tokenDao.deleteByUserId(userId);
+	}
+
+	/**
+	 * 修改密码
+	 *
+	 * @param userId
+	 * @param password
+	 * @param newPassword
+	 */
+	@Transactional
+	public void changePassword(Long userId, String password, String newPassword) {
+		UserDo userDo = userDao.selectUserByUserId(userId);
+
+		if (userDo == null) {
+			throw new BusinessException(RespCode.RESP_0110);
+		}
+
+		if (!StringUtils.equals(encryptPassword(password), userDo.getPassword())) {
+			throw new BusinessException(RespCode.RESP_0113);
+		}
+
+		userDao.updatePasswordByUserId(encryptPassword(newPassword), userId);
+	}
+
+	/**
+	 * 获取用户信息
+	 *
+	 * @param userId
+	 * @return
+	 */
+	public UserBo getUserInfo(Long userId) {
+		UserBo userBo = null;
+
+		// 用户信息
+		UserDo userDo = userDao.selectUserByUserId(userId);
+		if (userDo != null) {
+			userBo = new UserBo();
+			BeanUtils.copyProperties(userDo, userBo);
+			assembleBaby(userBo);
+			assembleBindAccount(userBo);
+		}
+
+		return userBo;
+	}
+
+	protected void assembleBaby(UserBo userBo) {
+		if (userBo == null) {
+			return;
+		}
+		List<UserBabyDo> userBabyDoList = userDao.selectUserBabyByUserId(userBo.getUserId());
+		List<UserBabyBo> userBabyBoList = new ArrayList<UserBabyBo>(userBabyDoList.size());
+		for (UserBabyDo userBabyDo : userBabyDoList) {
+			UserBabyBo userBabyBo = new UserBabyBo();
+			BeanUtils.copyProperties(userBabyDo, userBabyBo);
+			userBabyBoList.add(userBabyBo);
+		}
+		userBo.setBabyList(userBabyBoList);
+	}
+
+	protected void assembleBindAccount(UserBo userBo) {
+		if (userBo == null) {
+			return;
+		}
+		List<UserBindAccountDo> userBindAccountDoList = userDao.selectUserBindAccountByUserId(userBo.getUserId());
+		List<UserBindAccountBo> userBindAccountBoList = new ArrayList<UserBindAccountBo>(userBindAccountDoList.size());
+		for (UserBindAccountDo userBindAccountDo : userBindAccountDoList) {
+			UserBindAccountBo userBindAccountBo = new UserBindAccountBo();
+			BeanUtils.copyProperties(userBindAccountDo, userBindAccountBo);
+			userBindAccountBoList.add(userBindAccountBo);
+		}
+		userBo.setBindAccountList(userBindAccountBoList);
+	}
+
+	/**
+	 * 设置用户信息
+	 *
+	 * @param userId
+	 * @param headImgRes
+	 * @param nickname
+	 * @param sex
+	 * @param moodWords
+	 * @param babyBirth
+	 * @param babySex
+	 */
+	@Transactional
+	public void setUserInfo(Long userId, String headImgRes, String nickname, Byte sex, String moodWords,
+			Long babyBirth, Byte babySex) {
+		// 更新用户信息
+		UserDo userDo = userDao.selectUserByUserId(userId);
+
+		if (userDo == null) {
+			throw new BusinessException(RespCode.RESP_0110);
+		}
+
+		Long now = DateUtil.nowInMilliseconds();
+		userDo.setNickname(nickname);
+		userDo.setSex(sex);
+		userDo.setMoodWords(moodWords);
+		userDo.setMoodWordsTime(now);
+		if (UserStatusEnum.valueOfCode(userDo.getUserStatus()) == UserStatusEnum.NO_INFO) {
+			userDo.setUserStatus(UserStatusEnum.NORMAL.getCode());
+		}
+		userDo.setUpdTime(now);
+		userDao.updateByUserId(userDo);
+
+		// 更新用户头像信息
+		resourceDao.deleteObjectResourceByEntityTypeAndEntityIdAndForClass(EntityTypeEnum.USER.getCode(), userId,
+				ResForClassEnum.HEAD_IMG.getCode());
+		if (StringUtils.isNotBlank(headImgRes)) {
+			String[] headImgArray = headImgRes.split(";");
+			for (String headImg : headImgArray) {
+				headImg = StringUtils.trim(headImg);
+				String[] parts = headImg.split(":");
+				ObjectResourceDo objectResourceDo = new ObjectResourceDo();
+				objectResourceDo.setResId(parts[0].trim());
+				objectResourceDo.setEntityType(EntityTypeEnum.USER.getCode());
+				objectResourceDo.setEntityId(userId);
+				objectResourceDo.setForClass(ResForClassEnum.HEAD_IMG.getCode());
+				objectResourceDo.setForSubclass(parts.length > 1 ? parts[1].trim() : "");
+				objectResourceDo.setAddTime(now);
+				objectResourceDo.setUpdTime(now);
+				resourceDao.insertObjectResource(objectResourceDo);
+			}
+		}
+
+		// 更新用户宝宝信息
+		List<UserBabyDo> babyModelList = userDao.selectUserBabyByUserId(userId);
+		if (babyModelList.size() > 0) {
+			// 更新
+			UserBabyDo userBabyDo = babyModelList.get(0);
+			userBabyDo.setBabySex(babySex);
+			userBabyDo.setBabyBirth(babyBirth);
+			userBabyDo.setUpdTime(now);
+			userDao.updateUserBaby(userBabyDo);
+		} else {
+			// 插入
+			UserBabyDo userBabyDo = new UserBabyDo();
+			userBabyDo.setBabyId(generateBabyId());
+			userBabyDo.setUserId(userId);
+			userBabyDo.setBabySex(babySex);
+			userBabyDo.setBabyBirth(babyBirth);
+			userBabyDo.setAddTime(now);
+			userBabyDo.setUpdTime(now);
+			userDao.insertUserBaby(userBabyDo);
+		}
+
+	}
+
 }

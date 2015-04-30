@@ -8,7 +8,7 @@ package com.xjd.ct.utl.enums;
  */
 public enum UserTypeEnum {
 
-	ADMIN((byte) 0, "管理员"), CERTED((byte) 10, "认证用户"), NORMAL((byte) 20, "普通用户");
+	ADMIN((byte) 0, "管理员"), NORMAL((byte) 1, "普通用户");
 
 	byte code;
 	String desc;
