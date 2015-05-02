@@ -82,6 +82,8 @@ public class UserInfoForSelfVo {
 	private Long updTime;
 
 	//
+	private List<ResourceVo> resourceList;
+
 	private List<UserBabyForSelfVo> babyList;
 
 	private List<UserBindAccountForSelfVo> bindAccountList;
@@ -380,5 +382,13 @@ public class UserInfoForSelfVo {
 
 	public void setBindAccountList(List<UserBindAccountForSelfVo> bindAccountList) {
 		this.bindAccountList = bindAccountList;
+	}
+
+	public List<ResourceVo> getResourceList() {
+		return resourceList;
+	}
+
+	public void setResourceList(List<ResourceVo> resourceList) {
+		this.resourceList = resourceList;
 	}
 }

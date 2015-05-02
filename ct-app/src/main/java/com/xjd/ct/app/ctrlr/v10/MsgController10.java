@@ -1,20 +1,23 @@
 package com.xjd.ct.app.ctrlr.v10;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.xjd.ct.app.biz.MsgBiz;
 import com.xjd.ct.app.util.RequestContext;
 import com.xjd.ct.app.view.View;
 import com.xjd.ct.app.view.ViewUtil;
 import com.xjd.ct.app.view.body.MsgInformListBody;
 import com.xjd.ct.app.view.vo.MsgInformVo;
+import com.xjd.ct.biz.bo.MsgInformBo;
+import com.xjd.ct.biz.service.MsgService;
 import com.xjd.ct.utl.valid.ValidationUtil;
 
 /**
@@ -27,7 +30,7 @@ import com.xjd.ct.utl.valid.ValidationUtil;
 @RequestMapping("/10")
 public class MsgController10 {
 	@Autowired
-	MsgBiz msgBiz;
+	MsgService msgService;
 
 	@RequestMapping("/listMyMsgs")
 	@ResponseBody
@@ -61,9 +64,16 @@ public class MsgController10 {
 		}
 
 		// 业务调用
-		List<MsgInformVo> msgInformVoList = msgBiz.listMsgs(RequestContext.checkAndGetUserId(), offsetI, countI);
+		List<MsgInformBo> msgInformBoList = msgService.listMsgs(RequestContext.checkAndGetUserId(), offsetI, countI);
 
 		// 返回结果
+		List<MsgInformVo> msgInformVoList = new ArrayList<MsgInformVo>(msgInformBoList.size());
+		for (MsgInformBo msgInformBo : msgInformBoList) {
+			MsgInformVo msgInformVo = new MsgInformVo();
+			BeanUtils.copyProperties(msgInformBo, msgInformVo);
+			msgInformVoList.add(msgInformVo);
+		}
+
 		MsgInformListBody body = new MsgInformListBody();
 		body.setMsgInformList(msgInformVoList);
 

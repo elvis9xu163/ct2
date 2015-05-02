@@ -1,5 +1,6 @@
 package com.xjd.ct.app.ctrlr.v10;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,12 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.xjd.ct.app.biz.IdolBiz;
+import com.xjd.ct.app.util.BeanTransport;
 import com.xjd.ct.app.util.RequestContext;
 import com.xjd.ct.app.view.View;
 import com.xjd.ct.app.view.ViewUtil;
 import com.xjd.ct.app.view.body.UserInfoForOtherListBody;
-import com.xjd.ct.app.view.vo.UserForOtherVo;
+import com.xjd.ct.app.view.vo.UserInfoForOtherVo;
+import com.xjd.ct.biz.bo.UserBo;
 import com.xjd.ct.biz.service.UserRelationService;
 import com.xjd.ct.utl.enums.IdolOperEnum;
 import com.xjd.ct.utl.valid.ValidationUtil;
@@ -30,8 +32,6 @@ import com.xjd.ct.utl.valid.ValidationUtil;
 public class UserRelationController10 {
 	@Autowired
 	UserRelationService userRelationService;
-	@Autowired
-	IdolBiz idolBiz;
 
 	@RequestMapping("/idolatrizeUser")
 	@ResponseBody
@@ -87,12 +87,18 @@ public class UserRelationController10 {
 		}
 
 		// 业务调用
-		List<UserForOtherVo> idols = idolBiz.listIdols(RequestContext.checkAndGetUserId(), offsetI, countI);
+		List<UserBo> idolUserList = userRelationService.listIdols(RequestContext.checkAndGetUserId(), offsetI, countI);
 
 		// 返回结果
+		List<UserInfoForOtherVo> userInfoForOtherVoList = new ArrayList<UserInfoForOtherVo>(idolUserList.size());
+		for (UserBo userBo : idolUserList) {
+			UserInfoForOtherVo userInfoForOtherVo = new UserInfoForOtherVo();
+			BeanTransport.copyTo(userBo, userInfoForOtherVo);
+			userInfoForOtherVoList.add(userInfoForOtherVo);
+		}
 
 		UserInfoForOtherListBody body = new UserInfoForOtherListBody();
-		body.setUserInfoList(idols);
+		body.setUserInfoList(userInfoForOtherVoList);
 
 		View view = ViewUtil.defaultView();
 		view.setBody(body);

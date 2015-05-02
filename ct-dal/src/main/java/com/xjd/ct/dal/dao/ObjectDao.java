@@ -1,0 +1,212 @@
+package com.xjd.ct.dal.dao;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.xjd.ct.dal.dos.*;
+import com.xjd.ct.dal.map.ObjectCommentDoMapper;
+import com.xjd.ct.dal.map.ObjectDoMapper;
+import com.xjd.ct.dal.map.ObjectFavorDoMapper;
+import com.xjd.ct.dal.map.ObjectLikeDoMapper;
+import com.xjd.ct.utl.DateUtil;
+
+/**
+ * @author elvis.xu
+ * @since 2015-05-01 12:01
+ */
+@Repository
+@Transactional
+public class ObjectDao {
+	@Autowired
+	ObjectDoMapper objectDoMapper;
+	@Autowired
+	ObjectFavorDoMapper objectFavorDoMapper;
+	@Autowired
+	ObjectLikeDoMapper objectLikeDoMapper;
+	@Autowired
+	ObjectCommentDoMapper objectCommentDoMapper;
+
+	public List<ObjectDo> selectObjectByUserIdAndPage(Long userId, long offset, int count) {
+		ObjectDoExample example = new ObjectDoExample();
+		example.or().andUserIdEqualTo(userId);
+		example.setOrderByClause("object_id desc");
+		example.setOffsetAndLimit(offset - 1, count);
+
+		return objectDoMapper.selectByExample(example);
+	}
+
+	public List<ObjectFavorDo> selectObjectFavorByUserIdAndPage(Long userId, long offset, int count) {
+		ObjectFavorDoExample example = new ObjectFavorDoExample();
+		example.or().andUserIdEqualTo(userId);
+		example.setOrderByClause("add_time desc");
+		example.setOffsetAndLimit(offset - 1, count);
+
+		return objectFavorDoMapper.selectByExample(example);
+	}
+
+	public List<ObjectDo> selectObjectByObjectIdList(List<Long> objectIdList) {
+		ObjectDoExample example = new ObjectDoExample();
+		example.or().andUserIdIn(objectIdList);
+
+		return objectDoMapper.selectByExample(example);
+	}
+
+	public List<ObjectLikeDo> selectObjectLikeByUserIdAndPage(Long userId, long offset, int count) {
+		ObjectLikeDoExample example = new ObjectLikeDoExample();
+		example.or().andUserIdEqualTo(userId);
+		example.setOrderByClause("add_time desc");
+		example.setOffsetAndLimit(offset - 1, count);
+
+		return objectLikeDoMapper.selectByExample(example);
+	}
+
+	public ObjectDo selectObjectByObjectId(Long objectId) {
+		return objectDoMapper.selectByPrimaryKey(objectId);
+	}
+
+	public ObjectLikeDo selectObjectLikeByObjectIdAndUserId(Long objectId, Long userId) {
+		ObjectLikeDoKey key = new ObjectLikeDo();
+		key.setObjectId(objectId);
+		key.setUserId(userId);
+		return objectLikeDoMapper.selectByPrimaryKey(key);
+	}
+
+	public int insertObjectLike(ObjectLikeDo objectLikeDo) {
+		return objectLikeDoMapper.insert(objectLikeDo);
+	}
+
+	public int increaseLikeYesCount(Long objectId) {
+		ObjectDo objectDo = selectObjectByObjectId(objectId);
+
+		ObjectDo upd = new ObjectDo();
+		upd.setObjectId(objectId);
+		upd.setLikeYesCount(objectDo.getLikeYesCount() + 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return objectDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	public int increaseLikeNoCount(Long objectId) {
+		ObjectDo objectDo = selectObjectByObjectId(objectId);
+
+		ObjectDo upd = new ObjectDo();
+		upd.setObjectId(objectId);
+		upd.setLikeNoCount(objectDo.getLikeNoCount() + 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return objectDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	public int deleteObjectLikeByObjectIdAndUserId(Long objectId, Long userId) {
+		ObjectLikeDoKey key = new ObjectLikeDo();
+		key.setObjectId(objectId);
+		key.setUserId(userId);
+		return objectLikeDoMapper.deleteByPrimaryKey(key);
+	}
+
+	public int decreaseLikeYesCount(Long objectId) {
+		ObjectDo objectDo = selectObjectByObjectId(objectId);
+
+		ObjectDo upd = new ObjectDo();
+		upd.setObjectId(objectId);
+		upd.setLikeYesCount(objectDo.getLikeYesCount() - 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return objectDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	public int decreaseLikeNoCount(Long objectId) {
+		ObjectDo objectDo = selectObjectByObjectId(objectId);
+
+		ObjectDo upd = new ObjectDo();
+		upd.setObjectId(objectId);
+		upd.setLikeNoCount(objectDo.getLikeNoCount() - 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return objectDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	public ObjectFavorDo selectObjectFavorByObjectIdAndUserId(Long objectId, Long userId) {
+		ObjectFavorDoKey key = new ObjectFavorDoKey();
+		key.setObjectId(objectId);
+		key.setUserId(userId);
+		return objectFavorDoMapper.selectByPrimaryKey(key);
+	}
+
+	public int insertObjectFavor(ObjectFavorDo objectFavorDo) {
+		return objectFavorDoMapper.insert(objectFavorDo);
+	}
+
+	public int increaseFavorCount(Long objectId) {
+		ObjectDo objectDo = selectObjectByObjectId(objectId);
+
+		ObjectDo upd = new ObjectDo();
+		upd.setObjectId(objectId);
+		upd.setFavorCount(objectDo.getFavorCount() + 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return objectDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	public int decreaseFavorCount(Long objectId) {
+		ObjectDo objectDo = selectObjectByObjectId(objectId);
+
+		ObjectDo upd = new ObjectDo();
+		upd.setObjectId(objectId);
+		upd.setFavorCount(objectDo.getFavorCount() - 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return objectDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	public int deleteObjectFavorByObjectIdAndUserId(Long objectId, Long userId) {
+		ObjectFavorDoKey key = new ObjectFavorDoKey();
+		key.setObjectId(objectId);
+		key.setUserId(userId);
+		return objectFavorDoMapper.deleteByPrimaryKey(key);
+	}
+
+	public ObjectCommentDo selectObjectCommentByCommentId(Long commentId) {
+		return objectCommentDoMapper.selectByPrimaryKey(commentId);
+	}
+
+	public int insertObjectComment(ObjectCommentDo objectCommentDo) {
+		return objectCommentDoMapper.insert(objectCommentDo);
+	}
+
+	public int deleteObjectCommentByCommentId(Long commentId) {
+		return objectCommentDoMapper.deleteByPrimaryKey(commentId);
+	}
+
+	public int increaseCommentCount(Long objectId) {
+		ObjectDo objectDo = selectObjectByObjectId(objectId);
+
+		ObjectDo upd = new ObjectDo();
+		upd.setObjectId(objectId);
+		upd.setCommentCount(objectDo.getCommentCount() + 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return objectDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	public int decreaseCommentCount(Long objectId) {
+		ObjectDo objectDo = selectObjectByObjectId(objectId);
+
+		ObjectDo upd = new ObjectDo();
+		upd.setObjectId(objectId);
+		upd.setCommentCount(objectDo.getCommentCount() - 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return objectDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	public List<ObjectCommentDo> selectObjectCommentByObjectId(Long objectId) {
+		ObjectCommentDoExample example = new ObjectCommentDoExample();
+		example.or().andObjectIdEqualTo(objectId);
+
+		return objectCommentDoMapper.selectByExample(example);
+	}
+}

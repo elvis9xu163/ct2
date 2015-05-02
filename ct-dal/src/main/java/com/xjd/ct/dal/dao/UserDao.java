@@ -182,4 +182,95 @@ public class UserDao {
 	public int insertUserBaby(UserBabyDo userBabyDo) {
 		return userBabyDoMapper.insert(userBabyDo);
 	}
+
+	/**
+	 * 用户关注记数加1
+	 *
+	 * @param userId
+	 * @return
+	 */
+	public int increaseIdolCountByUserId(Long userId) {
+		UserDo userDo = userDoMapper.selectByPrimaryKey(userId);
+
+		UserDo upd = new UserDo();
+		upd.setUserId(userId);
+		upd.setCountIdol(userDo.getCountIdol() + 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return userDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	/**
+	 * 用户粉丝记数加1
+	 *
+	 * @param userId
+	 * @return
+	 */
+	public int increaseFansCountByUserId(Long userId) {
+		UserDo userDo = userDoMapper.selectByPrimaryKey(userId);
+
+		UserDo upd = new UserDo();
+		upd.setUserId(userId);
+		upd.setCountFans(userDo.getCountFans() + 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return userDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	/**
+	 * 用户关注记数减1
+	 *
+	 * @param userId
+	 * @return
+	 */
+	public int decreaseIdolCountByUserId(Long userId) {
+		UserDo userDo = userDoMapper.selectByPrimaryKey(userId);
+
+		UserDo upd = new UserDo();
+		upd.setUserId(userId);
+		upd.setCountIdol(userDo.getCountIdol() - 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return userDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	/**
+	 * 用户粉丝记数减1
+	 *
+	 * @param userId
+	 * @return
+	 */
+	public int decreaseFansCountByUserId(Long userId) {
+		UserDo userDo = userDoMapper.selectByPrimaryKey(userId);
+
+		UserDo upd = new UserDo();
+		upd.setUserId(userId);
+		upd.setCountFans(userDo.getCountFans() - 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return userDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	public int increaseFavorCount(Long userId) {
+		UserDo userDo = userDoMapper.selectByPrimaryKey(userId);
+
+		UserDo upd = new UserDo();
+		upd.setUserId(userId);
+		upd.setCountFavor(userDo.getCountFavor() + 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return userDoMapper.updateByPrimaryKeySelective(upd);
+
+	}
+
+	public int decreaseFavorCount(Long userId) {
+		UserDo userDo = userDoMapper.selectByPrimaryKey(userId);
+
+		UserDo upd = new UserDo();
+		upd.setUserId(userId);
+		upd.setCountFavor(userDo.getCountFavor() - 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return userDoMapper.updateByPrimaryKeySelective(upd);
+	}
 }

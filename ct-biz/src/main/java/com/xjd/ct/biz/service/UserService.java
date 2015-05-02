@@ -48,6 +48,9 @@ public class UserService {
 	@Autowired
 	ResourceDao resourceDao;
 
+	@Autowired
+	ResourceService resourceService;
+
 	/**
 	 * 根据用户IP生成Token
 	 * 
@@ -406,11 +409,19 @@ public class UserService {
 		if (userDo != null) {
 			userBo = new UserBo();
 			BeanUtils.copyProperties(userDo, userBo);
+			assembleResource(userBo);
 			assembleBaby(userBo);
 			assembleBindAccount(userBo);
 		}
 
 		return userBo;
+	}
+
+	protected void assembleResource(UserBo userBo) {
+		if (userBo == null) {
+			return;
+		}
+		userBo.setResourceList(resourceService.listResource(EntityTypeEnum.USER.getCode(), userBo.getUserId()));
 	}
 
 	protected void assembleBaby(UserBo userBo) {

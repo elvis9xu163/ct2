@@ -93,7 +93,7 @@
         <!-- data -->
         <data.dataSource.type>jdbc</data.dataSource.type>
         <data.jdbc.driverClass>com.mysql.jdbc.Driver</data.jdbc.driverClass>
-        <data.jdbc.url>jdbc:mysql://localhost/ct?useUnicode=true&amp;amp;characterEncoding=utf-8</data.jdbc.url>
+        <data.jdbc.url>jdbc:mysql://localhost/ct2?useUnicode=true&amp;amp;characterEncoding=utf-8</data.jdbc.url>
         <data.jdbc.username>root</data.jdbc.username>
         <data.jdbc.password>root</data.jdbc.password>
       </properties>
@@ -104,7 +104,7 @@
         <!-- data -->
         <data.dataSource.type>jdbc</data.dataSource.type>
         <data.jdbc.driverClass>com.mysql.jdbc.Driver</data.jdbc.driverClass>
-        <data.jdbc.url>jdbc:mysql://172.246.220.254:3306/ct?useUnicode=true&amp;amp;characterEncoding=utf-8</data.jdbc.url>
+        <data.jdbc.url>jdbc:mysql://172.246.220.254:3306/ct2?useUnicode=true&amp;amp;characterEncoding=utf-8</data.jdbc.url>
         <data.jdbc.username>xjd</data.jdbc.username>
         <data.jdbc.password>Elvis9xu</data.jdbc.password>
       </properties>

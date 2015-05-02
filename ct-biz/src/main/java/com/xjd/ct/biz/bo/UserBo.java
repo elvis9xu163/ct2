@@ -77,6 +77,7 @@ public class UserBo extends BaseBo {
 	private Long updTime;
 
 	//
+	private List<ResourceBo> resourceList;
 	private List<UserBabyBo> babyList;
 	private List<UserBindAccountBo> bindAccountList;
 
@@ -438,6 +439,14 @@ public class UserBo extends BaseBo {
 	/** @param updTime the updTime to set */
 	public void setUpdTime(Long updTime) {
 		this.updTime = updTime;
+	}
+
+	public List<ResourceBo> getResourceList() {
+		return resourceList;
+	}
+
+	public void setResourceList(List<ResourceBo> resourceList) {
+		this.resourceList = resourceList;
 	}
 
 	public List<UserBabyBo> getBabyList() {

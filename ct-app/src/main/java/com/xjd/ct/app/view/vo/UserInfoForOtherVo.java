@@ -95,6 +95,8 @@ public class UserInfoForOtherVo {
 	private Long updTime;
 
 	//
+	private List<ResourceVo> resourceList;
+
 	private List<UserBabyForOtherVo> babyList;
 
 	private List<UserBindAccountForOtherVo> bindAccountList;
@@ -393,5 +395,13 @@ public class UserInfoForOtherVo {
 
 	public void setBindAccountList(List<UserBindAccountForOtherVo> bindAccountList) {
 		this.bindAccountList = bindAccountList;
+	}
+
+	public List<ResourceVo> getResourceList() {
+		return resourceList;
+	}
+
+	public void setResourceList(List<ResourceVo> resourceList) {
+		this.resourceList = resourceList;
 	}
 }

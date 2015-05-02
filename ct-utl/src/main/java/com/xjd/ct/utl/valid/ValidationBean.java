@@ -6,7 +6,6 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.xjd.ct.utl.enums.IdolOperEnum;
-import com.xjd.ct.utl.enums.ObjectTypeEnum;
 import com.xjd.ct.utl.enums.OrderByEnum;
 import com.xjd.ct.utl.enums.UserSexEnum;
 import com.xjd.ct.utl.respcode.RespCode;
@@ -63,12 +62,8 @@ public class ValidationBean {
 	private String count;
 
 	@NotBlank(message = RespCode.RESP_0001)
-	@com.xjd.ct.utl.valid.constraints.Enum(enumClass = ObjectTypeEnum.class)
-	private String objectType;
-
-	@NotBlank(message = RespCode.RESP_0001)
 	@Digits(integer = 18, fraction = 0, message = RespCode.RESP_0002)
-	private String objectRefId;
+	private String objectId;
 
 	@NotBlank(message = RespCode.RESP_0001)
 	@Pattern(regexp = "0|1", message = RespCode.RESP_0003)
@@ -209,24 +204,12 @@ public class ValidationBean {
 		this.count = count;
 	}
 
-	/** @return the objectType */
-	public String getObjectType() {
-		return objectType;
+	public String getObjectId() {
+		return objectId;
 	}
 
-	/** @param objectType the objectType to set */
-	public void setObjectType(String objectType) {
-		this.objectType = objectType;
-	}
-
-	/** @return the objectRefId */
-	public String getObjectRefId() {
-		return objectRefId;
-	}
-
-	/** @param objectRefId the objectRefId to set */
-	public void setObjectRefId(String objectRefId) {
-		this.objectRefId = objectRefId;
+	public void setObjectId(String objectId) {
+		this.objectId = objectId;
 	}
 
 	/** @return the like */
@@ -320,4 +303,5 @@ public class ValidationBean {
 	public void setRange(String range) {
 		this.range = range;
 	}
+
 }
