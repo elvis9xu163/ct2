@@ -81,13 +81,27 @@
 
   <profiles>
     <profile>
-      <id>develop</id>
+      <id>develop-windows</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
         <log4j2.logger>console</log4j2.logger>
         <log4j2.level>trace</log4j2.level>
+      </properties>
+    </profile>
+    <profile>
+      <id>develop-mac</id>
+      <properties>
+        <log4j2.logger>console</log4j2.logger>
+        <log4j2.level>trace</log4j2.level>
+      </properties>
+    </profile>
+    <profile>
+      <id>test</id>
+      <properties>
+        <log4j2.logger>console</log4j2.logger>
+        <log4j2.level>debug</log4j2.level>
       </properties>
     </profile>
     <profile>

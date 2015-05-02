@@ -85,7 +85,7 @@
   </build>
   <profiles>
     <profile>
-      <id>develop</id>
+      <id>develop-windows</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
@@ -99,7 +99,21 @@
       </properties>
     </profile>
     <profile>
+      <id>develop-mac</id>
+      <properties>
+        <!-- data -->
+        <data.dataSource.type>jdbc</data.dataSource.type>
+        <data.jdbc.driverClass>com.mysql.jdbc.Driver</data.jdbc.driverClass>
+        <data.jdbc.url>jdbc:mysql://localhost/ct2?useUnicode=true&amp;amp;characterEncoding=utf-8</data.jdbc.url>
+        <data.jdbc.username>root</data.jdbc.username>
+        <data.jdbc.password>root</data.jdbc.password>
+      </properties>
+    </profile>
+    <profile>
       <id>test</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <properties>
         <!-- data -->
         <data.dataSource.type>jdbc</data.dataSource.type>

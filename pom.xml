@@ -5,7 +5,7 @@
 
   <groupId>com.xjd.ct</groupId>
   <artifactId>ct</artifactId>
-  <version>1.1.0</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -149,22 +149,30 @@
   </build>
   <profiles>
     <profile>
-      <id>develop</id>
+      <id>develop-windows</id>
+      <properties>
+        <app.env>test</app.env>
+        <app.sign.disabled>1</app.sign.disabled>
+        <resource.root>C:/tmp/resource</resource.root>
+      </properties>
+    </profile>
+    <profile>
+      <id>develop-mac</id>
+      <properties>
+        <app.env>test</app.env>
+        <app.sign.disabled>1</app.sign.disabled>
+        <resource.root>~/tmp/ct</resource.root>
+      </properties>
+    </profile>
+    <profile>
+      <id>test</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
         <app.env>test</app.env>
         <app.sign.disabled>1</app.sign.disabled>
-        <resource.root>D:/tmp/resource</resource.root>
-      </properties>
-    </profile>
-    <profile>
-      <id>test</id>
-      <properties>
-        <app.env>test</app.env>
-        <app.sign.disabled>1</app.sign.disabled>
-        <resource.root>D:/tmp/resource</resource.root>
+        <resource.root>/data/resource/ct</resource.root>
       </properties>
     </profile>
     <profile>
@@ -172,7 +180,7 @@
       <properties>
         <app.env>product</app.env>
         <app.sign.disabled>1</app.sign.disabled>
-        <resource.root>D:/tmp/resource</resource.root>
+        <resource.root>/data/resource/ct</resource.root>
       </properties>
     </profile>
   </profiles>
