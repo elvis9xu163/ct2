@@ -1,4 +1,4 @@
-package com.xjd.ct.app.util;
+package com.xjd.ct.web.util;
 
 import javax.servlet.http.HttpServletRequest;
 

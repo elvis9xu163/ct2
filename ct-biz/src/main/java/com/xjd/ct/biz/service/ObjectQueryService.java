@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xjd.ct.biz.bo.BannerBo;
 import com.xjd.ct.biz.bo.ObjectBo;
+import com.xjd.ct.biz.bo.ResourceBo;
 import com.xjd.ct.dal.dao.ObjectDao;
-import com.xjd.ct.dal.dos.ObjectDo;
-import com.xjd.ct.dal.dos.ObjectFavorDo;
-import com.xjd.ct.dal.dos.ObjectLikeDo;
+import com.xjd.ct.dal.dao.ResourceDao;
+import com.xjd.ct.dal.dos.*;
 import com.xjd.ct.utl.enums.EntityTypeEnum;
+import com.xjd.ct.utl.enums.ObjectTypeEnum;
 
 /**
  * <pre>
@@ -30,6 +33,8 @@ public class ObjectQueryService {
 	ObjectDao objectDao;
 	@Autowired
 	ResourceService resourceService;
+	@Autowired
+	ResourceDao resourceDao;
 
 	public List<ObjectBo> listObject(Long userId, long offset, int count) {
 		List<ObjectDo> objectDoList = objectDao.selectObjectByUserIdAndPage(userId, offset, count);
@@ -86,6 +91,104 @@ public class ObjectQueryService {
 		}
 
 		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectIdList(objectIdList);
+
+		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
+		for (ObjectDo objectDo : objectDoList) {
+			ObjectBo objectBo = new ObjectBo();
+			BeanUtils.copyProperties(objectDo, objectBo);
+			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
+					objectDo.getObjectId()));
+			objectBoList.add(objectBo);
+		}
+
+		return objectBoList;
+	}
+
+	public List<BannerBo> listBanners() {
+		List<BannerDo> bannerDoList = objectDao.selectBanner();
+
+		if (CollectionUtils.isEmpty(bannerDoList)) {
+			return Collections.emptyList();
+		}
+
+		List<BannerBo> bannerBoList = new ArrayList<BannerBo>(bannerDoList.size());
+		for (BannerDo bannerDo : bannerDoList) {
+			BannerBo bannerBo = new BannerBo();
+			BeanUtils.copyProperties(bannerDo, bannerBo);
+
+			ResourceDo resourceDo = resourceDao.selectResourceByResId(bannerBo.getResId());
+			if (resourceDo != null) {
+				ResourceBo resourceBo = new ResourceBo();
+				BeanUtils.copyProperties(resourceDo, resourceBo);
+				bannerBo.setResource(resourceBo);
+			}
+		}
+
+		return bannerBoList;
+	}
+
+	public List<ObjectBo> listRecommendObjects(Long date) {
+		List<RecommendDo> recommendDoList = objectDao.selectRecommendByRecommendTime(date);
+
+		if (CollectionUtils.isEmpty(recommendDoList)) {
+			return Collections.emptyList();
+		}
+
+		List<Long> objectIdList = new ArrayList<Long>(recommendDoList.size());
+		for (RecommendDo recommendDo : recommendDoList) {
+			objectIdList.add(recommendDo.getObjectId());
+		}
+
+		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectIdList(objectIdList);
+
+		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
+		for (ObjectDo objectDo : objectDoList) {
+			ObjectBo objectBo = new ObjectBo();
+			BeanUtils.copyProperties(objectDo, objectBo);
+			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
+					objectDo.getObjectId()));
+			objectBoList.add(objectBo);
+		}
+
+		return objectBoList;
+	}
+
+	public List<ObjectBo> listArticles(Byte orderBy, Long offset, Integer count) {
+		// 全部以时间倒序
+		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectTypeAndPageOrderByAddTimeDesc(
+				ObjectTypeEnum.ARTICLE.getCode(), offset, count);
+
+		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
+		for (ObjectDo objectDo : objectDoList) {
+			ObjectBo objectBo = new ObjectBo();
+			BeanUtils.copyProperties(objectDo, objectBo);
+			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
+					objectDo.getObjectId()));
+			objectBoList.add(objectBo);
+		}
+
+		return objectBoList;
+	}
+
+	public List<ObjectBo> listPublishs(Byte orderBy, Long offset, Integer count) {
+		// 全部以时间倒序
+		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectTypeAndPageOrderByAddTimeDesc(
+				ObjectTypeEnum.PUBLISH.getCode(), offset, count);
+
+		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
+		for (ObjectDo objectDo : objectDoList) {
+			ObjectBo objectBo = new ObjectBo();
+			BeanUtils.copyProperties(objectDo, objectBo);
+			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
+					objectDo.getObjectId()));
+			objectBoList.add(objectBo);
+		}
+
+		return objectBoList;
+	}
+
+	public List<ObjectBo> listPublishs(Long userId, Byte orderBy, Long offset, Integer count) {
+		List<ObjectDo> objectDoList = objectDao.selectIdolUserPublishByPageOrderByAddTimeDesc(userId, offset, count);
 
 		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
 		for (ObjectDo objectDo : objectDoList) {

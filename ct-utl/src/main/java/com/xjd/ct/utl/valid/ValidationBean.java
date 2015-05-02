@@ -108,6 +108,10 @@ public class ValidationBean {
 	@Pattern(regexp = "0|1", message = RespCode.RESP_0003)
 	private String range;
 
+	@NotBlank(message = RespCode.RESP_0001)
+	@Date(pattern = DatePattern.yyyyMMdd)
+	private String date;
+
 	public String getTimestamp() {
 		return timestamp;
 	}
@@ -304,4 +308,11 @@ public class ValidationBean {
 		this.range = range;
 	}
 
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
 }

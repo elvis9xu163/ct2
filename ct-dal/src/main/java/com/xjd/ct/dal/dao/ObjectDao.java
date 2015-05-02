@@ -1,5 +1,7 @@
 package com.xjd.ct.dal.dao;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +9,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xjd.ct.dal.dos.*;
-import com.xjd.ct.dal.map.ObjectCommentDoMapper;
-import com.xjd.ct.dal.map.ObjectDoMapper;
-import com.xjd.ct.dal.map.ObjectFavorDoMapper;
-import com.xjd.ct.dal.map.ObjectLikeDoMapper;
+import com.xjd.ct.dal.map.*;
 import com.xjd.ct.utl.DateUtil;
+import com.xjd.ct.utl.enums.ObjectTypeEnum;
 
 /**
  * @author elvis.xu
@@ -28,6 +28,12 @@ public class ObjectDao {
 	ObjectLikeDoMapper objectLikeDoMapper;
 	@Autowired
 	ObjectCommentDoMapper objectCommentDoMapper;
+	@Autowired
+	BannerDoMapper bannerDoMapper;
+	@Autowired
+	RecommendDoMapper recommendDoMapper;
+	@Autowired
+	IdolDoMapper idolDoMapper;
 
 	public List<ObjectDo> selectObjectByUserIdAndPage(Long userId, long offset, int count) {
 		ObjectDoExample example = new ObjectDoExample();
@@ -208,5 +214,57 @@ public class ObjectDao {
 		example.or().andObjectIdEqualTo(objectId);
 
 		return objectCommentDoMapper.selectByExample(example);
+	}
+
+	public List<BannerDo> selectBanner() {
+		return bannerDoMapper.selectByExample(null);
+	}
+
+	public List<RecommendDo> selectRecommendByRecommendTime(Long date) {
+		RecommendDoExample example = new RecommendDoExample();
+		example.or().andRecommendTimeEqualTo(date);
+
+		return recommendDoMapper.selectByExample(example);
+	}
+
+	public List<ObjectDo> selectObjectByObjectTypeAndPageOrderByAddTimeDesc(byte objectType, Long offset, Integer count) {
+		ObjectDoExample example = new ObjectDoExample();
+		example.or().andObjectTypeEqualTo(objectType);
+		example.setOrderByClause("ADD_TIME desc");
+		example.setOffsetAndLimit(offset - 1, count);
+		return objectDoMapper.selectByExample(example);
+	}
+
+	public List<ObjectDo> selectIdolUserPublishByPageOrderByAddTimeDesc(Long userId, Long offset, Integer count) {
+		// TODO 优化
+		List<Long> uidList = new ArrayList<Long>();
+
+		IdolDoExample idolDoExample = new IdolDoExample();
+		idolDoExample.or().andUserIdEqualTo(userId);
+		List<IdolDo> idolDoList = idolDoMapper.selectByExample(idolDoExample);
+		for (IdolDo idolDo : idolDoList) {
+			uidList.add(idolDo.getIdolUserId());
+		}
+
+		idolDoExample = new IdolDoExample();
+		idolDoExample.or().andIdolUserIdEqualTo(userId);
+		idolDoList = idolDoMapper.selectByExample(idolDoExample);
+		for (IdolDo idolDo : idolDoList) {
+			uidList.add(idolDo.getIdolUserId());
+		}
+
+		if (uidList.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		ObjectDoExample example = new ObjectDoExample();
+		example.or().andObjectTypeEqualTo(ObjectTypeEnum.PUBLISH.getCode()).andUserIdIn(uidList);
+		example.setOrderByClause("ADD_TIME desc");
+		example.setOffsetAndLimit(offset - 1, count);
+		return objectDoMapper.selectByExample(example);
+	}
+
+	public int insertObject(ObjectDo objectDo) {
+		return objectDoMapper.insert(objectDo);
 	}
 }

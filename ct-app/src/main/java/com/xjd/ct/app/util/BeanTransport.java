@@ -89,4 +89,12 @@ public abstract class BeanTransport {
 		}
 	}
 
+	public static void copyTo(BannerBo bo, BannerVo vo) {
+		BeanUtils.copyProperties(bo, vo);
+		if (bo.getResource() != null) {
+			ResourceVo resourceVo = new ResourceVo();
+			BeanUtils.copyProperties(bo.getResource(), resourceVo);
+			vo.setResource(resourceVo);
+		}
+	}
 }

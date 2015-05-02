@@ -25,5 +25,6 @@ public interface ValidationProperties {
 	String SET = "set";
 	String ORDER_BY = "orderBy";
 	String RANGE = "range";
+	String DATE = "date";
 
 }

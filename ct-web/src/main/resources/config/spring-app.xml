@@ -13,7 +13,7 @@
   <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
     <property name="converters">
       <set>
-        <bean class="com.xjd.ct.app.cmpnt.StringToTrimmedStringConverter" />
+        <bean class="com.xjd.ct.web.cmpnt.StringToTrimmedStringConverter" />
       </set>
     </property>
   </bean>

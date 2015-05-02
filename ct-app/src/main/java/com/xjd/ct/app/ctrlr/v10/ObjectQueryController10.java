@@ -14,8 +14,11 @@ import com.xjd.ct.app.util.BeanTransport;
 import com.xjd.ct.app.util.RequestContext;
 import com.xjd.ct.app.view.View;
 import com.xjd.ct.app.view.ViewUtil;
+import com.xjd.ct.app.view.body.BannerListBody;
 import com.xjd.ct.app.view.body.ObjectListBody;
+import com.xjd.ct.app.view.vo.BannerVo;
 import com.xjd.ct.app.view.vo.ObjectVo;
+import com.xjd.ct.biz.bo.BannerBo;
 import com.xjd.ct.biz.bo.ObjectBo;
 import com.xjd.ct.biz.service.ObjectQueryService;
 import com.xjd.ct.utl.valid.ValidationUtil;
@@ -166,6 +169,128 @@ public class ObjectQueryController10 {
 		// 业务调用
 		List<ObjectBo> objectBoList = objectQueryService
 				.listLikes(RequestContext.checkAndGetUserId(), offsetI, countI);
+
+		// 返回结果
+		List<ObjectVo> objectVoList = new ArrayList<ObjectVo>(objectBoList.size());
+		for (ObjectBo objectBo : objectBoList) {
+			ObjectVo objectVo = new ObjectVo();
+			BeanTransport.copyTo(objectBo, objectVo);
+			objectVoList.add(objectVo);
+		}
+
+		ObjectListBody body = new ObjectListBody();
+		body.setObjectList(objectVoList);
+
+		View view = ViewUtil.defaultView();
+		view.setBody(body);
+		return view;
+	}
+
+	@RequestMapping("/listBanners")
+	@ResponseBody
+	public View listBanners() {
+
+		// 业务调用
+		List<BannerBo> list = objectQueryService.listBanners();
+
+		// 返回结果
+		List<BannerVo> voList = new ArrayList<BannerVo>(list.size());
+		for (BannerBo bo : list) {
+			BannerVo vo = new BannerVo();
+			BeanTransport.copyTo(bo, vo);
+			voList.add(vo);
+		}
+
+		BannerListBody body = new BannerListBody();
+		body.setBannerList(voList);
+
+		View view = ViewUtil.defaultView();
+		view.setBody(body);
+		return view;
+	}
+
+	@RequestMapping("/listRecommendObjects")
+	@ResponseBody
+	public View listRecommendObjects(@RequestParam(value = "date", required = false) String date) {
+		// 校验
+		ValidationUtil.check(ValidationUtil.DATE, date);
+
+		Long dateL = Long.valueOf(date);
+
+		// 业务调用
+		List<ObjectBo> objectBoList = objectQueryService.listRecommendObjects(dateL);
+
+		// 返回结果
+		List<ObjectVo> objectVoList = new ArrayList<ObjectVo>(objectBoList.size());
+		for (ObjectBo objectBo : objectBoList) {
+			ObjectVo objectVo = new ObjectVo();
+			BeanTransport.copyTo(objectBo, objectVo);
+			objectVoList.add(objectVo);
+		}
+
+		ObjectListBody body = new ObjectListBody();
+		body.setObjectList(objectVoList);
+
+		View view = ViewUtil.defaultView();
+		view.setBody(body);
+		return view;
+	}
+
+	@RequestMapping("/listArticles")
+	@ResponseBody
+	public View listArticles(@RequestParam(value = "orderBy", required = false) String orderBy,
+			@RequestParam(value = "offset", required = false) String offset,
+			@RequestParam(value = "count", required = false) String count) {
+		// 参数校验
+		ValidationUtil.check(ValidationUtil.ORDER_BY, orderBy, ValidationUtil.OFFSET, offset, ValidationUtil.COUNT,
+				count);
+
+		Byte orderByB = Byte.valueOf(orderBy);
+		Long offsetL = Long.valueOf(offset);
+		Integer countI = Integer.valueOf(count);
+
+		// 业务调用
+		List<ObjectBo> objectBoList = objectQueryService.listArticles(orderByB, offsetL, countI);
+
+		// 返回结果
+		List<ObjectVo> objectVoList = new ArrayList<ObjectVo>(objectBoList.size());
+		for (ObjectBo objectBo : objectBoList) {
+			ObjectVo objectVo = new ObjectVo();
+			BeanTransport.copyTo(objectBo, objectVo);
+			objectVoList.add(objectVo);
+		}
+
+		ObjectListBody body = new ObjectListBody();
+		body.setObjectList(objectVoList);
+
+		View view = ViewUtil.defaultView();
+		view.setBody(body);
+		return view;
+	}
+
+	@RequestMapping("/listPublishs")
+	@ResponseBody
+	public View listPublishs(@RequestParam(value = "range", required = false) String range,
+			@RequestParam(value = "orderBy", required = false) String orderBy,
+			@RequestParam(value = "offset", required = false) String offset,
+			@RequestParam(value = "count", required = false) String count) {
+		// 参数校验
+		ValidationUtil.check(ValidationUtil.RANGE, range, ValidationUtil.ORDER_BY, orderBy, ValidationUtil.OFFSET,
+				offset, ValidationUtil.COUNT, count);
+
+		Byte orderByB = Byte.valueOf(orderBy);
+		Long offsetL = Long.valueOf(offset);
+		Integer countI = Integer.valueOf(count);
+
+		List<ObjectBo> objectBoList = null;
+		// 业务调用
+		if ("0".equals(range)) { // 所有
+			objectBoList = objectQueryService.listPublishs(orderByB, offsetL, countI);
+
+		} else { // 仅关注用户
+			objectBoList = objectQueryService.listPublishs(RequestContext.checkAndGetUserId(), orderByB, offsetL,
+					countI);
+		}
 
 		// 返回结果
 		List<ObjectVo> objectVoList = new ArrayList<ObjectVo>(objectBoList.size());
