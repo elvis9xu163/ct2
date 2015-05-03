@@ -122,6 +122,7 @@ public class ObjectQueryService {
 				BeanUtils.copyProperties(resourceDo, resourceBo);
 				bannerBo.setResource(resourceBo);
 			}
+			bannerBoList.add(bannerBo);
 		}
 
 		return bannerBoList;
