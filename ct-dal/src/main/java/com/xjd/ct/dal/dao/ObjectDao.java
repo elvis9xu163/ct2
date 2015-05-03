@@ -55,7 +55,7 @@ public class ObjectDao {
 
 	public List<ObjectDo> selectObjectByObjectIdList(List<Long> objectIdList) {
 		ObjectDoExample example = new ObjectDoExample();
-		example.or().andUserIdIn(objectIdList);
+		example.or().andObjectIdIn(objectIdList);
 
 		return objectDoMapper.selectByExample(example);
 	}
