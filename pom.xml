@@ -161,7 +161,7 @@
       <properties>
         <app.env>test</app.env>
         <app.sign.disabled>1</app.sign.disabled>
-        <resource.root>~/tmp/ct</resource.root>
+        <resource.root>/Users/XJD/tmp/ct</resource.root>
       </properties>
     </profile>
     <profile>

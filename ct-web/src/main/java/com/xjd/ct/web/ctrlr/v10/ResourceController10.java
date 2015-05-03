@@ -65,7 +65,7 @@ public class ResourceController10 {
 			}
 			// TODO sign校验
 			if (multipartFile == null || multipartFile.isEmpty()) {
-				throw new RuntimeException(RespCode.RESP_0220);
+				throw new BusinessException(RespCode.RESP_0220);
 			}
 
 			// 用户判断
@@ -114,24 +114,30 @@ public class ResourceController10 {
 	@RequestMapping("/download")
 	public void download(@RequestParam(value = "resId", required = false) String resId, HttpServletResponse resp)
 			throws IOException {
+		log.info("下载资源开始: resId={}", resId);
 		ResourceBo resourceBo = resourceService.queryResource(resId);
 		if (resourceBo == null) {
 			resp.setStatus(404);
+			log.warn("下载资源异常: 资源不存在 resId={}", resId);
 			return;
 		}
 
 		resp.reset();
-		resp.setHeader(
-				"Content-Disposition",
-				"attachment; filename=file"
-						+ (StringUtils.isNotBlank(resourceBo.getResFormat()) ? "." + resourceBo.getResFormat() : ""));
 		if (StringUtils.isNotBlank(resourceBo.getContentType())) {
 			resp.setContentType(resourceBo.getContentType());
 		} else {
+			resp.setHeader(
+					"Content-Disposition",
+					"attachment; filename=file"
+							+ (StringUtils.isNotBlank(resourceBo.getResFormat()) ? "." + resourceBo.getResFormat() : ""));
 			resp.setContentType("application/octet-stream; charset=utf-8");
+		}
+		if (resourceBo.getResLength() != null) {
+			resp.setContentLength(resourceBo.getResLength().intValue());
 		}
 		OutputStream out = resp.getOutputStream();
 		resourceService.download(resId, out);
 		out.flush();
+		log.info("下载资源结束: resId={}", resId);
 	}
 }
