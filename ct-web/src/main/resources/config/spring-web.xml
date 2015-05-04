@@ -8,7 +8,7 @@
     http://www.springframework.org/schema/mvc
     http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 
-  <context:component-scan base-package="com.xjd.ct.web.cmpnt, com.xjd.ct.web.ctrlr"/>
+  <context:component-scan base-package="com.xjd.ct.web.cmpnt, com.xjd.ct.web.ctrlr" />
 
   <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
     <property name="converters">
@@ -21,5 +21,18 @@
   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 
   <mvc:annotation-driven conversion-service="conversionService" />
+
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/WEB-INF/page/" />
+    <property name="suffix" value=".jsp" />
+  </bean>
+  <mvc:resources location="/css/" mapping="/css/**"/>
+  <mvc:resources location="/fonts/" mapping="/fonts/**"/>
+  <mvc:resources location="/js/" mapping="/js/**"/>
+  <mvc:resources location="/img/" mapping="/img/**"/>
+  <mvc:resources location="/other/" mapping="/other/**"/>
+  
+  <mvc:view-controller path="/index" view-name="index" />
+  <mvc:view-controller path="/article_edit" view-name="article_edit" />
 
 </beans>

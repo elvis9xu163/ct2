@@ -111,9 +111,6 @@
     </profile>
     <profile>
       <id>test</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <properties>
         <!-- data -->
         <data.dataSource.type>jdbc</data.dataSource.type>
