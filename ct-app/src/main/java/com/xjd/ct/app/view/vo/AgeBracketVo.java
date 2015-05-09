@@ -1,5 +1,6 @@
 package com.xjd.ct.app.view.vo;
 
+//@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class AgeBracketVo {
 	private Long ageBracketId;
 

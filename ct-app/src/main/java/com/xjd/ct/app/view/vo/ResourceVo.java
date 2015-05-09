@@ -1,12 +1,10 @@
 package com.xjd.ct.app.view.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 /**
  * @author elvis.xu
  * @since 2015-05-01 11:38
  */
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+//@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class ResourceVo {
 	private String resId;
 

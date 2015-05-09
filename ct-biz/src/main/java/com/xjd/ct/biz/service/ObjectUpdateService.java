@@ -80,7 +80,7 @@ public class ObjectUpdateService {
 				objectResourceDo.setEntityType(EntityTypeEnum.OBJECT.getCode());
 				objectResourceDo.setEntityId(objectDo.getObjectId());
 				objectResourceDo.setForClass(parts.length > 1 ? Byte.valueOf(parts[1]) : null);
-				objectResourceDo.setForSubclass(parts.length > 2 ? parts[2] : null);
+				objectResourceDo.setForSubclass(parts.length > 2 ? parts[2] : "");
 				objectResourceDo.setFinishProcess(BoolEnum.FALSE.getCode());
 				objectResourceDo.setAddTime(now);
 				objectResourceDo.setUpdTime(now);

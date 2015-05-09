@@ -1,13 +1,12 @@
 package com.xjd.ct.app.view.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author elvis.xu
  * @since 2015-04-30 23:54
  */
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+//@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class UserBabyForOtherVo {
 	private Long babyId;
 

@@ -1,9 +1,8 @@
 package com.xjd.ct.app.view.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.xjd.ct.biz.bo.BaseBo;
 
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+//@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class MsgInformVo extends BaseBo {
 	private Long informId;
 

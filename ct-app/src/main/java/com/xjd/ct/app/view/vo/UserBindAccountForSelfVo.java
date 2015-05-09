@@ -1,12 +1,10 @@
 package com.xjd.ct.app.view.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 /**
  * @author elvis.xu
  * @since 2015-04-30 23:45
  */
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+//@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class UserBindAccountForSelfVo {
 	private Long accountId;
 

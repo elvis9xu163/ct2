@@ -2,13 +2,11 @@ package com.xjd.ct.app.view.vo;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 /**
  * @author elvis.xu
  * @since 2015-05-01 11:54
  */
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+//@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class ObjectVo {
 	private Long objectId;
 

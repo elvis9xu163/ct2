@@ -3,13 +3,11 @@ package com.xjd.ct.app.view.vo;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 /**
  * @author elvis.xu
  * @since 2015-04-30 23:45
  */
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+//@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class UserInfoForSelfVo {
 	private Long userId;
 

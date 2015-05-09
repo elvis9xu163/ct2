@@ -1,8 +1,6 @@
 package com.xjd.ct.app.view.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+//@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class ObjectCommentVo {
 	private Long commentId;
 
