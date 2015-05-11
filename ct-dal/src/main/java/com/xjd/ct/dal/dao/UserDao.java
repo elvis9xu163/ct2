@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xjd.ct.dal.dos.*;
+import com.xjd.ct.dal.map.SignDoMapper;
 import com.xjd.ct.dal.map.UserBabyDoMapper;
 import com.xjd.ct.dal.map.UserBindAccountDoMapper;
 import com.xjd.ct.dal.map.UserDoMapper;
@@ -29,6 +30,8 @@ public class UserDao {
 	UserBabyDoMapper userBabyDoMapper;
 	@Autowired
 	UserBindAccountDoMapper userBindAccountDoMapper;
+	@Autowired
+	SignDoMapper signDoMapper;
 
 	// ==============用户基本信息=============== //
 
@@ -272,5 +275,9 @@ public class UserDao {
 		upd.setUpdTime(DateUtil.nowInMilliseconds());
 
 		return userDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	public int insertSign(SignDo signDo) {
+		return signDoMapper.insert(signDo);
 	}
 }

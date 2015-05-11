@@ -32,6 +32,7 @@ public class SequenceDao {
 	public static final String SEQ_RECOMMEND_ID = "SEQ_RECOMMEND_ID";
 	public static final String SEQ_SUBSCRIBE_ID = "SEQ_SUBSCRIBE_ID";
 	public static final String SEQ_AGE_BRACKET_ID = "SEQ_AGE_BRACKET_ID";
+	public static final String SEQ_SIGN_ID = "SEQ_SIGN_ID";
 
 	@Autowired
 	SequenceMapper sequenceMapper;

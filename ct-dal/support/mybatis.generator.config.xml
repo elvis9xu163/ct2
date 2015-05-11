@@ -5,8 +5,8 @@
 
 <generatorConfiguration>
   <!-- 修改：jdbc jar包 -->
-  <classPathEntry location="C:/Program Files (x86)/MySQL/MySQL Tools for 5.0/java/lib/mysql-connector-java-5.0.4-bin.jar" />
-  <!-- <classPathEntry location="/Users/XJD/360yunpan/repo/maven_repository/mysql/mysql-connector-java/5.1.21/mysql-connector-java-5.1.21.jar"/> -->
+  <!--<classPathEntry location="C:/Program Files (x86)/MySQL/MySQL Tools for 5.0/java/lib/mysql-connector-java-5.0.4-bin.jar" />-->
+   <classPathEntry location="/Users/XJD/360/repo/mvn-repo/mysql/mysql-connector-java/5.1.21/mysql-connector-java-5.1.21.jar"/>
   <!-- 生成的class所在的根路径 -->
   <classPathEntry location="target/classes" />
 
@@ -38,7 +38,7 @@
     <javaClientGenerator type="XMLMAPPER" targetPackage="com.xjd.ct.dal.map" targetProject="MAVEN">
       <property name="enableSubPackages" value="true" />
     </javaClientGenerator>
-<!-- 
+    <!--
     <table tableName="t_age_bracket" domainObjectName="AgeBracketDo" />
     <table tableName="t_app_version" domainObjectName="AppVersionDo" />
     <table tableName="t_banner" domainObjectName="BannerDo" />
@@ -67,8 +67,10 @@
     <table tableName="t_user_baby" domainObjectName="UserBabyDo" />
     <table tableName="t_user_bind_account" domainObjectName="UserBindAccountDo" />
     <table tableName="t_user_resource" domainObjectName="UserResourceDo" />
-    <table tableName="t_user_subscribe" domainObjectName="UserSubscribeDo" /> -->
+    <table tableName="t_user_subscribe" domainObjectName="UserSubscribeDo" />
     <table tableName="t_report" domainObjectName="ReportDo" />
+    -->
+    <table tableName="t_sign" domainObjectName="SignDo" />
 
   </context>
 

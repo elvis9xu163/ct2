@@ -1,6 +1,7 @@
 package com.xjd.ct.app.ctrlr.v10;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +12,11 @@ import com.xjd.ct.app.util.BeanTransport;
 import com.xjd.ct.app.util.RequestContext;
 import com.xjd.ct.app.view.View;
 import com.xjd.ct.app.view.ViewUtil;
-import com.xjd.ct.app.view.body.ExistsBody;
-import com.xjd.ct.app.view.body.TokenBody;
-import com.xjd.ct.app.view.body.UserInfoForOtherBody;
-import com.xjd.ct.app.view.body.UserInfoForSelfBody;
+import com.xjd.ct.app.view.body.*;
+import com.xjd.ct.app.view.vo.SignVo;
 import com.xjd.ct.app.view.vo.UserInfoForOtherVo;
 import com.xjd.ct.app.view.vo.UserInfoForSelfVo;
+import com.xjd.ct.biz.bo.SignBo;
 import com.xjd.ct.biz.bo.TokenBo;
 import com.xjd.ct.biz.bo.UserBo;
 import com.xjd.ct.biz.service.UserService;
@@ -219,6 +219,22 @@ public class UserController10 {
 		return view;
 	}
 
+	@RequestMapping("/sign")
+	@ResponseBody
+	public View sign() {
+		SignBo signBo = userService.sign(RequestContext.checkAndGetUserId());
+
+		SignVo vo = new SignVo();
+		BeanUtils.copyProperties(signBo, vo);
+
+		SignBody body = new SignBody();
+		body.setSignResult(vo);
+
+		View view = ViewUtil.defaultView();
+		view.setBody(body);
+
+		return view;
+	}
 
 
 }

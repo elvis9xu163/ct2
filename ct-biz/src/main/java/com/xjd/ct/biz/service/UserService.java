@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.xjd.ct.biz.bo.TokenBo;
-import com.xjd.ct.biz.bo.UserBabyBo;
-import com.xjd.ct.biz.bo.UserBindAccountBo;
-import com.xjd.ct.biz.bo.UserBo;
+import com.xjd.ct.biz.bo.*;
 import com.xjd.ct.dal.dao.ResourceDao;
 import com.xjd.ct.dal.dao.SequenceDao;
 import com.xjd.ct.dal.dao.TokenDao;
@@ -31,9 +28,9 @@ import com.xjd.ct.utl.respcode.RespCode;
 /**
  * <pre>
  * 用户和授权服务
- * 
+ *
  * </pre>
- * 
+ *
  * @author elvis.xu
  * @since 2015-4-30 下午5:57:04
  */
@@ -53,16 +50,17 @@ public class UserService {
 
 	/**
 	 * 根据用户IP生成Token
-	 * 
+	 *
 	 * @param userIp
 	 * @return
 	 */
 	@Transactional
 	public TokenBo genTokenForUserIp(String userIp) {
 		// 查询作废以前的Token
-		if (tokenDao.selectByUserIpAndUserId(userIp, AppConstant.ANONYMOUS_USERID) != null) { // 先查询后删除用于优化
-			tokenDao.deleteByUserIpAndUserId(userIp, AppConstant.ANONYMOUS_USERID);
-		}
+		// 考虑到多用户使用同一个WIFI上网，不能同IP只能有一个用户登录
+		// if (tokenDao.selectByUserIpAndUserId(userIp, AppConstant.ANONYMOUS_USERID) != null) { // 先查询后删除用于优化
+		// tokenDao.deleteByUserIpAndUserId(userIp, AppConstant.ANONYMOUS_USERID);
+		// }
 
 		// 生成新的Token
 		TokenDo tokenDo = new TokenDo();
@@ -83,7 +81,7 @@ public class UserService {
 
 	/**
 	 * 根据用户IP和用户ID生成Token
-	 * 
+	 *
 	 * @param userIp
 	 * @param userId
 	 * @return
@@ -114,7 +112,7 @@ public class UserService {
 
 	/**
 	 * 根据token查询TOKEN信息
-	 * 
+	 *
 	 * @param token
 	 * @return
 	 */
@@ -133,7 +131,7 @@ public class UserService {
 
 	/**
 	 * 判断Token是否有效
-	 * 
+	 *
 	 * @param token
 	 */
 	public void checkToken(TokenBo token) {
@@ -145,7 +143,7 @@ public class UserService {
 
 	/**
 	 * 更新token的时间 在每次使用token访问时调用该方法
-	 * 
+	 *
 	 * @param token
 	 */
 	@Transactional
@@ -155,7 +153,7 @@ public class UserService {
 
 	/**
 	 * 删除TOKEN
-	 * 
+	 *
 	 * @param token
 	 */
 	@Transactional
@@ -165,7 +163,7 @@ public class UserService {
 
 	/**
 	 * 生成token
-	 * 
+	 *
 	 * @return
 	 */
 	protected String generateToken() {
@@ -174,7 +172,7 @@ public class UserService {
 
 	/**
 	 * 生成Salt
-	 * 
+	 *
 	 * @return
 	 */
 	protected String generateSalt() {
@@ -185,7 +183,7 @@ public class UserService {
 
 	/**
 	 * 通过userId查询用户
-	 * 
+	 *
 	 * @param userId
 	 * @return 查询不到时返回null
 	 */
@@ -204,7 +202,7 @@ public class UserService {
 
 	/**
 	 * 检查用户名是否存在
-	 * 
+	 *
 	 * @param username
 	 */
 	@Transactional(readOnly = true)
@@ -212,10 +210,9 @@ public class UserService {
 		return userDao.isMobileOrEmailExists(username);
 	}
 
-
 	/**
 	 * 生成一个新的UserId
-	 * 
+	 *
 	 * @return
 	 */
 	protected Long generateUserId() {
@@ -227,7 +224,7 @@ public class UserService {
 
 	/**
 	 * 处理明文密码
-	 * 
+	 *
 	 * @param password
 	 * @return
 	 */
@@ -237,7 +234,7 @@ public class UserService {
 
 	/**
 	 * 生成一个随机的用户昵称
-	 * 
+	 *
 	 * @return
 	 */
 	protected String generateNickname(UserSexEnum sexEnum) {
@@ -256,7 +253,7 @@ public class UserService {
 
 	/**
 	 * 生成一个新的BabyID
-	 * 
+	 *
 	 * @return
 	 */
 	protected Long generateBabyId() {
@@ -359,7 +356,7 @@ public class UserService {
 		TokenBo tokenBo = genTokenForUser(userIp, userDo.getUserId());
 
 		// 作废原有的TOKEN
-//		deleteToken(originalToken);
+		// deleteToken(originalToken);
 
 		return tokenBo;
 	}
@@ -488,20 +485,20 @@ public class UserService {
 		resourceDao.deleteObjectResourceByEntityTypeAndEntityIdAndForClass(EntityTypeEnum.USER.getCode(), userId,
 				ResForClassEnum.HEAD_IMG.getCode());
 		if (StringUtils.isNotBlank(headImgRes)) {
-			String[] headImgArray = headImgRes.split(";");
-			for (String headImg : headImgArray) {
-				headImg = StringUtils.trim(headImg);
-				String[] parts = headImg.split(":");
-				ObjectResourceDo objectResourceDo = new ObjectResourceDo();
-				objectResourceDo.setResId(parts[0].trim());
-				objectResourceDo.setEntityType(EntityTypeEnum.USER.getCode());
-				objectResourceDo.setEntityId(userId);
-				objectResourceDo.setForClass(ResForClassEnum.HEAD_IMG.getCode());
-				objectResourceDo.setForSubclass(parts.length > 1 ? parts[1].trim() : "");
-				objectResourceDo.setAddTime(now);
-				objectResourceDo.setUpdTime(now);
-				resourceDao.insertObjectResource(objectResourceDo);
-			}
+			ObjectResourceDo objectResourceDo = new ObjectResourceDo();
+			objectResourceDo.setResId(headImgRes);
+			objectResourceDo.setEntityType(EntityTypeEnum.USER.getCode());
+			objectResourceDo.setEntityId(userId);
+			objectResourceDo.setForClass(ResForClassEnum.HEAD_IMG.getCode());
+			objectResourceDo.setForSubclass("");
+			objectResourceDo.setFinishProcess(BoolEnum.FALSE.getCode());
+			objectResourceDo.setAddTime(now);
+			objectResourceDo.setUpdTime(now);
+			resourceDao.insertObjectResource(objectResourceDo);
+
+			objectResourceDo.setForSubclass("200x200");
+			objectResourceDo.setFinishProcess(BoolEnum.FALSE.getCode());
+			resourceDao.insertObjectResource(objectResourceDo);
 		}
 
 		// 更新用户宝宝信息
@@ -527,4 +524,18 @@ public class UserService {
 
 	}
 
+	public SignBo sign(Long userId) {
+
+		SignDo signDo = new SignDo();
+		signDo.setSignId(sequenceDao.getSequence(SequenceDao.SEQ_SIGN_ID));
+		signDo.setUserId(userId);
+		signDo.setPont(10);
+		signDo.setAddTime(DateUtil.nowInMilliseconds());
+
+		userDao.insertSign(signDo);
+
+		SignBo signBo = new SignBo();
+		BeanUtils.copyProperties(signDo, signBo);
+		return signBo;
+	}
 }
