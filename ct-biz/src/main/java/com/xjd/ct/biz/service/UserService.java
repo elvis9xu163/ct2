@@ -359,7 +359,7 @@ public class UserService {
 		TokenBo tokenBo = genTokenForUser(userIp, userDo.getUserId());
 
 		// 作废原有的TOKEN
-		deleteToken(originalToken);
+//		deleteToken(originalToken);
 
 		return tokenBo;
 	}
