@@ -25,6 +25,7 @@ public class AppContext {
 	public static final String KEY_ENV = "app.env";
 	public static final String VAL_ENV_PRODUCT = "product";
 	public static final String KEY_SIGN_DISABLED = "app.sign.disabled";
+	public static final String KEY_RESOURCE_URL_PREFIX = "resource.url.prefix";
 	public static final String VAL_SIGN_DISABLED_YES = "1";
 
 	protected static AppContext instance;

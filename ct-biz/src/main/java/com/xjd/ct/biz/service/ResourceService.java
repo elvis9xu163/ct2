@@ -50,6 +50,10 @@ public class ResourceService {
 		for (ObjectResourceDo objectResourceDo : objectResourceDoList) {
 			ResourceDo resourceDo = resourceDao.selectResourceByResId(objectResourceDo.getResId());
 
+			// 直接生成URL让前端加载
+			resourceDo.setResForm(ResFormEnum.LINK.getCode());
+			resourceDo.setResPath(AppContext.getProperty(AppContext.KEY_RESOURCE_URL_PREFIX) + resourceDo.getResId());
+
 			ResourceBo resourceBo = new ResourceBo();
 			BeanUtils.copyProperties(resourceDo, resourceBo);
 			BeanUtils.copyProperties(objectResourceDo, resourceBo);

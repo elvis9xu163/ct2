@@ -1,5 +1,6 @@
 package com.xjd.ct.app.cmpnt;
 
+import java.net.URLDecoder;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,6 +58,9 @@ public class ControllerAspect {
 		String service = param[param.length - 1];
 		String userIp = HttpRequestUtil.getRealRemoteAddr(request);
 		String appAgent = request.getHeader("appAgent");
+		if (appAgent != null) {
+			appAgent = URLDecoder.decode(appAgent, "UTF-8");
+		}
 
 		RequestContext.putServiceName(service);
 		RequestContext.putServiceVersion(version);
@@ -78,7 +82,7 @@ public class ControllerAspect {
 			if (!"checkAppVersion".equals(service)) {
 				AppVersionResultBo resultBo = gatewayService.checkAppVersion(RequestContext.getAppType(),
 						RequestContext.getAppVersion());
-				if (BoolEnum.valueOfCode(resultBo.getMandatory()) == BoolEnum.TRUE) {
+				if (resultBo != null && BoolEnum.valueOfCode(resultBo.getMandatory()) == BoolEnum.TRUE) {
 					throw new BusinessException(RespCode.RESP_9972);
 				}
 			}

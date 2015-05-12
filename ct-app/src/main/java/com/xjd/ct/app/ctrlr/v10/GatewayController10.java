@@ -31,14 +31,16 @@ public class GatewayController10 {
 		AppVersionResultBo bo = gatewayService.checkAppVersion(RequestContext.getAppType(),
 				RequestContext.getAppVersion());
 
-		AppVersionResultVo vo = new AppVersionResultVo();
-		BeanUtils.copyProperties(bo, vo);
-
-		AppVersionResultBody body = new AppVersionResultBody();
-		body.setAppVersion(vo);
-
 		View view = ViewUtil.defaultView();
-		view.setBody(body);
+		if (bo != null) {
+			AppVersionResultVo vo = new AppVersionResultVo();
+			BeanUtils.copyProperties(bo, vo);
+
+			AppVersionResultBody body = new AppVersionResultBody();
+			body.setAppVersion(vo);
+
+			view.setBody(body);
+		}
 
 		return view;
 	}

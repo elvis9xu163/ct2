@@ -81,7 +81,7 @@ public class ServiceDao {
 
 	public AppVersionDo selectAvailableLatestAppVersionOfAppType(Byte appType) {
 		AppVersionDoExample example = new AppVersionDoExample();
-		example.or().andAppTypeEqualTo(appType).andSupportFlagEqualTo(BoolEnum.TRUE.getCode());
+		example.or().andAppTypeEqualTo(appType).andSupportFlagEqualTo(BoolEnum.TRUE.getCode()).andStatusEqualTo((byte)0);
 		example.setOrderByClause("VER_CODE DESC");
 		example.setOffsetAndLimit(0, 1);
 

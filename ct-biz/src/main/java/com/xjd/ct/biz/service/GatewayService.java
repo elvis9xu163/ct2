@@ -87,7 +87,12 @@ public class GatewayService {
 			throw new BusinessException(RespCode.RESP_9970);
 		}
 
-		BeanUtils.copyProperties(latestDo, appVersionResultBo);
+		if (BoolEnum.valueOfCode(appVersionResultBo.getMandatory()) == BoolEnum.TRUE
+				|| (BoolEnum.valueOfCode(appVersionResultBo.getMandatory()) == BoolEnum.FALSE && latestDo.getVerCode() > verCode)) {
+			BeanUtils.copyProperties(latestDo, appVersionResultBo);
+		} else {
+			return null;
+		}
 		return appVersionResultBo;
 	}
 }
