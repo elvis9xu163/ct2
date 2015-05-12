@@ -20,6 +20,7 @@ import com.xjd.ct.app.util.HttpRequestUtil;
 import com.xjd.ct.app.util.RequestContext;
 import com.xjd.ct.app.view.View;
 import com.xjd.ct.app.view.ViewUtil;
+import com.xjd.ct.biz.bo.AppVersionResultBo;
 import com.xjd.ct.biz.bo.ServiceBo;
 import com.xjd.ct.biz.bo.TokenBo;
 import com.xjd.ct.biz.bo.UserBo;
@@ -30,6 +31,7 @@ import com.xjd.ct.utl.DigestUtil;
 import com.xjd.ct.utl.JsonUtil;
 import com.xjd.ct.utl.constant.AppConstant;
 import com.xjd.ct.utl.context.AppContext;
+import com.xjd.ct.utl.enums.AppTypeEnum;
 import com.xjd.ct.utl.enums.BoolEnum;
 import com.xjd.ct.utl.exception.BusinessException;
 import com.xjd.ct.utl.respcode.RespCode;
@@ -54,13 +56,16 @@ public class ControllerAspect {
 		String version = param[param.length - 2];
 		String service = param[param.length - 1];
 		String userIp = HttpRequestUtil.getRealRemoteAddr(request);
+		String appAgent = request.getHeader("appAgent");
 
 		RequestContext.putServiceName(service);
 		RequestContext.putServiceVersion(version);
 		RequestContext.putUserIp(userIp);
+		RequestContext.putAppAgent(appAgent);
 
 		String paramString = paramString(request);
-		String fixLogString = "version=" + version + ", service=" + service + ", userIp=" + userIp + ", param="
+		String fixLogString = "appAgent=" + appAgent + ", version=" + version + ", service=" + service + ", userIp="
+				+ userIp + ", param="
 				+ paramString;
 		log.info("请求开始...: {}", fixLogString);
 		logHeaders(request);
@@ -68,6 +73,16 @@ public class ControllerAspect {
 		View rt = null;
 		long start = System.currentTimeMillis();
 		try {
+			// == 版本信息 == //
+			parseAppAgent(appAgent);
+			if (!"checkAppVersion".equals(service)) {
+				AppVersionResultBo resultBo = gatewayService.checkAppVersion(RequestContext.getAppType(),
+						RequestContext.getAppVersion());
+				if (BoolEnum.valueOfCode(resultBo.getMandatory()) == BoolEnum.TRUE) {
+					throw new BusinessException(RespCode.RESP_9972);
+				}
+			}
+
 			// == token == //
 			String token = request.getParameter("token");
 			boolean offerTokenFlag = StringUtils.isNotEmpty(token);
@@ -233,6 +248,30 @@ public class ControllerAspect {
 			return false;
 		}
 		return true;
+	}
+
+	public void parseAppAgent(String appAgent) {
+		if (appAgent == null) {
+			throw new BusinessException(RespCode.RESP_9970);
+		}
+		if (StringUtils.indexOfIgnoreCase(appAgent, "IOS") != -1) {
+			RequestContext.putAppType(AppTypeEnum.IOS.getCode());
+		} else if (StringUtils.indexOfIgnoreCase(appAgent, "Android") != -1) {
+			RequestContext.putAppType(AppTypeEnum.ANDROID.getCode());
+		} else {
+			throw new BusinessException(RespCode.RESP_9970);
+		}
+
+		int i;
+		if ((i = StringUtils.lastIndexOf(appAgent, '/')) != -1) {
+			String ver = appAgent.substring(i + 1);
+			try {
+				Short verCode = Short.valueOf(ver);
+				RequestContext.putAppVersion(verCode);
+			} catch (NumberFormatException e) {
+				throw new BusinessException(RespCode.RESP_9971);
+			}
+		}
 	}
 
 }

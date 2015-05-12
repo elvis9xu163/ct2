@@ -7,10 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.xjd.ct.biz.bo.AppVersionResultBo;
 import com.xjd.ct.biz.bo.ServiceBo;
 import com.xjd.ct.dal.dao.ServiceDao;
+import com.xjd.ct.dal.dos.AppVersionDo;
 import com.xjd.ct.dal.dos.ServiceDo;
 import com.xjd.ct.utl.DateUtil;
+import com.xjd.ct.utl.enums.BoolEnum;
+import com.xjd.ct.utl.exception.BusinessException;
+import com.xjd.ct.utl.respcode.RespCode;
 
 /**
  * APP后端网关相关服务
@@ -58,4 +63,31 @@ public class GatewayService {
 				DateUtil.parseToMilliseconds(requestTimestamp));
 	}
 
+	/**
+	 * 检查版本更新
+	 * 
+	 * @param appType
+	 * @param verCode
+	 * @return
+	 */
+	public AppVersionResultBo checkAppVersion(Byte appType, Short verCode) {
+		AppVersionResultBo appVersionResultBo = new AppVersionResultBo();
+
+		// 需要强制更新
+		AppVersionDo appVersionDo = serviceDao.selectAppVersionByAppTypeAndVerCode(appType, verCode);
+		if (appVersionDo == null || BoolEnum.valueOfCode(appVersionDo.getSupportFlag()) == BoolEnum.FALSE) {
+			appVersionResultBo.setMandatory(BoolEnum.TRUE.getCode());
+		} else {
+			appVersionResultBo.setMandatory(BoolEnum.FALSE.getCode());
+		}
+
+		// 获取最新版本
+		AppVersionDo latestDo = serviceDao.selectAvailableLatestAppVersionOfAppType(appType);
+		if (latestDo == null) {
+			throw new BusinessException(RespCode.RESP_9970);
+		}
+
+		BeanUtils.copyProperties(latestDo, appVersionResultBo);
+		return appVersionResultBo;
+	}
 }

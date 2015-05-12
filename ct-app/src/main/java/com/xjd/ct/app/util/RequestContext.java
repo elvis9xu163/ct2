@@ -18,6 +18,9 @@ public class RequestContext {
 	private static final String KEY_USER_ID = RequestContext.class.getName() + ".user.id";
 	private static final String KEY_SERVICE_NAME = RequestContext.class.getName() + ".service.name";
 	private static final String KEY_SERVICE_VERSION = RequestContext.class.getName() + ".service.version";
+	private static final String KEY_APP_AGENT = RequestContext.class.getName() + ".app.agent";
+	private static final String KEY_APP_TYPE = RequestContext.class.getName() + ".app.type";
+	private static final String KEY_APP_VERSION = RequestContext.class.getName() + ".app.version";
 
 	protected static ThreadLocal<Map<String, Object>> requestThreadLocal = new ThreadLocal<Map<String, Object>>();
 
@@ -83,6 +86,30 @@ public class RequestContext {
 
 	public static String getServiceVersion() {
 		return getAsString(KEY_SERVICE_VERSION);
+	}
+
+	public static void putAppAgent(String agent) {
+		put(KEY_APP_AGENT, agent);
+	}
+
+	public static String getAppAgent() {
+		return getAsString(KEY_APP_AGENT);
+	}
+
+	public static void putAppType(Byte type) {
+		put(KEY_APP_TYPE, type);
+	}
+
+	public static Byte getAppType() {
+		return (Byte) get(KEY_APP_TYPE);
+	}
+
+	public static void putAppVersion(Short verCode) {
+		put(KEY_APP_VERSION, verCode);
+	}
+
+	public static Short getAppVersion() {
+		return (Short) get(KEY_APP_VERSION);
 	}
 
 }
