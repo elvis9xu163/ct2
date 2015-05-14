@@ -49,6 +49,10 @@ public class ObjectVo {
 	//
 	private List<ResourceVo> resourceList;
 
+	private Byte liked;
+
+	private Byte favored;
+
 	public Long getObjectId() {
 		return objectId;
 	}
@@ -207,5 +211,21 @@ public class ObjectVo {
 
 	public void setResourceList(List<ResourceVo> resourceList) {
 		this.resourceList = resourceList;
+	}
+
+	public Byte getLiked() {
+		return liked;
+	}
+
+	public void setLiked(Byte liked) {
+		this.liked = liked;
+	}
+
+	public Byte getFavored() {
+		return favored;
+	}
+
+	public void setFavored(Byte favored) {
+		this.favored = favored;
 	}
 }

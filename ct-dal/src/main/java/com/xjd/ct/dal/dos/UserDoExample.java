@@ -2378,6 +2378,126 @@ public class UserDoExample {
             addCriterion("UPD_TIME not between", value1, value2, "updTime");
             return (Criteria) this;
         }
+
+        public Criteria andCountLikeYesIsNull() {
+            addCriterion("COUNT_LIKE_YES is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeYesIsNotNull() {
+            addCriterion("COUNT_LIKE_YES is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeYesEqualTo(Integer value) {
+            addCriterion("COUNT_LIKE_YES =", value, "countLikeYes");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeYesNotEqualTo(Integer value) {
+            addCriterion("COUNT_LIKE_YES <>", value, "countLikeYes");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeYesGreaterThan(Integer value) {
+            addCriterion("COUNT_LIKE_YES >", value, "countLikeYes");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeYesGreaterThanOrEqualTo(Integer value) {
+            addCriterion("COUNT_LIKE_YES >=", value, "countLikeYes");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeYesLessThan(Integer value) {
+            addCriterion("COUNT_LIKE_YES <", value, "countLikeYes");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeYesLessThanOrEqualTo(Integer value) {
+            addCriterion("COUNT_LIKE_YES <=", value, "countLikeYes");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeYesIn(List<Integer> values) {
+            addCriterion("COUNT_LIKE_YES in", values, "countLikeYes");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeYesNotIn(List<Integer> values) {
+            addCriterion("COUNT_LIKE_YES not in", values, "countLikeYes");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeYesBetween(Integer value1, Integer value2) {
+            addCriterion("COUNT_LIKE_YES between", value1, value2, "countLikeYes");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeYesNotBetween(Integer value1, Integer value2) {
+            addCriterion("COUNT_LIKE_YES not between", value1, value2, "countLikeYes");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeNoIsNull() {
+            addCriterion("COUNT_LIKE_NO is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeNoIsNotNull() {
+            addCriterion("COUNT_LIKE_NO is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeNoEqualTo(Integer value) {
+            addCriterion("COUNT_LIKE_NO =", value, "countLikeNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeNoNotEqualTo(Integer value) {
+            addCriterion("COUNT_LIKE_NO <>", value, "countLikeNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeNoGreaterThan(Integer value) {
+            addCriterion("COUNT_LIKE_NO >", value, "countLikeNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeNoGreaterThanOrEqualTo(Integer value) {
+            addCriterion("COUNT_LIKE_NO >=", value, "countLikeNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeNoLessThan(Integer value) {
+            addCriterion("COUNT_LIKE_NO <", value, "countLikeNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeNoLessThanOrEqualTo(Integer value) {
+            addCriterion("COUNT_LIKE_NO <=", value, "countLikeNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeNoIn(List<Integer> values) {
+            addCriterion("COUNT_LIKE_NO in", values, "countLikeNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeNoNotIn(List<Integer> values) {
+            addCriterion("COUNT_LIKE_NO not in", values, "countLikeNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeNoBetween(Integer value1, Integer value2) {
+            addCriterion("COUNT_LIKE_NO between", value1, value2, "countLikeNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLikeNoNotBetween(Integer value1, Integer value2) {
+            addCriterion("COUNT_LIKE_NO not between", value1, value2, "countLikeNo");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

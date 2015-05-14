@@ -277,6 +277,75 @@ public class UserDao {
 		return userDoMapper.updateByPrimaryKeySelective(upd);
 	}
 
+	public int increasePublishCount(Long userId) {
+		UserDo userDo = userDoMapper.selectByPrimaryKey(userId);
+
+		UserDo upd = new UserDo();
+		upd.setUserId(userId);
+		upd.setCountPublish(userDo.getCountPublish() + 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return userDoMapper.updateByPrimaryKeySelective(upd);
+
+	}
+
+	public int decreasePublishCount(Long userId) {
+		UserDo userDo = userDoMapper.selectByPrimaryKey(userId);
+
+		UserDo upd = new UserDo();
+		upd.setUserId(userId);
+		upd.setCountPublish(userDo.getCountPublish() - 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return userDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	public int increaseLikeYesCount(Long userId) {
+		UserDo userDo = userDoMapper.selectByPrimaryKey(userId);
+
+		UserDo upd = new UserDo();
+		upd.setUserId(userId);
+		upd.setCountLikeYes(userDo.getCountLikeYes() + 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return userDoMapper.updateByPrimaryKeySelective(upd);
+
+	}
+
+	public int decreaseLikeYesCount(Long userId) {
+		UserDo userDo = userDoMapper.selectByPrimaryKey(userId);
+
+		UserDo upd = new UserDo();
+		upd.setUserId(userId);
+		upd.setCountLikeYes(userDo.getCountLikeYes() - 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return userDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
+	public int increaseLikeNoCount(Long userId) {
+		UserDo userDo = userDoMapper.selectByPrimaryKey(userId);
+
+		UserDo upd = new UserDo();
+		upd.setUserId(userId);
+		upd.setCountLikeNo(userDo.getCountLikeNo() + 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return userDoMapper.updateByPrimaryKeySelective(upd);
+
+	}
+
+	public int decreaseLikeNoCount(Long userId) {
+		UserDo userDo = userDoMapper.selectByPrimaryKey(userId);
+
+		UserDo upd = new UserDo();
+		upd.setUserId(userId);
+		upd.setCountLikeNo(userDo.getCountLikeNo() - 1);
+		upd.setUpdTime(DateUtil.nowInMilliseconds());
+
+		return userDoMapper.updateByPrimaryKeySelective(upd);
+	}
+
 	public int insertSign(SignDo signDo) {
 		return signDoMapper.insert(signDo);
 	}

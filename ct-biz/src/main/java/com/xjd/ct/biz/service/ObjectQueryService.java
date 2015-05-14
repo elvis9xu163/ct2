@@ -45,6 +45,7 @@ public class ObjectQueryService {
 			BeanUtils.copyProperties(objectDo, objectBo);
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
+			processLikeFavor(userId, objectBo);
 			objectBoList.add(objectBo);
 		}
 
@@ -71,6 +72,7 @@ public class ObjectQueryService {
 			BeanUtils.copyProperties(objectDo, objectBo);
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
+			processLikeFavor(userId, objectBo);
 			objectBoList.add(objectBo);
 		}
 
@@ -98,6 +100,7 @@ public class ObjectQueryService {
 			BeanUtils.copyProperties(objectDo, objectBo);
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
+			processLikeFavor(userId, objectBo);
 			objectBoList.add(objectBo);
 		}
 
@@ -128,7 +131,7 @@ public class ObjectQueryService {
 		return bannerBoList;
 	}
 
-	public List<ObjectBo> listRecommendObjects(Long date) {
+	public List<ObjectBo> listRecommendObjects(Long date, Long userId) {
 		List<RecommendDo> recommendDoList = objectDao.selectRecommendByRecommendTime(date);
 
 		if (CollectionUtils.isEmpty(recommendDoList)) {
@@ -148,13 +151,16 @@ public class ObjectQueryService {
 			BeanUtils.copyProperties(objectDo, objectBo);
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
+			if (userId != null) {
+				processLikeFavor(userId, objectBo);
+			}
 			objectBoList.add(objectBo);
 		}
 
 		return objectBoList;
 	}
 
-	public List<ObjectBo> listArticles(Byte orderBy, Long offset, Integer count) {
+	public List<ObjectBo> listArticles(Byte orderBy, Long offset, Integer count, Long userId) {
 		// 全部以时间倒序
 		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectTypeAndPageOrderByAddTimeDesc(
 				ObjectTypeEnum.ARTICLE.getCode(), offset, count);
@@ -165,13 +171,16 @@ public class ObjectQueryService {
 			BeanUtils.copyProperties(objectDo, objectBo);
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
+			if (userId != null) {
+				processLikeFavor(userId, objectBo);
+			}
 			objectBoList.add(objectBo);
 		}
 
 		return objectBoList;
 	}
 
-	public List<ObjectBo> listPublishs(Byte orderBy, Long offset, Integer count) {
+	public List<ObjectBo> listPublishs(Byte orderBy, Long offset, Integer count, Long userId) {
 		// 全部以时间倒序
 		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectTypeAndPageOrderByAddTimeDesc(
 				ObjectTypeEnum.PUBLISH.getCode(), offset, count);
@@ -182,6 +191,9 @@ public class ObjectQueryService {
 			BeanUtils.copyProperties(objectDo, objectBo);
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
+			if (userId != null) {
+				processLikeFavor(userId, objectBo);
+			}
 			objectBoList.add(objectBo);
 		}
 
@@ -197,9 +209,31 @@ public class ObjectQueryService {
 			BeanUtils.copyProperties(objectDo, objectBo);
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
+			if (userId != null) {
+				processLikeFavor(userId, objectBo);
+			}
 			objectBoList.add(objectBo);
 		}
 
 		return objectBoList;
+	}
+
+	protected void processLikeFavor(Long userId, ObjectBo objectBo) {
+		objectBo.setLiked(isLike(userId, objectBo.getObjectId()) ? (byte) 1 : (byte) 0);
+		objectBo.setFavored(isFavor(userId, objectBo.getObjectId()) ? (byte) 1 : (byte) 0);
+	}
+
+	protected boolean isLike(Long userId, Long objectId) {
+		if (objectDao.selectObjectLikeByObjectIdAndUserId(objectId, userId) != null) {
+			return true;
+		}
+		return false;
+	}
+
+	protected boolean isFavor(Long userId, Long objectId) {
+		if (objectDao.selectObjectFavorByObjectIdAndUserId(objectId, userId) != null) {
+			return true;
+		}
+		return false;
 	}
 }

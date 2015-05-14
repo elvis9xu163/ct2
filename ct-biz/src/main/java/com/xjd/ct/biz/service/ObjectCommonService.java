@@ -84,9 +84,11 @@ public class ObjectCommonService {
 		// 点赞记数
 		if (YesNoEnum.valueOfCode(yesOrNo) == YesNoEnum.YES) {
 			objectDao.increaseLikeYesCount(objectDo.getObjectId());
+			userDao.increaseLikeYesCount(userId);
 
 		} else if (YesNoEnum.valueOfCode(yesOrNo) == YesNoEnum.NO) {
 			objectDao.increaseLikeNoCount(objectDo.getObjectId());
+			userDao.increaseLikeNoCount(userId);
 		}
 	}
 
@@ -113,9 +115,11 @@ public class ObjectCommonService {
 		// 点赞记数
 		if (YesNoEnum.valueOfCode(yesOrNo) == YesNoEnum.YES) {
 			objectDao.decreaseLikeYesCount(objectDo.getObjectId());
+			userDao.decreaseLikeYesCount(userId);
 
 		} else if (YesNoEnum.valueOfCode(yesOrNo) == YesNoEnum.NO) {
 			objectDao.decreaseLikeNoCount(objectDo.getObjectId());
+			userDao.decreaseLikeNoCount(userId);
 		}
 	}
 

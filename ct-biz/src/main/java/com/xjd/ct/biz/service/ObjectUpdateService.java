@@ -13,6 +13,7 @@ import com.xjd.ct.biz.bo.ObjectBo;
 import com.xjd.ct.dal.dao.ObjectDao;
 import com.xjd.ct.dal.dao.ResourceDao;
 import com.xjd.ct.dal.dao.SequenceDao;
+import com.xjd.ct.dal.dao.UserDao;
 import com.xjd.ct.dal.dos.ObjectDo;
 import com.xjd.ct.dal.dos.ObjectResourceDo;
 import com.xjd.ct.utl.DateUtil;
@@ -39,6 +40,8 @@ public class ObjectUpdateService {
 	ObjectDao objectDao;
 	@Autowired
 	ResourceDao resourceDao;
+	@Autowired
+	UserDao userDao;
 	@Autowired
 	ResourceService resourceService;
 
@@ -96,6 +99,9 @@ public class ObjectUpdateService {
 		ObjectBo objectBo = new ObjectBo();
 		BeanUtils.copyProperties(objectDo, objectBo);
 		objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(), objectDo.getObjectId()));
+
+		// 用户countPublish +1
+		userDao.increasePublishCount(userId);
 
 		return objectBo;
 	}

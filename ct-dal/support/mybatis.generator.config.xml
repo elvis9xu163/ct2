@@ -18,8 +18,8 @@
       <!-- <property name="suppressDate" value="true" /> -->
     </commentGenerator>
 
-    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/ct2"
-      userId="root" password="root" />
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://172.246.220.254:3306/ct2"
+      userId="xjd" password="Elvis9xu" />
 
     <javaTypeResolver>
       <property name="forceBigDecimals" value="false" />
@@ -62,15 +62,15 @@
     <table tableName="t_subscribe" domainObjectName="SubscribeDo" />
     <table tableName="t_tag" domainObjectName="TagDo" />
     <table tableName="t_token" domainObjectName="TokenDo" />
-    <table tableName="t_user" domainObjectName="UserDo" />
     <table tableName="t_user_age_bracket" domainObjectName="UserAgeBracketDo" />
     <table tableName="t_user_baby" domainObjectName="UserBabyDo" />
     <table tableName="t_user_bind_account" domainObjectName="UserBindAccountDo" />
     <table tableName="t_user_resource" domainObjectName="UserResourceDo" />
     <table tableName="t_user_subscribe" domainObjectName="UserSubscribeDo" />
     <table tableName="t_report" domainObjectName="ReportDo" />
-    -->
     <table tableName="t_sign" domainObjectName="SignDo" />
+    -->
+    <table tableName="t_user" domainObjectName="UserDo" />
 
   </context>
 

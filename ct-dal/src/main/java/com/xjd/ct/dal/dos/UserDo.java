@@ -75,6 +75,10 @@ public class UserDo extends BaseDo {
 
     private Long updTime;
 
+    private Integer countLikeYes;
+
+    private Integer countLikeNo;
+
     public Long getUserId() {
         return userId;
     }
@@ -361,5 +365,21 @@ public class UserDo extends BaseDo {
 
     public void setUpdTime(Long updTime) {
         this.updTime = updTime;
+    }
+
+    public Integer getCountLikeYes() {
+        return countLikeYes;
+    }
+
+    public void setCountLikeYes(Integer countLikeYes) {
+        this.countLikeYes = countLikeYes;
+    }
+
+    public Integer getCountLikeNo() {
+        return countLikeNo;
+    }
+
+    public void setCountLikeNo(Integer countLikeNo) {
+        this.countLikeNo = countLikeNo;
     }
 }

@@ -215,7 +215,23 @@ public class UserController10 {
 		userService.setUserInfo(RequestContext.checkAndGetUserId(), headImgRes, nickname, sexB, moodWords,
 				babyBirthDate, babySexB);
 
+		// 再次询用户信息返回
+		UserBo userBo = userService.getUserInfo(RequestContext.checkAndGetUserId());
+
+		if (userBo == null) {
+			throw new BusinessException(RespCode.RESP_0110);
+		}
+
+		// 结果封装
+		UserInfoForSelfVo vo = new UserInfoForSelfVo();
+		BeanTransport.copyTo(userBo, vo);
+
+		UserInfoForSelfBody body = new UserInfoForSelfBody();
+		body.setUserInfo(vo);
+
 		View view = ViewUtil.defaultView();
+		view.setBody(body);
+
 		return view;
 	}
 

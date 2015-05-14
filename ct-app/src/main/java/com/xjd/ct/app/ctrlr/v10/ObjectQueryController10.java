@@ -218,7 +218,7 @@ public class ObjectQueryController10 {
 		Long dateL = Long.valueOf(date);
 
 		// 业务调用
-		List<ObjectBo> objectBoList = objectQueryService.listRecommendObjects(dateL);
+		List<ObjectBo> objectBoList = objectQueryService.listRecommendObjects(dateL, RequestContext.getUserId());
 
 		// 返回结果
 		List<ObjectVo> objectVoList = new ArrayList<ObjectVo>(objectBoList.size());
@@ -250,7 +250,7 @@ public class ObjectQueryController10 {
 		Integer countI = Integer.valueOf(count);
 
 		// 业务调用
-		List<ObjectBo> objectBoList = objectQueryService.listArticles(orderByB, offsetL, countI);
+		List<ObjectBo> objectBoList = objectQueryService.listArticles(orderByB, offsetL, countI, RequestContext.getUserId());
 
 		// 返回结果
 		List<ObjectVo> objectVoList = new ArrayList<ObjectVo>(objectBoList.size());
@@ -285,7 +285,7 @@ public class ObjectQueryController10 {
 		List<ObjectBo> objectBoList = null;
 		// 业务调用
 		if ("0".equals(range)) { // 所有
-			objectBoList = objectQueryService.listPublishs(orderByB, offsetL, countI);
+			objectBoList = objectQueryService.listPublishs(orderByB, offsetL, countI, RequestContext.getUserId());
 
 		} else { // 仅关注用户
 			objectBoList = objectQueryService.listPublishs(RequestContext.checkAndGetUserId(), orderByB, offsetL,
