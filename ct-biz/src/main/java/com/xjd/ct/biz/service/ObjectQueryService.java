@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.xjd.ct.biz.bo.BannerBo;
 import com.xjd.ct.biz.bo.ObjectBo;
 import com.xjd.ct.biz.bo.ResourceBo;
+import com.xjd.ct.biz.bo.UserBo;
 import com.xjd.ct.dal.dao.ObjectDao;
 import com.xjd.ct.dal.dao.ResourceDao;
 import com.xjd.ct.dal.dos.*;
@@ -187,7 +188,7 @@ public class ObjectQueryService {
 		return objectBoList;
 	}
 
-	public List<ObjectBo> listPublishs(Byte orderBy, Long offset, Integer count, Long userId) {
+	public List<ObjectBo> listAllPublishs(Byte orderBy, Long offset, Integer count, Long userId) {
 		// 全部以时间倒序
 		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectTypeAndPageOrderByAddTimeDesc(
 				ObjectTypeEnum.PUBLISH.getCode(), offset, count);
@@ -208,7 +209,7 @@ public class ObjectQueryService {
 		return objectBoList;
 	}
 
-	public List<ObjectBo> listPublishs(Long userId, Byte orderBy, Long offset, Integer count) {
+	public List<ObjectBo> listIdolPublishs(Long userId, Byte orderBy, Long offset, Integer count) {
 		List<ObjectDo> objectDoList = objectDao.selectIdolUserPublishByPageOrderByAddTimeDesc(userId, offset, count);
 
 		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
@@ -221,6 +222,28 @@ public class ObjectQueryService {
 				processLikeFavor(userId, objectBo);
 			}
 			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
+			objectBoList.add(objectBo);
+		}
+
+		return objectBoList;
+	}
+
+	public List<ObjectBo> listUserPublishs(Long ofUserId, Byte orderBy, Long offset, Integer count, Long userId) {
+		// 全部以时间倒序
+		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectTypeAndUserIdAndPageOrderByAddTimeDesc(
+				ObjectTypeEnum.PUBLISH.getCode(), ofUserId, offset, count);
+
+		UserBo userBo = userService.getUserInfoSimple(ofUserId);
+		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
+		for (ObjectDo objectDo : objectDoList) {
+			ObjectBo objectBo = new ObjectBo();
+			BeanUtils.copyProperties(objectDo, objectBo);
+			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
+					objectDo.getObjectId()));
+			if (userId != null) {
+				processLikeFavor(userId, objectBo);
+			}
+			objectBo.setUser(userBo);
 			objectBoList.add(objectBo);
 		}
 
@@ -245,4 +268,5 @@ public class ObjectQueryService {
 		}
 		return false;
 	}
+
 }

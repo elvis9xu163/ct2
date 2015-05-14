@@ -285,12 +285,48 @@ public class ObjectQueryController10 {
 		List<ObjectBo> objectBoList = null;
 		// 业务调用
 		if ("0".equals(range)) { // 所有
-			objectBoList = objectQueryService.listPublishs(orderByB, offsetL, countI, RequestContext.getUserId());
+			objectBoList = objectQueryService.listAllPublishs(orderByB, offsetL, countI, RequestContext.getUserId());
 
 		} else { // 仅关注用户
-			objectBoList = objectQueryService.listPublishs(RequestContext.checkAndGetUserId(), orderByB, offsetL,
+			objectBoList = objectQueryService.listIdolPublishs(RequestContext.checkAndGetUserId(), orderByB, offsetL,
 					countI);
 		}
+
+		// 返回结果
+		List<ObjectVo> objectVoList = new ArrayList<ObjectVo>(objectBoList.size());
+		for (ObjectBo objectBo : objectBoList) {
+			ObjectVo objectVo = new ObjectVo();
+			BeanTransport.copyTo(objectBo, objectVo);
+			objectVoList.add(objectVo);
+		}
+
+		ObjectListBody body = new ObjectListBody();
+		body.setObjectList(objectVoList);
+
+		View view = ViewUtil.defaultView();
+		view.setBody(body);
+		return view;
+	}
+
+	@RequestMapping("/listPublishsOfUser")
+	@ResponseBody
+	public View listPublishsOfUser(@RequestParam(value = "userId", required = false) String userId,
+			@RequestParam(value = "orderBy", required = false) String orderBy,
+			@RequestParam(value = "offset", required = false) String offset,
+			@RequestParam(value = "count", required = false) String count) {
+		// 参数校验
+		ValidationUtil.check(ValidationUtil.USER_ID, userId, ValidationUtil.ORDER_BY, orderBy, ValidationUtil.OFFSET,
+				offset, ValidationUtil.COUNT, count);
+
+		Long userIdL = Long.valueOf(userId);
+		Byte orderByB = Byte.valueOf(orderBy);
+		Long offsetL = Long.valueOf(offset);
+		Integer countI = Integer.valueOf(count);
+
+		List<ObjectBo> objectBoList = null;
+		// 业务调用
+		objectBoList = objectQueryService.listUserPublishs(userIdL, orderByB, offsetL, countI,
+				RequestContext.getUserId());
 
 		// 返回结果
 		List<ObjectVo> objectVoList = new ArrayList<ObjectVo>(objectBoList.size());

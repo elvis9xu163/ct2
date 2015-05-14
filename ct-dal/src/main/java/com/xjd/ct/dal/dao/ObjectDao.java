@@ -212,6 +212,7 @@ public class ObjectDao {
 	public List<ObjectCommentDo> selectObjectCommentByObjectId(Long objectId) {
 		ObjectCommentDoExample example = new ObjectCommentDoExample();
 		example.or().andObjectIdEqualTo(objectId);
+		example.setOrderByClause("comment_id asc");
 
 		return objectCommentDoMapper.selectByExample(example);
 	}
@@ -266,5 +267,13 @@ public class ObjectDao {
 
 	public int insertObject(ObjectDo objectDo) {
 		return objectDoMapper.insert(objectDo);
+	}
+
+	public List<ObjectDo> selectObjectByObjectTypeAndUserIdAndPageOrderByAddTimeDesc(byte objectType, Long userId, Long offset, Integer count) {
+		ObjectDoExample example = new ObjectDoExample();
+		example.or().andObjectTypeEqualTo(objectType).andUserIdEqualTo(userId);
+		example.setOrderByClause("ADD_TIME desc");
+		example.setOffsetAndLimit(offset - 1, count);
+		return objectDoMapper.selectByExample(example);
 	}
 }
