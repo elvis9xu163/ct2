@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xjd.ct.app.util.BeanTransport;
 import com.xjd.ct.app.util.RequestContext;
 import com.xjd.ct.app.view.View;
 import com.xjd.ct.app.view.ViewUtil;
 import com.xjd.ct.app.view.body.ObjectCommentBody;
 import com.xjd.ct.app.view.body.ObjectCommentListBody;
 import com.xjd.ct.app.view.vo.ObjectCommentVo;
+import com.xjd.ct.app.view.vo.UserInfoSimplestVo;
 import com.xjd.ct.biz.bo.ObjectCommentBo;
 import com.xjd.ct.biz.service.ObjectCommonService;
 import com.xjd.ct.utl.valid.ValidationUtil;
@@ -138,6 +140,11 @@ public class OjectCommonController10 {
 		for (ObjectCommentBo bo : objectCommentBoList) {
 			ObjectCommentVo vo = new ObjectCommentVo();
 			BeanUtils.copyProperties(bo, vo);
+			if (bo.getUser() != null) {
+				UserInfoSimplestVo userInfoSimplest = new UserInfoSimplestVo();
+				BeanTransport.copyTo(bo.getUser(), userInfoSimplest);
+				vo.setUser(userInfoSimplest);
+			}
 			objectCommentVoList.add(vo);
 		}
 

@@ -21,6 +21,9 @@ public class ObjectCommentBo extends BaseBo {
 
 	private Long updTime;
 
+	//
+	private UserBo user;
+
 	public Long getCommentId() {
 		return commentId;
 	}
@@ -99,5 +102,13 @@ public class ObjectCommentBo extends BaseBo {
 
 	public void setUpdTime(Long updTime) {
 		this.updTime = updTime;
+	}
+
+	public UserBo getUser() {
+		return user;
+	}
+
+	public void setUser(UserBo user) {
+		this.user = user;
 	}
 }

@@ -48,6 +48,8 @@ public class ObjectBo extends BaseBo {
 
 	private Byte favored;
 
+	private UserBo user;
+
 	public Long getObjectId() {
 		return objectId;
 	}
@@ -222,5 +224,13 @@ public class ObjectBo extends BaseBo {
 
 	public void setFavored(Byte favored) {
 		this.favored = favored;
+	}
+
+	public UserBo getUser() {
+		return user;
+	}
+
+	public void setUser(UserBo user) {
+		this.user = user;
 	}
 }

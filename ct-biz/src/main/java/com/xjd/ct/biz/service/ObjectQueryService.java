@@ -35,6 +35,8 @@ public class ObjectQueryService {
 	ResourceService resourceService;
 	@Autowired
 	ResourceDao resourceDao;
+	@Autowired
+	UserService userService;
 
 	public List<ObjectBo> listObject(Long userId, long offset, int count) {
 		List<ObjectDo> objectDoList = objectDao.selectObjectByUserIdAndPage(userId, offset, count);
@@ -46,6 +48,7 @@ public class ObjectQueryService {
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
 			processLikeFavor(userId, objectBo);
+			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
 			objectBoList.add(objectBo);
 		}
 
@@ -73,6 +76,7 @@ public class ObjectQueryService {
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
 			processLikeFavor(userId, objectBo);
+			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
 			objectBoList.add(objectBo);
 		}
 
@@ -101,6 +105,7 @@ public class ObjectQueryService {
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
 			processLikeFavor(userId, objectBo);
+			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
 			objectBoList.add(objectBo);
 		}
 
@@ -154,6 +159,7 @@ public class ObjectQueryService {
 			if (userId != null) {
 				processLikeFavor(userId, objectBo);
 			}
+			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
 			objectBoList.add(objectBo);
 		}
 
@@ -174,6 +180,7 @@ public class ObjectQueryService {
 			if (userId != null) {
 				processLikeFavor(userId, objectBo);
 			}
+			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
 			objectBoList.add(objectBo);
 		}
 
@@ -194,6 +201,7 @@ public class ObjectQueryService {
 			if (userId != null) {
 				processLikeFavor(userId, objectBo);
 			}
+			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
 			objectBoList.add(objectBo);
 		}
 
@@ -212,6 +220,7 @@ public class ObjectQueryService {
 			if (userId != null) {
 				processLikeFavor(userId, objectBo);
 			}
+			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
 			objectBoList.add(objectBo);
 		}
 

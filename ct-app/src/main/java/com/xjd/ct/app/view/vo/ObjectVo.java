@@ -53,6 +53,8 @@ public class ObjectVo {
 
 	private Byte favored;
 
+	private UserInfoSimplestVo user;
+
 	public Long getObjectId() {
 		return objectId;
 	}
@@ -227,5 +229,13 @@ public class ObjectVo {
 
 	public void setFavored(Byte favored) {
 		this.favored = favored;
+	}
+
+	public UserInfoSimplestVo getUser() {
+		return user;
+	}
+
+	public void setUser(UserInfoSimplestVo user) {
+		this.user = user;
 	}
 }

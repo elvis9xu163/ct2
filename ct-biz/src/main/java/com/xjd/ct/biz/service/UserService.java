@@ -393,6 +393,26 @@ public class UserService {
 	}
 
 	/**
+	 * 获取用户基本信息
+	 *
+	 * @param userId
+	 * @return
+	 */
+	public UserBo getUserInfoSimple(Long userId) {
+		UserBo userBo = null;
+
+		// 用户信息
+		UserDo userDo = userDao.selectUserByUserId(userId);
+		if (userDo != null) {
+			userBo = new UserBo();
+			BeanUtils.copyProperties(userDo, userBo);
+			assembleResource(userBo);
+		}
+
+		return userBo;
+	}
+
+	/**
 	 * 获取用户信息
 	 *
 	 * @param userId

@@ -77,6 +77,19 @@ public abstract class BeanTransport {
 		}
 	}
 
+	public static void copyTo(UserBo bo, UserInfoSimplestVo vo) {
+		BeanUtils.copyProperties(bo, vo);
+		if (bo.getResourceList() != null) {
+			List<ResourceVo> resourceVoList = new ArrayList<ResourceVo>(bo.getResourceList().size());
+			for (ResourceBo resourceBo : bo.getResourceList()) {
+				ResourceVo resourceVo = new ResourceVo();
+				BeanUtils.copyProperties(resourceBo, resourceVo);
+				resourceVoList.add(resourceVo);
+			}
+			vo.setResourceList(resourceVoList);
+		}
+	}
+
 	public static void copyTo(ObjectBo bo, ObjectVo vo) {
 		BeanUtils.copyProperties(bo, vo);
 		if (bo.getResourceList() != null) {
@@ -86,6 +99,11 @@ public abstract class BeanTransport {
 				BeanUtils.copyProperties(resourceBo, resourceVo);
 				resourceVoList.add(resourceVo);
 			}
+		}
+		if (bo.getUser() != null) {
+			UserInfoSimplestVo userInfoSimplest = new UserInfoSimplestVo();
+			copyTo(bo.getUser(), userInfoSimplest);
+			vo.setUser(userInfoSimplest);
 		}
 	}
 

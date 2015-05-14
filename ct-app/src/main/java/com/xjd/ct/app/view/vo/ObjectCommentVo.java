@@ -22,6 +22,9 @@ public class ObjectCommentVo {
 
 	private Long updTime;
 
+	//
+	private UserInfoSimplestVo user;
+
 	public Long getCommentId() {
 		return commentId;
 	}
@@ -100,5 +103,13 @@ public class ObjectCommentVo {
 
 	public void setUpdTime(Long updTime) {
 		this.updTime = updTime;
+	}
+
+	public UserInfoSimplestVo getUser() {
+		return user;
+	}
+
+	public void setUser(UserInfoSimplestVo user) {
+		this.user = user;
 	}
 }

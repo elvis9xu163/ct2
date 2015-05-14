@@ -40,6 +40,8 @@ public class ObjectCommonService {
 	@Autowired
 	UserDao userDao;
 	@Autowired
+	UserService userService;
+	@Autowired
 	SequenceDao sequenceDao;
 
 	public void likeYes(Long userId, Long objectId, Byte like) {
@@ -265,6 +267,7 @@ public class ObjectCommonService {
 		for (ObjectCommentDo commentDo : commentDoList) {
 			ObjectCommentBo commentBo = new ObjectCommentBo();
 			BeanUtils.copyProperties(commentDo, commentBo);
+			commentBo.setUser(userService.getUserInfoSimple(commentBo.getUserId()));
 			commentBoList.add(commentBo);
 		}
 
