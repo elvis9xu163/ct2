@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author elvis.xu
@@ -93,6 +92,10 @@ public class UserInfoForOtherVo {
 
 	@JsonIgnore
 	private Long updTime;
+
+	private Integer countLikeYes;
+
+	private Integer countLikeNo;
 
 	//
 	private List<ResourceVo> resourceList;
@@ -403,5 +406,21 @@ public class UserInfoForOtherVo {
 
 	public void setResourceList(List<ResourceVo> resourceList) {
 		this.resourceList = resourceList;
+	}
+
+	public Integer getCountLikeYes() {
+		return countLikeYes;
+	}
+
+	public void setCountLikeYes(Integer countLikeYes) {
+		this.countLikeYes = countLikeYes;
+	}
+
+	public Integer getCountLikeNo() {
+		return countLikeNo;
+	}
+
+	public void setCountLikeNo(Integer countLikeNo) {
+		this.countLikeNo = countLikeNo;
 	}
 }

@@ -76,6 +76,10 @@ public class UserBo extends BaseBo {
 
 	private Long updTime;
 
+	private Integer countLikeYes;
+
+	private Integer countLikeNo;
+
 	//
 	private List<ResourceBo> resourceList;
 	private List<UserBabyBo> babyList;
@@ -463,5 +467,21 @@ public class UserBo extends BaseBo {
 
 	public void setBindAccountList(List<UserBindAccountBo> bindAccountList) {
 		this.bindAccountList = bindAccountList;
+	}
+
+	public Integer getCountLikeYes() {
+		return countLikeYes;
+	}
+
+	public void setCountLikeYes(Integer countLikeYes) {
+		this.countLikeYes = countLikeYes;
+	}
+
+	public Integer getCountLikeNo() {
+		return countLikeNo;
+	}
+
+	public void setCountLikeNo(Integer countLikeNo) {
+		this.countLikeNo = countLikeNo;
 	}
 }
