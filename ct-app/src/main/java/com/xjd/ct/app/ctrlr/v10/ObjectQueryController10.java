@@ -351,9 +351,11 @@ public class ObjectQueryController10 {
 	@ResponseBody
 	public View getLaunchPic(@RequestParam(value = "lastTime", required = false) String lastTime) {
 		// 校验
-		ValidationUtil.check(ValidationUtil.LAST_TIME, lastTime);
-
-		Long lastTimeL = Long.valueOf(lastTime);
+		Long lastTimeL = null;
+		if (StringUtils.isNotEmpty(lastTime)) {
+			ValidationUtil.check(ValidationUtil.LAST_TIME, lastTime);
+			lastTimeL = Long.valueOf(lastTime);
+		}
 
 		// 业务调用
 		List<LaunchPicBo> boList = objectQueryService.getLaunchPic(lastTimeL);

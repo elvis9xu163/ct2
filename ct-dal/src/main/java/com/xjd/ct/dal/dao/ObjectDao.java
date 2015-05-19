@@ -281,7 +281,9 @@ public class ObjectDao {
 
 	public List<LaunchPicDo> selectLaunchPicNewerThen(Long lastTime) {
 		LaunchPicDoExample example = new LaunchPicDoExample();
-		example.or().andAddTimeGreaterThan(lastTime);
+		if (lastTime != null) {
+			example.or().andAddTimeGreaterThan(lastTime);
+		}
 
 		return launchPicDoMapper.selectByExample(example);
 	}
