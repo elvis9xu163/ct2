@@ -15,10 +15,13 @@ import com.xjd.ct.app.util.RequestContext;
 import com.xjd.ct.app.view.View;
 import com.xjd.ct.app.view.ViewUtil;
 import com.xjd.ct.app.view.body.BannerListBody;
+import com.xjd.ct.app.view.body.LaunchPicListBody;
 import com.xjd.ct.app.view.body.ObjectListBody;
 import com.xjd.ct.app.view.vo.BannerVo;
+import com.xjd.ct.app.view.vo.LaunchPicVo;
 import com.xjd.ct.app.view.vo.ObjectVo;
 import com.xjd.ct.biz.bo.BannerBo;
+import com.xjd.ct.biz.bo.LaunchPicBo;
 import com.xjd.ct.biz.bo.ObjectBo;
 import com.xjd.ct.biz.service.ObjectQueryService;
 import com.xjd.ct.utl.valid.ValidationUtil;
@@ -338,6 +341,33 @@ public class ObjectQueryController10 {
 
 		ObjectListBody body = new ObjectListBody();
 		body.setObjectList(objectVoList);
+
+		View view = ViewUtil.defaultView();
+		view.setBody(body);
+		return view;
+	}
+
+	@RequestMapping("/getLaunchPic")
+	@ResponseBody
+	public View getLaunchPic(@RequestParam(value = "lastTime", required = false) String lastTime) {
+		// 校验
+		ValidationUtil.check(ValidationUtil.LAST_TIME, lastTime);
+
+		Long lastTimeL = Long.valueOf(lastTime);
+
+		// 业务调用
+		List<LaunchPicBo> boList = objectQueryService.getLaunchPic(lastTimeL);
+
+		// 返回结果
+		List<LaunchPicVo> voList = new ArrayList<LaunchPicVo>(boList.size());
+		for (LaunchPicBo bo : boList) {
+			LaunchPicVo vo = new LaunchPicVo();
+			BeanTransport.copyTo(bo, vo);
+			voList.add(vo);
+		}
+
+		LaunchPicListBody body = new LaunchPicListBody();
+		body.setLaunchPicList(voList);
 
 		View view = ViewUtil.defaultView();
 		view.setBody(body);

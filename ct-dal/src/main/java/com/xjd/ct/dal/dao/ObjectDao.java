@@ -34,6 +34,8 @@ public class ObjectDao {
 	RecommendDoMapper recommendDoMapper;
 	@Autowired
 	IdolDoMapper idolDoMapper;
+	@Autowired
+	LaunchPicDoMapper launchPicDoMapper;
 
 	public List<ObjectDo> selectObjectByUserIdAndPage(Long userId, long offset, int count) {
 		ObjectDoExample example = new ObjectDoExample();
@@ -275,5 +277,12 @@ public class ObjectDao {
 		example.setOrderByClause("ADD_TIME desc");
 		example.setOffsetAndLimit(offset - 1, count);
 		return objectDoMapper.selectByExample(example);
+	}
+
+	public List<LaunchPicDo> selectLaunchPicNewerThen(Long lastTime) {
+		LaunchPicDoExample example = new LaunchPicDoExample();
+		example.or().andAddTimeGreaterThan(lastTime);
+
+		return launchPicDoMapper.selectByExample(example);
 	}
 }

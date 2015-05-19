@@ -9,10 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.xjd.ct.biz.bo.BannerBo;
-import com.xjd.ct.biz.bo.ObjectBo;
-import com.xjd.ct.biz.bo.ResourceBo;
-import com.xjd.ct.biz.bo.UserBo;
+import com.xjd.ct.biz.bo.*;
 import com.xjd.ct.dal.dao.ObjectDao;
 import com.xjd.ct.dal.dao.ResourceDao;
 import com.xjd.ct.dal.dos.*;
@@ -269,4 +266,16 @@ public class ObjectQueryService {
 		return false;
 	}
 
+	public List<LaunchPicBo> getLaunchPic(Long lastTime) {
+		List<LaunchPicDo> doList = objectDao.selectLaunchPicNewerThen(lastTime);
+
+		List<LaunchPicBo> boList = new ArrayList<LaunchPicBo>(doList.size());
+		for (LaunchPicDo picDo : doList) {
+			LaunchPicBo bo = new LaunchPicBo();
+			BeanUtils.copyProperties(picDo, bo);
+			bo.setResource(resourceService.queryResource(bo.getResId()));
+			boList.add(bo);
+		}
+		return boList;
+	}
 }

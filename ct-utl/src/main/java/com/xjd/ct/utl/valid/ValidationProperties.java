@@ -26,5 +26,6 @@ public interface ValidationProperties {
 	String ORDER_BY = "orderBy";
 	String RANGE = "range";
 	String DATE = "date";
+	String LAST_TIME = "lastTime";
 
 }
