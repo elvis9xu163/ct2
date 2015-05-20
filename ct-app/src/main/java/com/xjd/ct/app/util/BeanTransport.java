@@ -124,4 +124,13 @@ public abstract class BeanTransport {
 			vo.setResource(resourceVo);
 		}
 	}
+
+	public static void copyTo(ObjectCommentBo bo, ObjectCommentVo vo) {
+		BeanUtils.copyProperties(bo, vo);
+		if (bo.getUser() != null) {
+			UserInfoSimplestVo userInfoSimplest = new UserInfoSimplestVo();
+			BeanTransport.copyTo(bo.getUser(), userInfoSimplest);
+			vo.setUser(userInfoSimplest);
+		}
+	}
 }

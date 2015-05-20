@@ -305,6 +305,8 @@ public class UserService {
 		userDo.setCountPublish(0);
 		userDo.setCountIdol(0);
 		userDo.setCountFans(0);
+		userDo.setCountLikeYes(0);
+		userDo.setCountLikeNo(0);
 		Long now = DateUtil.nowInMilliseconds();
 		userDo.setAddTime(now);
 		userDo.setUpdTime(now);

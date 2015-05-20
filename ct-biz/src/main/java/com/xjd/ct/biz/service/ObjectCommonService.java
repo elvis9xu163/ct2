@@ -232,6 +232,7 @@ public class ObjectCommonService {
 
 		ObjectCommentBo objectCommentBo = new ObjectCommentBo();
 		BeanUtils.copyProperties(objectCommentDo, objectCommentBo);
+		objectCommentBo.setUser(userService.getUserInfoSimple(userId));
 
 		return objectCommentBo;
 	}

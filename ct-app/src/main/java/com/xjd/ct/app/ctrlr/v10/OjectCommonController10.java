@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +17,6 @@ import com.xjd.ct.app.view.ViewUtil;
 import com.xjd.ct.app.view.body.ObjectCommentBody;
 import com.xjd.ct.app.view.body.ObjectCommentListBody;
 import com.xjd.ct.app.view.vo.ObjectCommentVo;
-import com.xjd.ct.app.view.vo.UserInfoSimplestVo;
 import com.xjd.ct.biz.bo.ObjectCommentBo;
 import com.xjd.ct.biz.service.ObjectCommonService;
 import com.xjd.ct.utl.valid.ValidationUtil;
@@ -97,7 +95,7 @@ public class OjectCommonController10 {
 
 		if (objectCommentBo != null) {
 			ObjectCommentVo vo = new ObjectCommentVo();
-			BeanUtils.copyProperties(objectCommentBo, vo);
+			BeanTransport.copyTo(objectCommentBo, vo);
 
 			ObjectCommentBody body = new ObjectCommentBody();
 			body.setComment(vo);
@@ -139,12 +137,7 @@ public class OjectCommonController10 {
 		List<ObjectCommentVo> objectCommentVoList = new ArrayList<ObjectCommentVo>(objectCommentBoList.size());
 		for (ObjectCommentBo bo : objectCommentBoList) {
 			ObjectCommentVo vo = new ObjectCommentVo();
-			BeanUtils.copyProperties(bo, vo);
-			if (bo.getUser() != null) {
-				UserInfoSimplestVo userInfoSimplest = new UserInfoSimplestVo();
-				BeanTransport.copyTo(bo.getUser(), userInfoSimplest);
-				vo.setUser(userInfoSimplest);
-			}
+			BeanTransport.copyTo(bo, vo);
 			objectCommentVoList.add(vo);
 		}
 
