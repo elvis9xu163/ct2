@@ -101,7 +101,7 @@ public abstract class DateUtil {
 	}
 
 	public static Long parseToMilliseconds(Date date) {
-		return parseToLong(now(), PATTERN_YEAR2MILLISECOND);
+		return parseToLong(date, PATTERN_YEAR2MILLISECOND);
 	}
 
 	/**

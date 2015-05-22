@@ -30,7 +30,7 @@ public class ObjectUpdateController10 {
 	public View addPublish(@RequestParam(value = "title", required = false) String title,
 			@RequestParam(value = "content", required = false) String content,
 			@RequestParam(value = "resources", required = false) String resources) {
-		// FIXME 参数校验
+		// TODO 参数校验
 
 		// 业务调用
 		ObjectBo objectBo = objectUpdateService.addPublish(RequestContext.checkAndGetUserId(), title, content,

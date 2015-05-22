@@ -59,12 +59,19 @@
         <button type="button" class="btn btn-default">提&nbsp;交</button>
   </div>
 
+  <form>
+      <input type="hidden" name="title" >
+      <input type="hidden" name="summary" >
+      <input type="hidden" name="contentType" >
+      <input type="hidden" name="link" >
+  </form>
+
   <!-- JS -->
   <script type="text/javascript" charset="utf-8" src="js/jquery.min.js"></script>
   <script type="text/javascript" charset="utf-8" src="js/bootstrap.min.js"></script>
   <script type="text/javascript" charset="utf-8" src="other/umeditor/umeditor.config.js"></script>
   <script type="text/javascript" charset="utf-8" src="other/umeditor/umeditor.min.js"></script>
-  <script type="text/javascript" src="other/umeditor/lang/zh-cn/zh-cn.js"></script>
+  <script type="text/javascript" charset="utf-8" src="other/umeditor/lang/zh-cn/zh-cn.js"></script>
   <script type="text/javascript">
   	$("input[name='contentType']").click(function() {
   		alert($(this).attr("selected"));
@@ -72,7 +79,7 @@
   	
   	//实例化编辑器
   	var um = UM.getEditor('myEditor');
-  	UM.getEditor('myEditor').setDisabled('fullscreen');
+//  	UM.getEditor('myEditor').setDisabled('fullscreen');
   </script>
 </body>
 </html>
