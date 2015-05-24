@@ -112,4 +112,8 @@ public class RequestContext {
 		return (Short) get(KEY_APP_VERSION);
 	}
 
+	public static void clear() {
+		requestThreadLocal.remove();
+	}
+
 }

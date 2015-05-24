@@ -19,7 +19,7 @@ import com.xjd.ct.utl.enums.ObjectTypeEnum;
 /**
  * <pre>
  * 业务对象查询服务
- * 
+ *
  * 根据不同的条件(包括订阅条件)查询数据
  * </pre>
  * @author elvis.xu
@@ -154,9 +154,7 @@ public class ObjectQueryService {
 			BeanUtils.copyProperties(objectDo, objectBo);
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
-			if (userId != null) {
-				processLikeFavor(userId, objectBo);
-			}
+			processLikeFavor(userId, objectBo);
 			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
 			objectBoList.add(objectBo);
 		}
@@ -175,9 +173,7 @@ public class ObjectQueryService {
 			BeanUtils.copyProperties(objectDo, objectBo);
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
-			if (userId != null) {
-				processLikeFavor(userId, objectBo);
-			}
+			processLikeFavor(userId, objectBo);
 			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
 			objectBoList.add(objectBo);
 		}
@@ -196,9 +192,7 @@ public class ObjectQueryService {
 			BeanUtils.copyProperties(objectDo, objectBo);
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
-			if (userId != null) {
-				processLikeFavor(userId, objectBo);
-			}
+			processLikeFavor(userId, objectBo);
 			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
 			objectBoList.add(objectBo);
 		}
@@ -215,9 +209,7 @@ public class ObjectQueryService {
 			BeanUtils.copyProperties(objectDo, objectBo);
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
-			if (userId != null) {
-				processLikeFavor(userId, objectBo);
-			}
+			processLikeFavor(userId, objectBo);
 			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
 			objectBoList.add(objectBo);
 		}
@@ -237,9 +229,7 @@ public class ObjectQueryService {
 			BeanUtils.copyProperties(objectDo, objectBo);
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
 					objectDo.getObjectId()));
-			if (userId != null) {
-				processLikeFavor(userId, objectBo);
-			}
+			processLikeFavor(userId, objectBo);
 			objectBo.setUser(userBo);
 			objectBoList.add(objectBo);
 		}
@@ -248,8 +238,13 @@ public class ObjectQueryService {
 	}
 
 	protected void processLikeFavor(Long userId, ObjectBo objectBo) {
-		objectBo.setLiked(isLike(userId, objectBo.getObjectId()) ? (byte) 1 : (byte) 0);
-		objectBo.setFavored(isFavor(userId, objectBo.getObjectId()) ? (byte) 1 : (byte) 0);
+		if (userId != null) {
+			objectBo.setLiked(isLike(userId, objectBo.getObjectId()) ? (byte) 1 : (byte) 0);
+			objectBo.setFavored(isFavor(userId, objectBo.getObjectId()) ? (byte) 1 : (byte) 0);
+		} else {
+			objectBo.setLiked((byte) 0);
+			objectBo.setFavored((byte) 0);
+		}
 	}
 
 	protected boolean isLike(Long userId, Long objectId) {

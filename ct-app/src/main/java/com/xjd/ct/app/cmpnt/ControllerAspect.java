@@ -170,9 +170,12 @@ public class ControllerAspect {
 				rt = ViewUtil.defaultView(RespCode.RESP_9999);
 				log.error("请求异常: " + fixLogString, t);
 			}
+		} finally {
+			// web容器会重用线程，所以对于使用线程变量的数据要清掉
+			RequestContext.clear();
 		}
 		long cost = System.currentTimeMillis() - start;
-		fixLogString = "[COST: " + cost + "ms]";
+		fixLogString = "[COST: " + cost + "ms]" + fixLogString;
 
 		if (rt == null) {
 			log.info("请求返回: {}, result={}", fixLogString, null);

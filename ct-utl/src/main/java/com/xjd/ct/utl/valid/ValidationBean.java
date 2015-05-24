@@ -1,5 +1,6 @@
 package com.xjd.ct.utl.valid;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Pattern;
 
@@ -15,7 +16,7 @@ import com.xjd.ct.utl.valid.constraints.Date.DatePattern;
 public class ValidationBean {
 
 	@NotBlank(message = RespCode.RESP_0001)
-	@Date(pattern = DatePattern.yyyyMMddHHmmssSSS)
+	@DecimalMin(value = "1", message = RespCode.RESP_0002)
 	private String timestamp;
 
 	@NotBlank(message = RespCode.RESP_0001)
@@ -225,7 +226,10 @@ public class ValidationBean {
 		return like;
 	}
 
-	/** @param like the like to set */
+	/**
+	 * @param like
+	 *            the like to set
+	 */
 	public void setLike(String like) {
 		this.like = like;
 	}
@@ -235,7 +239,10 @@ public class ValidationBean {
 		return favor;
 	}
 
-	/** @param favor the favor to set */
+	/**
+	 * @param favor
+	 *            the favor to set
+	 */
 	public void setFavor(String favor) {
 		this.favor = favor;
 	}

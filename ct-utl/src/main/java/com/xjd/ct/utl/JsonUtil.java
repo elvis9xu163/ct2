@@ -28,10 +28,10 @@ public abstract class JsonUtil {
 	static {
 		SimpleFilterProvider filterProvider = new SimpleFilterProvider();
 		filterProvider.addFilter(FILTER_PWD, new FilterPwdBeanPropertyFilter());
-		objectMapper.setDateFormat(dateFormat);
+//		objectMapper.setDateFormat(dateFormat);
 		objectMapper.setAnnotationIntrospector(new FilterPwdJacksonAnnotationIntrospector());
 		objectMapper.setFilters(filterProvider);
-		objectMapperIncludeIgnoredProperties.setDateFormat(dateFormat);
+//		objectMapperIncludeIgnoredProperties.setDateFormat(dateFormat);
 		objectMapperIncludeIgnoredProperties.setAnnotationIntrospector(new NoIgnoreJacksonAnnotationIntrospector());
 		objectMapperIncludeIgnoredProperties.setFilters(filterProvider);
 	}

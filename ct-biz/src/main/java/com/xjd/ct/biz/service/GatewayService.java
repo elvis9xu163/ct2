@@ -59,8 +59,7 @@ public class GatewayService {
 	 */
 	public void serviceLog(String userIp, Long userId, String token, String serviceName, String serviceVersion,
 			Date requestTimestamp) {
-		serviceDao.serviceLog(userIp, userId, token, serviceName, serviceVersion,
-				DateUtil.parseToMilliseconds(requestTimestamp));
+		serviceDao.serviceLog(userIp, userId, token, serviceName, serviceVersion, requestTimestamp.getTime());
 	}
 
 	/**

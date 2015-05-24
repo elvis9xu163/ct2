@@ -11,6 +11,5 @@ public class DateUtilTest {
 	public void test() {
 		Date d = new Date();
 		d = DateUtils.addHours(d, -2);
-		System.out.println(DateUtil.parseToMilliseconds(d));
 	}
 }

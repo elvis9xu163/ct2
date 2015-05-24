@@ -88,7 +88,7 @@ public abstract class ViewUtil {
 		private Object[] resultArgs;
 		private String service;
 		private String version;
-		private String timestamp;
+		private long timestamp;
 		private ViewBody body;
 
 		private View appView;
@@ -138,13 +138,14 @@ public abstract class ViewUtil {
 			return this;
 		}
 
-		public ViewBuilder timestamp(String timestamp) {
+		public ViewBuilder timestamp(long timestamp) {
 			this.timestamp = timestamp;
 			return this;
 		}
 
 		public ViewBuilder timestamp(Date timestamp) {
-			this.timestamp = DateUtil.format(timestamp, DateUtil.PATTERN_YEAR2MILLISECOND);
+//			this.timestamp = DateUtil.format(timestamp, DateUtil.PATTERN_YEAR2MILLISECOND);
+			this.timestamp = timestamp.getTime();
 			return this;
 		}
 

@@ -12,7 +12,7 @@ public class View {
 	private String returnMsg;
 	private String service;
 	private String version;
-	private String timestamp;
+	private long timestamp;
 
 	@JsonIgnore
 	private String originalCode;
@@ -62,11 +62,11 @@ public class View {
 		this.version = version;
 	}
 
-	public String getTimestamp() {
+	public long getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(String timestamp) {
+	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
 

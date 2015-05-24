@@ -100,10 +100,6 @@ public abstract class DateUtil {
 		return Long.valueOf(format(date, pattern));
 	}
 
-	public static Long parseToMilliseconds(Date date) {
-		return parseToLong(date, PATTERN_YEAR2MILLISECOND);
-	}
-
 	/**
 	 * 获取当前时间
 	 * 
@@ -114,7 +110,7 @@ public abstract class DateUtil {
 	}
 
 	public static Long nowInMilliseconds() {
-		return parseToMilliseconds(now());
+		return System.currentTimeMillis();
 	}
 
 }
