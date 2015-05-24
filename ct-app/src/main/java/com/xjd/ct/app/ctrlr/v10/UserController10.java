@@ -19,6 +19,7 @@ import com.xjd.ct.app.view.vo.UserInfoForSelfVo;
 import com.xjd.ct.biz.bo.SignBo;
 import com.xjd.ct.biz.bo.TokenBo;
 import com.xjd.ct.biz.bo.UserBo;
+import com.xjd.ct.biz.service.UserRelationService;
 import com.xjd.ct.biz.service.UserService;
 import com.xjd.ct.utl.enums.BoolEnum;
 import com.xjd.ct.utl.enums.UserSexEnum;
@@ -37,6 +38,8 @@ import com.xjd.ct.utl.valid.ValidationUtil;
 public class UserController10 {
 	@Autowired
 	UserService userService;
+	@Autowired
+	UserRelationService userRelationService;
 
 	@RequestMapping("/getToken")
 	@ResponseBody
@@ -173,9 +176,14 @@ public class UserController10 {
 			throw new BusinessException(RespCode.RESP_0110);
 		}
 
+		boolean idoled = userRelationService.isIdol(RequestContext.getUserId(), userIdL);
+		boolean beenIdoled = userRelationService.isIdol(userIdL, RequestContext.getUserId());
+
 		// 结果封装
 		UserInfoForOtherVo vo = new UserInfoForOtherVo();
 		BeanTransport.copyTo(userBo, vo);
+		vo.setFansFlag(beenIdoled ? (byte) 1 : (byte) 0);
+		vo.setIdolFlag(idoled ? (byte) 1 : (byte) 0);
 
 		UserInfoForOtherBody body = new UserInfoForOtherBody();
 		body.setUserInfo(vo);

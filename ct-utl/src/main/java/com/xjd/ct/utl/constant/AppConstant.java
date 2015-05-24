@@ -11,4 +11,6 @@ public interface AppConstant {
 	
 	/** 资源文件保存的根路径 */
 	String RESOURCE_ROOT_PATH_KEY = "resource.root";
+	/** 资源文件保存的临时路径 */
+	String RESOURCE_TMP_PATH_KEY = "resource.tmp";
 }

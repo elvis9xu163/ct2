@@ -114,4 +114,11 @@ public class UserRelationService {
 
 		return userBoList;
 	}
+
+	public boolean isIdol(Long userId, Long idolUserId) {
+		if (userId == null || idolUserId == null) {
+			return false;
+		}
+		return idolDao.selectUserIdolByUserIdAndIdolUserId(userId, idolUserId) != null;
+	}
 }

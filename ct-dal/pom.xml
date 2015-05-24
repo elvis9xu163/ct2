@@ -97,9 +97,9 @@
         <!-- data -->
         <data.dataSource.type>jdbc</data.dataSource.type>
         <data.jdbc.driverClass>com.mysql.jdbc.Driver</data.jdbc.driverClass>
-        <data.jdbc.url>jdbc:mysql://localhost/ct2?useUnicode=true&amp;amp;characterEncoding=utf-8&amp;amp;autoReconnect=true</data.jdbc.url>
-        <data.jdbc.username>root</data.jdbc.username>
-        <data.jdbc.password>root</data.jdbc.password>
+        <data.jdbc.url>jdbc:mysql://118.193.133.209:3306/ct2?useUnicode=true&amp;amp;characterEncoding=utf-8&amp;amp;autoReconnect=true</data.jdbc.url>
+        <data.jdbc.username>xjd</data.jdbc.username>
+        <data.jdbc.password>Elvis9xu</data.jdbc.password>
       </properties>
     </profile>
     <profile>
@@ -108,9 +108,9 @@
         <!-- data -->
         <data.dataSource.type>jdbc</data.dataSource.type>
         <data.jdbc.driverClass>com.mysql.jdbc.Driver</data.jdbc.driverClass>
-        <data.jdbc.url>jdbc:mysql://localhost/ct2?useUnicode=true&amp;amp;characterEncoding=utf-8&amp;amp;autoReconnect=true</data.jdbc.url>
-        <data.jdbc.username>root</data.jdbc.username>
-        <data.jdbc.password>root</data.jdbc.password>
+        <data.jdbc.url>jdbc:mysql://118.193.133.209:3306/ct2?useUnicode=true&amp;amp;characterEncoding=utf-8&amp;amp;autoReconnect=true</data.jdbc.url>
+        <data.jdbc.username>xjd</data.jdbc.username>
+        <data.jdbc.password>Elvis9xu</data.jdbc.password>
       </properties>
     </profile>
     <profile>

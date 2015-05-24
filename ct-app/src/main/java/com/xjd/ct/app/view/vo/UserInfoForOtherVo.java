@@ -104,6 +104,12 @@ public class UserInfoForOtherVo {
 
 	private List<UserBindAccountForOtherVo> bindAccountList;
 
+	//
+	/** 该用户是否为当前用户的粉丝 */
+	private Byte fansFlag;
+	/** 该用户是否为当前用户的关注 */
+	private Byte idolFlag;
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -422,5 +428,21 @@ public class UserInfoForOtherVo {
 
 	public void setCountLikeNo(Integer countLikeNo) {
 		this.countLikeNo = countLikeNo;
+	}
+
+	public Byte getFansFlag() {
+		return fansFlag;
+	}
+
+	public void setFansFlag(Byte fansFlag) {
+		this.fansFlag = fansFlag;
+	}
+
+	public Byte getIdolFlag() {
+		return idolFlag;
+	}
+
+	public void setIdolFlag(Byte idolFlag) {
+		this.idolFlag = idolFlag;
 	}
 }
