@@ -3,13 +3,13 @@ package com.xjd.ct.dal.dos;
 public class LaunchPicDo extends BaseDo {
     private Long launchId;
 
-    private String resId;
-
     private String title;
 
     private String content;
 
     private Long addTime;
+
+    private Long updTime;
 
     public Long getLaunchId() {
         return launchId;
@@ -17,14 +17,6 @@ public class LaunchPicDo extends BaseDo {
 
     public void setLaunchId(Long launchId) {
         this.launchId = launchId;
-    }
-
-    public String getResId() {
-        return resId;
-    }
-
-    public void setResId(String resId) {
-        this.resId = resId;
     }
 
     public String getTitle() {
@@ -49,5 +41,13 @@ public class LaunchPicDo extends BaseDo {
 
     public void setAddTime(Long addTime) {
         this.addTime = addTime;
+    }
+
+    public Long getUpdTime() {
+        return updTime;
+    }
+
+    public void setUpdTime(Long updTime) {
+        this.updTime = updTime;
     }
 }

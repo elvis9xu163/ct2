@@ -8,7 +8,7 @@ package com.xjd.ct.utl.enums;
  */
 public enum EntityTypeEnum {
 
-	OBJECT((byte) 1, "业务对象"), USER((byte) 2, "用户");
+	OBJECT((byte) 1, "业务对象"), USER((byte) 2, "用户"), LAUNCH_PIC((byte) 3, "启动图");
 
 	byte code;
 	String desc;

@@ -1,9 +1,9 @@
 package com.xjd.ct.app.view.vo;
 
+import java.util.List;
+
 public class LaunchPicVo {
 	private Long launchId;
-
-	private String resId;
 
 	private String title;
 
@@ -11,8 +11,10 @@ public class LaunchPicVo {
 
 	private Long addTime;
 
+	private Long updTime;
+
 	//
-	private ResourceVo resource;
+	private List<ResourceVo> resourceList;
 
 	public Long getLaunchId() {
 		return launchId;
@@ -20,14 +22,6 @@ public class LaunchPicVo {
 
 	public void setLaunchId(Long launchId) {
 		this.launchId = launchId;
-	}
-
-	public String getResId() {
-		return resId;
-	}
-
-	public void setResId(String resId) {
-		this.resId = resId;
 	}
 
 	public String getTitle() {
@@ -54,11 +48,20 @@ public class LaunchPicVo {
 		this.addTime = addTime;
 	}
 
-	public ResourceVo getResource() {
-		return resource;
+	public Long getUpdTime() {
+		return updTime;
 	}
 
-	public void setResource(ResourceVo resource) {
-		this.resource = resource;
+	public void setUpdTime(Long updTime) {
+		this.updTime = updTime;
 	}
+
+	public List<ResourceVo> getResourceList() {
+		return resourceList;
+	}
+
+	public void setResourceList(List<ResourceVo> resourceList) {
+		this.resourceList = resourceList;
+	}
+
 }

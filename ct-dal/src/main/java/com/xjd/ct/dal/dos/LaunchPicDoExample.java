@@ -188,76 +188,6 @@ public class LaunchPicDoExample {
             return (Criteria) this;
         }
 
-        public Criteria andResIdIsNull() {
-            addCriterion("RES_ID is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andResIdIsNotNull() {
-            addCriterion("RES_ID is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andResIdEqualTo(String value) {
-            addCriterion("RES_ID =", value, "resId");
-            return (Criteria) this;
-        }
-
-        public Criteria andResIdNotEqualTo(String value) {
-            addCriterion("RES_ID <>", value, "resId");
-            return (Criteria) this;
-        }
-
-        public Criteria andResIdGreaterThan(String value) {
-            addCriterion("RES_ID >", value, "resId");
-            return (Criteria) this;
-        }
-
-        public Criteria andResIdGreaterThanOrEqualTo(String value) {
-            addCriterion("RES_ID >=", value, "resId");
-            return (Criteria) this;
-        }
-
-        public Criteria andResIdLessThan(String value) {
-            addCriterion("RES_ID <", value, "resId");
-            return (Criteria) this;
-        }
-
-        public Criteria andResIdLessThanOrEqualTo(String value) {
-            addCriterion("RES_ID <=", value, "resId");
-            return (Criteria) this;
-        }
-
-        public Criteria andResIdLike(String value) {
-            addCriterion("RES_ID like", value, "resId");
-            return (Criteria) this;
-        }
-
-        public Criteria andResIdNotLike(String value) {
-            addCriterion("RES_ID not like", value, "resId");
-            return (Criteria) this;
-        }
-
-        public Criteria andResIdIn(List<String> values) {
-            addCriterion("RES_ID in", values, "resId");
-            return (Criteria) this;
-        }
-
-        public Criteria andResIdNotIn(List<String> values) {
-            addCriterion("RES_ID not in", values, "resId");
-            return (Criteria) this;
-        }
-
-        public Criteria andResIdBetween(String value1, String value2) {
-            addCriterion("RES_ID between", value1, value2, "resId");
-            return (Criteria) this;
-        }
-
-        public Criteria andResIdNotBetween(String value1, String value2) {
-            addCriterion("RES_ID not between", value1, value2, "resId");
-            return (Criteria) this;
-        }
-
         public Criteria andTitleIsNull() {
             addCriterion("TITLE is null");
             return (Criteria) this;
@@ -455,6 +385,66 @@ public class LaunchPicDoExample {
 
         public Criteria andAddTimeNotBetween(Long value1, Long value2) {
             addCriterion("ADD_TIME not between", value1, value2, "addTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdTimeIsNull() {
+            addCriterion("UPD_TIME is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdTimeIsNotNull() {
+            addCriterion("UPD_TIME is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdTimeEqualTo(Long value) {
+            addCriterion("UPD_TIME =", value, "updTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdTimeNotEqualTo(Long value) {
+            addCriterion("UPD_TIME <>", value, "updTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdTimeGreaterThan(Long value) {
+            addCriterion("UPD_TIME >", value, "updTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdTimeGreaterThanOrEqualTo(Long value) {
+            addCriterion("UPD_TIME >=", value, "updTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdTimeLessThan(Long value) {
+            addCriterion("UPD_TIME <", value, "updTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdTimeLessThanOrEqualTo(Long value) {
+            addCriterion("UPD_TIME <=", value, "updTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdTimeIn(List<Long> values) {
+            addCriterion("UPD_TIME in", values, "updTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdTimeNotIn(List<Long> values) {
+            addCriterion("UPD_TIME not in", values, "updTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdTimeBetween(Long value1, Long value2) {
+            addCriterion("UPD_TIME between", value1, value2, "updTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdTimeNotBetween(Long value1, Long value2) {
+            addCriterion("UPD_TIME not between", value1, value2, "updTime");
             return (Criteria) this;
         }
     }

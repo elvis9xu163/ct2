@@ -114,6 +114,7 @@ public class ResourceController10 {
 	@RequestMapping("/download")
 	public void download(@RequestParam(value = "resId", required = false) String resId, HttpServletResponse resp)
 			throws IOException {
+		long start = System.currentTimeMillis();
 		log.info("下载资源开始: resId={}", resId);
 		ResourceBo resourceBo = resourceService.queryResource(resId);
 		if (resourceBo == null) {
@@ -138,6 +139,7 @@ public class ResourceController10 {
 		OutputStream out = resp.getOutputStream();
 		resourceService.download(resId, out);
 		out.flush();
-		log.info("下载资源结束: resId={}", resId);
+		long cost = System.currentTimeMillis() - start;
+		log.info("下载资源结束: cost={}ms, resId={}", cost, resId);
 	}
 }

@@ -21,6 +21,8 @@ import com.xjd.ct.utl.enums.BoolEnum;
 import com.xjd.ct.utl.enums.EntityTypeEnum;
 import com.xjd.ct.utl.enums.ObjectContentTypeEnum;
 import com.xjd.ct.utl.enums.ObjectTypeEnum;
+import com.xjd.ct.utl.exception.BusinessException;
+import com.xjd.ct.utl.respcode.RespCode;
 
 /**
  * <pre>
@@ -78,6 +80,12 @@ public class ObjectUpdateService {
 					continue;
 				}
 				String[] parts = resource.split(":");
+
+				// 校验资源ID是否存在
+				if (resourceDao.selectResourceByResId(parts[0]) == null) {
+					throw new BusinessException(RespCode.RESP_0221, new Object[] { parts[0] });
+				}
+
 				ObjectResourceDo objectResourceDo = new ObjectResourceDo();
 				objectResourceDo.setResId(parts[0]);
 				objectResourceDo.setEntityType(EntityTypeEnum.OBJECT.getCode());
@@ -108,7 +116,7 @@ public class ObjectUpdateService {
 
 	/**
 	 * 生成一个新的UserId
-	 *
+	 * 
 	 * @return
 	 */
 	protected Long generateObjectId() {

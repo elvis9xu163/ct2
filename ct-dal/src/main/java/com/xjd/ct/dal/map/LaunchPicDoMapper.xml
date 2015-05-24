@@ -3,10 +3,10 @@
 <mapper namespace="com.xjd.ct.dal.map.LaunchPicDoMapper" >
   <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.LaunchPicDo" >
     <id column="LAUNCH_ID" property="launchId" jdbcType="BIGINT" />
-    <result column="RES_ID" property="resId" jdbcType="CHAR" />
     <result column="TITLE" property="title" jdbcType="VARCHAR" />
     <result column="CONTENT" property="content" jdbcType="VARCHAR" />
     <result column="ADD_TIME" property="addTime" jdbcType="BIGINT" />
+    <result column="UPD_TIME" property="updTime" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    LAUNCH_ID, RES_ID, TITLE, CONTENT, ADD_TIME
+    LAUNCH_ID, TITLE, CONTENT, ADD_TIME, UPD_TIME
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.LaunchPicDoExample" >
     select
@@ -101,19 +101,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.xjd.ct.dal.dos.LaunchPicDo" >
-    insert into t_launch_pic (LAUNCH_ID, RES_ID, TITLE, 
-      CONTENT, ADD_TIME)
-    values (#{launchId,jdbcType=BIGINT}, #{resId,jdbcType=CHAR}, #{title,jdbcType=VARCHAR}, 
-      #{content,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT})
+    insert into t_launch_pic (LAUNCH_ID, TITLE, CONTENT, 
+      ADD_TIME, UPD_TIME)
+    values (#{launchId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=BIGINT}, #{updTime,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.LaunchPicDo" >
     insert into t_launch_pic
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="launchId != null" >
         LAUNCH_ID,
-      </if>
-      <if test="resId != null" >
-        RES_ID,
       </if>
       <if test="title != null" >
         TITLE,
@@ -124,13 +121,13 @@
       <if test="addTime != null" >
         ADD_TIME,
       </if>
+      <if test="updTime != null" >
+        UPD_TIME,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="launchId != null" >
         #{launchId,jdbcType=BIGINT},
-      </if>
-      <if test="resId != null" >
-        #{resId,jdbcType=CHAR},
       </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
@@ -140,6 +137,9 @@
       </if>
       <if test="addTime != null" >
         #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -155,9 +155,6 @@
       <if test="record.launchId != null" >
         LAUNCH_ID = #{record.launchId,jdbcType=BIGINT},
       </if>
-      <if test="record.resId != null" >
-        RES_ID = #{record.resId,jdbcType=CHAR},
-      </if>
       <if test="record.title != null" >
         TITLE = #{record.title,jdbcType=VARCHAR},
       </if>
@@ -167,6 +164,9 @@
       <if test="record.addTime != null" >
         ADD_TIME = #{record.addTime,jdbcType=BIGINT},
       </if>
+      <if test="record.updTime != null" >
+        UPD_TIME = #{record.updTime,jdbcType=BIGINT},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -175,10 +175,10 @@
   <update id="updateByExample" parameterType="map" >
     update t_launch_pic
     set LAUNCH_ID = #{record.launchId,jdbcType=BIGINT},
-      RES_ID = #{record.resId,jdbcType=CHAR},
       TITLE = #{record.title,jdbcType=VARCHAR},
       CONTENT = #{record.content,jdbcType=VARCHAR},
-      ADD_TIME = #{record.addTime,jdbcType=BIGINT}
+      ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      UPD_TIME = #{record.updTime,jdbcType=BIGINT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -186,9 +186,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.LaunchPicDo" >
     update t_launch_pic
     <set >
-      <if test="resId != null" >
-        RES_ID = #{resId,jdbcType=CHAR},
-      </if>
       <if test="title != null" >
         TITLE = #{title,jdbcType=VARCHAR},
       </if>
@@ -198,15 +195,18 @@
       <if test="addTime != null" >
         ADD_TIME = #{addTime,jdbcType=BIGINT},
       </if>
+      <if test="updTime != null" >
+        UPD_TIME = #{updTime,jdbcType=BIGINT},
+      </if>
     </set>
     where LAUNCH_ID = #{launchId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.LaunchPicDo" >
     update t_launch_pic
-    set RES_ID = #{resId,jdbcType=CHAR},
-      TITLE = #{title,jdbcType=VARCHAR},
+    set TITLE = #{title,jdbcType=VARCHAR},
       CONTENT = #{content,jdbcType=VARCHAR},
-      ADD_TIME = #{addTime,jdbcType=BIGINT}
+      ADD_TIME = #{addTime,jdbcType=BIGINT},
+      UPD_TIME = #{updTime,jdbcType=BIGINT}
     where LAUNCH_ID = #{launchId,jdbcType=BIGINT}
   </update>
   <sql id="MysqlPageSuffix" >

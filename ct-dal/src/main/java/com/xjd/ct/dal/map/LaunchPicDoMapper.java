@@ -1,11 +1,9 @@
 package com.xjd.ct.dal.map;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.xjd.ct.dal.dos.LaunchPicDo;
 import com.xjd.ct.dal.dos.LaunchPicDoExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface LaunchPicDoMapper {
     int countByExample(LaunchPicDoExample example);

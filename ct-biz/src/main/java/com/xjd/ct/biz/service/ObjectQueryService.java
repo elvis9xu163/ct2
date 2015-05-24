@@ -268,7 +268,7 @@ public class ObjectQueryService {
 		for (LaunchPicDo picDo : doList) {
 			LaunchPicBo bo = new LaunchPicBo();
 			BeanUtils.copyProperties(picDo, bo);
-			bo.setResource(resourceService.queryResource(bo.getResId()));
+			bo.setResourceList(resourceService.listResource(EntityTypeEnum.LAUNCH_PIC.getCode(), picDo.getLaunchId()));
 			boList.add(bo);
 		}
 		return boList;

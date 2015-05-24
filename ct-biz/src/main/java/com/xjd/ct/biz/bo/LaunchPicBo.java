@@ -1,9 +1,9 @@
 package com.xjd.ct.biz.bo;
 
+import java.util.List;
+
 public class LaunchPicBo extends BaseBo {
 	private Long launchId;
-
-	private String resId;
 
 	private String title;
 
@@ -11,8 +11,10 @@ public class LaunchPicBo extends BaseBo {
 
 	private Long addTime;
 
+	private Long updTime;
+
 	//
-	private ResourceBo resource;
+	private List<ResourceBo> resourceList;
 
 	public Long getLaunchId() {
 		return launchId;
@@ -20,14 +22,6 @@ public class LaunchPicBo extends BaseBo {
 
 	public void setLaunchId(Long launchId) {
 		this.launchId = launchId;
-	}
-
-	public String getResId() {
-		return resId;
-	}
-
-	public void setResId(String resId) {
-		this.resId = resId;
 	}
 
 	public String getTitle() {
@@ -54,11 +48,20 @@ public class LaunchPicBo extends BaseBo {
 		this.addTime = addTime;
 	}
 
-	public ResourceBo getResource() {
-		return resource;
+	public Long getUpdTime() {
+		return updTime;
 	}
 
-	public void setResource(ResourceBo resource) {
-		this.resource = resource;
+	public void setUpdTime(Long updTime) {
+		this.updTime = updTime;
 	}
+
+	public List<ResourceBo> getResourceList() {
+		return resourceList;
+	}
+
+	public void setResourceList(List<ResourceBo> resourceList) {
+		this.resourceList = resourceList;
+	}
+
 }
