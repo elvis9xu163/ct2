@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.xjd.ct.biz.bo.TokenBo;
+<<<<<<< HEAD
 import com.xjd.ct.biz.bo.UserBo;
+=======
+>>>>>>> origin/master
 import com.xjd.ct.biz.service.UserService;
 import com.xjd.ct.utl.exception.BusinessException;
 import com.xjd.ct.utl.respcode.RespCode;
@@ -44,8 +47,11 @@ public class AdminController {
 		try {
 			TokenBo token = userService.signin(username, password, ip, null);
 			SessionContextUtil.pubToken(token);
+<<<<<<< HEAD
 			UserBo userBo = userService.getUserInfoSimple(token.getUserId());
 			SessionContextUtil.pubUser(userBo);
+=======
+>>>>>>> origin/master
 		} catch (BusinessException e) {
 			model.put("errorCode", e.getCode());
 			model.put("errorMsg", I18NUtil.getMsg(e.getCode(), e.getArgs(), e.getMsg()));
@@ -63,7 +69,11 @@ public class AdminController {
 			return "login";
 		}
 
+<<<<<<< HEAD
 		return "redirect:/admin";
+=======
+		return "redirect:/";
+>>>>>>> origin/master
 	}
 
 	@RequestMapping("/logout")
