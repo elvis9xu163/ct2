@@ -85,6 +85,11 @@ public class UserBo extends BaseBo {
 	private List<UserBabyBo> babyList;
 	private List<UserBindAccountBo> bindAccountList;
 
+	/** 该用户是否为当前用户的粉丝 */
+	private Byte fansFlag;
+	/** 该用户是否为当前用户的关注 */
+	private Byte idolFlag;
+
 	/** @return the userId */
 	public Long getUserId() {
 		return userId;
@@ -483,5 +488,21 @@ public class UserBo extends BaseBo {
 
 	public void setCountLikeNo(Integer countLikeNo) {
 		this.countLikeNo = countLikeNo;
+	}
+
+	public Byte getFansFlag() {
+		return fansFlag;
+	}
+
+	public void setFansFlag(Byte fansFlag) {
+		this.fansFlag = fansFlag;
+	}
+
+	public Byte getIdolFlag() {
+		return idolFlag;
+	}
+
+	public void setIdolFlag(Byte idolFlag) {
+		this.idolFlag = idolFlag;
 	}
 }

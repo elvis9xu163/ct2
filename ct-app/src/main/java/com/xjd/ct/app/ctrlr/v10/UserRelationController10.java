@@ -3,7 +3,6 @@ package com.xjd.ct.app.ctrlr.v10;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,43 +54,55 @@ public class UserRelationController10 {
 		return view;
 	}
 
-	@RequestMapping("/listMyIdols")
+	@RequestMapping("/listIdols")
 	@ResponseBody
-	public View listMyIdols(@RequestParam(value = "offset", required = false) String offset,
-			@RequestParam(value = "count", required = false) String count) {
+	public View listIdols(@RequestParam(value = "userId", required = false) String userId,
+						 @RequestParam(value = "offset", required = false) String offset,
+						 @RequestParam(value = "count", required = false) String count) {
 		// 参数校验
-		if (StringUtils.isNotEmpty(offset)) {
-			ValidationUtil.check(ValidationUtil.OFFSET, offset);
-		}
-		if (StringUtils.isNotEmpty(count)) {
-			ValidationUtil.check(ValidationUtil.COUNT, count);
-		}
+		ValidationUtil.check(ValidationUtil.USER_ID, userId, ValidationUtil.OFFSET, offset, ValidationUtil.COUNT, count);
 
-		long offsetI = 1;
-		int countI = 20;
-
-		if (StringUtils.isNotEmpty(offset)) {
-			offsetI = Long.parseLong(offset);
-			if (offsetI < 1) {
-				offsetI = 1;
-			}
-		}
-
-		if (StringUtils.isNotEmpty(count)) {
-			countI = Integer.parseInt(count);
-			if (countI < 1) {
-				countI = 1;
-			} else if (countI > 100) {
-				countI = 100;
-			}
-		}
+		Long userIdL = Long.valueOf(userId);
+		Long offsetL = Long.valueOf(offset);
+		Integer countI = Integer.valueOf(count);
 
 		// 业务调用
-		List<UserBo> idolUserList = userRelationService.listIdols(RequestContext.checkAndGetUserId(), offsetI, countI);
+		List<UserBo> list = userRelationService.listIdolsOrFans(true, userIdL, offsetL, countI, RequestContext.getUserId());
 
 		// 返回结果
-		List<UserInfoForOtherVo> userInfoForOtherVoList = new ArrayList<UserInfoForOtherVo>(idolUserList.size());
-		for (UserBo userBo : idolUserList) {
+		List<UserInfoForOtherVo> userInfoForOtherVoList = new ArrayList<UserInfoForOtherVo>(list.size());
+		for (UserBo userBo : list) {
+			UserInfoForOtherVo userInfoForOtherVo = new UserInfoForOtherVo();
+			BeanTransport.copyTo(userBo, userInfoForOtherVo);
+			userInfoForOtherVoList.add(userInfoForOtherVo);
+		}
+
+		UserInfoForOtherListBody body = new UserInfoForOtherListBody();
+		body.setUserInfoList(userInfoForOtherVoList);
+
+		View view = ViewUtil.defaultView();
+		view.setBody(body);
+		return view;
+	}
+
+	@RequestMapping("/listFans")
+	@ResponseBody
+	public View listFans(@RequestParam(value = "userId", required = false) String userId,
+			@RequestParam(value = "offset", required = false) String offset,
+			@RequestParam(value = "count", required = false) String count) {
+		// 参数校验
+		ValidationUtil.check(ValidationUtil.USER_ID, userId, ValidationUtil.OFFSET, offset, ValidationUtil.COUNT, count);
+
+		Long userIdL = Long.valueOf(userId);
+		Long offsetL = Long.valueOf(offset);
+		Integer countI = Integer.valueOf(count);
+
+		// 业务调用
+		List<UserBo> list = userRelationService.listIdolsOrFans(false, userIdL, offsetL, countI, RequestContext.getUserId());
+
+		// 返回结果
+		List<UserInfoForOtherVo> userInfoForOtherVoList = new ArrayList<UserInfoForOtherVo>(list.size());
+		for (UserBo userBo : list) {
 			UserInfoForOtherVo userInfoForOtherVo = new UserInfoForOtherVo();
 			BeanTransport.copyTo(userBo, userInfoForOtherVo);
 			userInfoForOtherVoList.add(userInfoForOtherVo);

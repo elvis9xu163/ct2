@@ -1,5 +1,6 @@
 package com.xjd.ct.utl.valid;
 
+import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Pattern;
@@ -55,10 +56,13 @@ public class ValidationBean {
 	private String idolOper;
 
 	@NotBlank(message = RespCode.RESP_0001)
+	@DecimalMin(value = "1", message = RespCode.RESP_0002)
 	@Digits(integer = 18, fraction = 0, message = RespCode.RESP_0002)
 	private String offset;
 
 	@NotBlank(message = RespCode.RESP_0001)
+	@DecimalMin(value = "1", message = RespCode.RESP_0002)
+	@DecimalMax(value = "100", message = RespCode.RESP_0002)
 	@Digits(integer = 2, fraction = 0, message = RespCode.RESP_0002)
 	private String count;
 

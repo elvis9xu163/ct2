@@ -13,6 +13,7 @@ import com.xjd.ct.dal.dao.SequenceDao;
 import com.xjd.ct.dal.dao.UserDao;
 import com.xjd.ct.dal.dos.IdolDo;
 import com.xjd.ct.utl.DateUtil;
+import com.xjd.ct.utl.enums.BoolEnum;
 import com.xjd.ct.utl.exception.BusinessException;
 import com.xjd.ct.utl.respcode.RespCode;
 
@@ -102,13 +103,46 @@ public class UserRelationService {
 		// 生成消息 TODO
 	}
 
-	public List<UserBo> listIdols(Long userId, long offset, int count) {
 
-		// TODO 优化
-		List<IdolDo> idolDoList = idolDao.selectUserIdolByUserIdAndPage(userId, offset, count);
-		List<UserBo> userBoList = new ArrayList<UserBo>(idolDoList.size());
-		for (IdolDo idolDo : idolDoList) {
-			UserBo userBo = userService.getUserInfo(idolDo.getIdolUserId());
+	// TODO 性能优化
+	/**
+	 * 获取指定用户[userId]的关注用户列表[listIdol=TRUE]或者粉丝用户列表[listIdol=FALSE],
+	 * 同时获取列表用户与当前用户[currentUserId]的关注关系
+	 * @param userId
+	 * @param offset
+	 * @param count
+	 * @param currentUserId
+	 * @return
+	 */
+	public List<UserBo> listIdolsOrFans(Boolean listIdol, Long userId, Long offset, Integer count, Long currentUserId) {
+		List<IdolDo> list;
+		if (listIdol) {
+			list = idolDao.selectUserIdolByUserIdAndPage(userId, offset, count);
+		} else {
+			list = idolDao.selectUserIdolByIdolUserIdAndPage(userId, offset, count);
+		}
+		List<UserBo> userBoList = new ArrayList<UserBo>(list.size());
+		for (IdolDo idolDo : list) {
+			UserBo userBo = userService.getUserInfoSimple(idolDo.getIdolUserId());
+
+			if (currentUserId == null) {
+				userBo.setFansFlag(BoolEnum.FALSE.getCode());
+				userBo.setIdolFlag(BoolEnum.FALSE.getCode());
+			} else {
+				if (currentUserId.equals(userId)) {
+					if (listIdol) {
+						userBo.setIdolFlag(BoolEnum.TRUE.getCode());
+						userBo.setFansFlag(isIdol(userBo.getUserId(), currentUserId) ? BoolEnum.TRUE.getCode() : BoolEnum.FALSE.getCode());
+					} else {
+						userBo.setFansFlag(BoolEnum.TRUE.getCode());
+						userBo.setIdolFlag(isIdol(currentUserId, userBo.getUserId()) ? BoolEnum.TRUE.getCode() : BoolEnum.FALSE.getCode());
+					}
+				} else {
+					userBo.setFansFlag(isIdol(userBo.getUserId(), currentUserId) ? BoolEnum.TRUE.getCode() : BoolEnum.FALSE.getCode());
+					userBo.setIdolFlag(isIdol(currentUserId, userBo.getUserId()) ? BoolEnum.TRUE.getCode() : BoolEnum.FALSE.getCode());
+				}
+			}
+
 			userBoList.add(userBo);
 		}
 
@@ -121,4 +155,5 @@ public class UserRelationService {
 		}
 		return idolDao.selectUserIdolByUserIdAndIdolUserId(userId, idolUserId) != null;
 	}
+
 }

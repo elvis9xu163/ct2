@@ -61,7 +61,7 @@ public class IdolDao {
 	}
 
 	/**
-	 * 查询用户的所有关注信息
+	 * 查询用户的所有关注
 	 *
 	 * @param userId
 	 * @return
@@ -69,6 +69,20 @@ public class IdolDao {
 	public List<IdolDo> selectUserIdolByUserIdAndPage(Long userId, long offset, int limit) {
 		IdolDoExample example = new IdolDoExample();
 		example.or().andUserIdEqualTo(userId);
+		example.setOrderByClause("add_time desc");
+		example.setOffsetAndLimit(offset - 1, limit);
+
+		return idolDoMapper.selectByExample(example);
+	}
+	/**
+	 * 查询用户的所有粉丝
+	 *
+	 * @param idolUserId
+	 * @return
+	 */
+	public List<IdolDo> selectUserIdolByIdolUserIdAndPage(Long idolUserId, long offset, int limit) {
+		IdolDoExample example = new IdolDoExample();
+		example.or().andIdolUserIdEqualTo(idolUserId);
 		example.setOrderByClause("add_time desc");
 		example.setOffsetAndLimit(offset - 1, limit);
 
