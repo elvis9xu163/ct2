@@ -226,3 +226,4 @@ MANIFEST.MF
 # IntelliJ
 .idea
 *.iml
+.myumldata
