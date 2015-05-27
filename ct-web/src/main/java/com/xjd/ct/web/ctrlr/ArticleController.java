@@ -13,7 +13,7 @@ public class ArticleController {
 
 	@RequestMapping("/edit/input")
 	public String articleEditInput() {
-		return "article_edit";
+		return "admin/article_edit";
 	}
 
 

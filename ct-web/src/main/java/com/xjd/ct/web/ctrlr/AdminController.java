@@ -25,12 +25,14 @@ import com.xjd.ct.web.util.SessionContextUtil;
 public class AdminController {
 	private static Logger log = LoggerFactory.getLogger(AdminController.class);
 
+	public static final String PAGE_LOGIN = "admin/login";
+
 	@Autowired
 	UserService userService;
 
 	@RequestMapping("/login/input")
 	public String loginInput() {
-		return "login";
+		return PAGE_LOGIN;
 	}
 
 	@RequestMapping("/login")
@@ -55,12 +57,12 @@ public class AdminController {
 			} else {
 				log.warn("", e);
 			}
-			return "login";
+			return PAGE_LOGIN;
 		} catch (Exception e) {
 			model.put("errorCode", RespCode.RESP_9999);
 			model.put("errorMsg", I18NUtil.getMsg(RespCode.RESP_9999));
 			log.error("", e);
-			return "login";
+			return PAGE_LOGIN;
 		}
 
 		return "redirect:/admin";
@@ -69,7 +71,12 @@ public class AdminController {
 	@RequestMapping("/logout")
 	public String logout() {
 		SessionContextUtil.putToken(null);
-		return "login";
+		return "redirect:/login";
+	}
+
+	@RequestMapping({"/",""})
+	public String admin() {
+		return "admin/index";
 	}
 
 }

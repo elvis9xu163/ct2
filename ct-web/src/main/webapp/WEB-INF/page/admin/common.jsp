@@ -1,6 +1,6 @@
 <%@ page pageEncoding="UTF-8" import="com.xjd.ct.web.util.SessionContextUtil" %>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
             <button class="navbar-toggle" data-toggle="collapse" data-target="#navbar">

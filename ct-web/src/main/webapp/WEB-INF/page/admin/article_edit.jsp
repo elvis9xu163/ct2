@@ -19,7 +19,7 @@
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 </head>
-<body style="padding-top: 70px;">
+<body>
 <%@include file="common.jsp" %>
 
 <div class="container">
@@ -38,10 +38,13 @@
             </div>
 
             <div class="form-group">
-                <form id="imgForm" target="frame" enctype="multipart/form-data" method="post" action='<c:url value="/admin/resource/uploadArticleImg"/> '>
+                <form id="imgForm" target="frame" enctype="multipart/form-data" method="post"
+                      action='<c:url value="/admin/resource/uploadArticleImg"/> '>
                     <label for="inputImg">图&nbsp;片</label>
                     <input type="file" name="file" id="inputImg"/>
-                    <img id="imgView" src="#" class="img-rounded img-responsive hide" style="max-width: 100px; max-height: 100px;"/>
+                    <img id="imgView" src="#" class="img-rounded img-responsive hide"
+                         style="max-width: 100px; max-height: 100px;"/>
+
                     <p class="help-block">该图片将用在文章列表中展现.</p>
                 </form>
             </div>
@@ -50,8 +53,10 @@
                 <label>内容类型</label>
 
                 <div class="radio">
-                    <label class="radio-inline"><input type="radio" id="radioLink" name="contentTypeRadio" value="link" checked="checked"> 使用外部链接 </label>
-                    <label class="radio-inline"><input type="radio" id="radioText" name="contentTypeRadio" value="text"> 编辑页面内容 </label>
+                    <label class="radio-inline"><input type="radio" id="radioLink" name="contentTypeRadio" value="link"
+                                                       checked="checked"> 使用外部链接 </label>
+                    <label class="radio-inline"><input type="radio" id="radioText" name="contentTypeRadio" value="text">
+                        编辑页面内容 </label>
                 </div>
             </div>
             <div class="form-group">
@@ -64,12 +69,12 @@
                 <label for="inputImg">内容编辑</label>
                 <!--style给定宽度可以影响编辑器的最终宽度-->
                 <script type="text/plain" id="myEditor" style="width:100%; height:300px;">
-                <p>请输入内容</p>
+
                 </script>
             </div>
         </div>
     </div>
-    <button id="btnSubmit" type="button" class="btn btn-default">提&nbsp;交</button>
+    <button id="btnSubmit" type="button" class="btn btn-default btn-lg">提&nbsp;交</button>
 </div>
 
 <form id="articleForm" action="<c:url value='/admin/article/edit'/>" method="post">
@@ -100,7 +105,7 @@
     var um = UM.getEditor('myEditor');
     UM.getEditor('myEditor').setDisabled('fullscreen');
 
-    $("#inputImg").change(function() {
+    $("#inputImg").change(function () {
         var f = $(this).val();
         var i = f.indexOf('.');
         if (i == -1) {
@@ -120,17 +125,24 @@
         $("#imgView").attr("src", url).removeClass("hide");
     }
 
-    $("#radioLink, #radioText").click(function() {
+    $("#radioLink, #radioText").click(function () {
         var val = $(this).val();
         if (val == 'link') {
             $("#inputLink").removeAttr("disabled");
+            $("#inputLink").focus();
             UM.getEditor('myEditor').setDisabled('fullscreen');
         } else {
             $("#inputLink").attr("disabled", "disabled");
-            UM.getEditor('myEditor').setEnabled('fullscreen');
+            UM.getEditor('myEditor').setEnabled();
+            UM.getEditor('myEditor').focus();
         }
     });
 
+    $("#btnSubmit").click(function () {
+        // 保存编辑器中的信息
+
+        // 保存整个文章对象
+    });
 </script>
 </body>
 </html>

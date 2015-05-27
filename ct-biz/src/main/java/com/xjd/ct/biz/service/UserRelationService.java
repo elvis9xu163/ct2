@@ -123,8 +123,12 @@ public class UserRelationService {
 		}
 		List<UserBo> userBoList = new ArrayList<UserBo>(list.size());
 		for (IdolDo idolDo : list) {
-			UserBo userBo = userService.getUserInfoSimple(idolDo.getIdolUserId());
-
+			UserBo userBo;
+			if (listIdol) {
+				userBo = userService.getUserInfoSimple(idolDo.getIdolUserId());
+			} else {
+				userBo = userService.getUserInfoSimple(idolDo.getUserId());
+			}
 			if (currentUserId == null) {
 				userBo.setFansFlag(BoolEnum.FALSE.getCode());
 				userBo.setIdolFlag(BoolEnum.FALSE.getCode());
