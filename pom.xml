@@ -158,7 +158,7 @@
         <app.sign.disabled>1</app.sign.disabled>
         <resource.root>D:/tmp/resource</resource.root>
         <resource.tmp>D:/tmp/tmp</resource.tmp>
-        <resource.url.prefix>http://localhost/ct-web/10/download?resId=</resource.url.prefix>
+        <resource.url.prefix>http://localhost:8080/ct-web/10/download?resId=</resource.url.prefix>
       </properties>
     </profile>
     <profile>
