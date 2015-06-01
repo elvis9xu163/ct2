@@ -15,6 +15,7 @@
     <module>ct-biz</module>
     <module>ct-app</module>
     <module>ct-web</module>
+    <module>ct-con</module>
   </modules>
 
   <developers>
