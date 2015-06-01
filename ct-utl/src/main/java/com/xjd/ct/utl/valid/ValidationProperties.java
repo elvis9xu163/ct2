@@ -27,5 +27,5 @@ public interface ValidationProperties {
 	String RANGE = "range";
 	String DATE = "date";
 	String LAST_TIME = "lastTime";
-
+	String FEEDBACK_CONTENT = "feedbackContent";
 }

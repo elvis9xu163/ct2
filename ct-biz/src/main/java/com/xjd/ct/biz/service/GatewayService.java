@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.xjd.ct.biz.bo.AppVersionResultBo;
 import com.xjd.ct.biz.bo.ServiceBo;
+import com.xjd.ct.dal.dao.SequenceDao;
 import com.xjd.ct.dal.dao.ServiceDao;
 import com.xjd.ct.dal.dos.AppVersionDo;
+import com.xjd.ct.dal.dos.FeedbackDo;
 import com.xjd.ct.dal.dos.ServiceDo;
 import com.xjd.ct.utl.DateUtil;
 import com.xjd.ct.utl.enums.BoolEnum;
@@ -27,6 +29,8 @@ import com.xjd.ct.utl.respcode.RespCode;
 public class GatewayService {
 	@Autowired
 	ServiceDao serviceDao;
+	@Autowired
+	SequenceDao sequenceDao;
 
 	/**
 	 * 根据name和version查询Service配置
@@ -93,5 +97,18 @@ public class GatewayService {
 			return null;
 		}
 		return appVersionResultBo;
+	}
+
+	public void feedback(Long userId, String feedbackContent) {
+		Long nowInMilliseconds = DateUtil.nowInMilliseconds();
+
+		FeedbackDo feedbackDo = new FeedbackDo();
+		feedbackDo.setFeedbackId(sequenceDao.getSequence(SequenceDao.SEQ_FEEDBACK_ID));
+		feedbackDo.setUserId(userId);
+		feedbackDo.setFeedbackContent(feedbackContent);
+		feedbackDo.setAddTime(nowInMilliseconds);
+		feedbackDo.setUpdTime(nowInMilliseconds);
+
+		serviceDao.insertFeedback(feedbackDo);
 	}
 }

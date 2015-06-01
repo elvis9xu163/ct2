@@ -14,6 +14,7 @@ import com.xjd.ct.app.view.body.ObjectBody;
 import com.xjd.ct.app.view.vo.ObjectVo;
 import com.xjd.ct.biz.bo.ObjectBo;
 import com.xjd.ct.biz.service.ObjectUpdateService;
+import com.xjd.ct.utl.valid.ValidationUtil;
 
 /**
  * @author elvis.xu
@@ -48,6 +49,21 @@ public class ObjectUpdateController10 {
 			view.setBody(body);
 		}
 
+		return view;
+	}
+
+	@RequestMapping("/delObject")
+	@ResponseBody
+	public View delObject(@RequestParam(value = "objectId", required = false) String objectId) {
+		ValidationUtil.check(ValidationUtil.OBJECT_ID, objectId);
+
+		Long objectIdL = Long.valueOf(objectId);
+
+		// 业务调用
+		objectUpdateService.delObject(RequestContext.checkAndGetUserId(), objectIdL);
+
+		// 返回结果
+		View view = ViewUtil.defaultView();
 		return view;
 	}
 }

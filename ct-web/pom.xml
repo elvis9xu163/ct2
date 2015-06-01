@@ -79,34 +79,4 @@
     <finalName>ct-web</finalName>
   </build>
 
-  <profiles>
-    <profile>
-      <id>develop-windows</id>
-      <properties>
-        <log4j2.logger>console</log4j2.logger>
-        <log4j2.level>trace</log4j2.level>
-      </properties>
-    </profile>
-    <profile>
-      <id>develop-mac</id>
-      <properties>
-        <log4j2.logger>console</log4j2.logger>
-        <log4j2.level>trace</log4j2.level>
-      </properties>
-    </profile>
-    <profile>
-      <id>test</id>
-      <properties>
-        <log4j2.logger>console</log4j2.logger>
-        <log4j2.level>debug</log4j2.level>
-      </properties>
-    </profile>
-    <profile>
-      <id>product</id>
-      <properties>
-        <log4j2.logger>file</log4j2.logger>
-        <log4j2.level>info</log4j2.level>
-      </properties>
-    </profile>
-  </profiles>
 </project>

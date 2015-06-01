@@ -17,10 +17,7 @@ import com.xjd.ct.dal.dao.UserDao;
 import com.xjd.ct.dal.dos.ObjectDo;
 import com.xjd.ct.dal.dos.ObjectResourceDo;
 import com.xjd.ct.utl.DateUtil;
-import com.xjd.ct.utl.enums.BoolEnum;
-import com.xjd.ct.utl.enums.EntityTypeEnum;
-import com.xjd.ct.utl.enums.ObjectContentTypeEnum;
-import com.xjd.ct.utl.enums.ObjectTypeEnum;
+import com.xjd.ct.utl.enums.*;
 import com.xjd.ct.utl.exception.BusinessException;
 import com.xjd.ct.utl.respcode.RespCode;
 
@@ -124,5 +121,78 @@ public class ObjectUpdateService {
 		String seq = sequenceDao.getSequence(SequenceDao.SEQ_OBJECT_ID) + "";
 		String rt = day + StringUtils.leftPad(seq, 10, '0');
 		return Long.valueOf(rt);
+	}
+
+
+	@Transactional
+	public ObjectBo addArticle(Long userId, String title, String summary, String listImg, String link) {
+		ObjectDo objectDo = new ObjectDo();
+		objectDo.setObjectId(generateObjectId());
+		objectDo.setUserId(userId);
+		objectDo.setObjectType(ObjectTypeEnum.ARTICLE.getCode());
+		objectDo.setTitle(title);
+		objectDo.setSummary(summary);
+		objectDo.setContentType(ObjectContentTypeEnum.LINK.getCode());
+		objectDo.setContent(null);
+		objectDo.setVoteFlag(BoolEnum.FALSE.getCode());
+		objectDo.setVoteMultiFlag(BoolEnum.FALSE.getCode());
+		objectDo.setLikeYesFlag(BoolEnum.TRUE.getCode());
+		objectDo.setLikeYesCount(0);
+		objectDo.setLikeNoFlag(BoolEnum.FALSE.getCode());
+		objectDo.setLikeNoCount(0);
+		objectDo.setCommentFlag(BoolEnum.TRUE.getCode());
+		objectDo.setCommentCount(0);
+		objectDo.setFavorFlag(BoolEnum.TRUE.getCode());
+		objectDo.setFavorCount(0);
+		Long now = DateUtil.nowInMilliseconds();
+		objectDo.setAddTime(now);
+		objectDo.setUpdTime(now);
+
+		List<ObjectResourceDo> objectResourceDoList = new ArrayList<ObjectResourceDo>();
+		if (StringUtils.isNotBlank(listImg)) {
+			// 校验资源ID是否存在
+			if (resourceDao.selectResourceByResId(listImg) == null) {
+				throw new BusinessException(RespCode.RESP_0221, new Object[] { listImg });
+			}
+
+			ObjectResourceDo objectResourceDo = new ObjectResourceDo();
+			objectResourceDo.setResId(listImg);
+			objectResourceDo.setEntityType(EntityTypeEnum.OBJECT.getCode());
+			objectResourceDo.setEntityId(objectDo.getObjectId());
+			objectResourceDo.setForClass(ResForClassEnum.LIST_IMG.getCode());
+			objectResourceDo.setForSubclass("");
+			objectResourceDo.setFinishProcess(BoolEnum.TRUE.getCode());
+			objectResourceDo.setAddTime(now);
+			objectResourceDo.setUpdTime(now);
+			objectResourceDoList.add(objectResourceDo);
+		}
+
+		objectDao.insertObject(objectDo);
+		for (ObjectResourceDo objectResourceDo : objectResourceDoList) {
+			resourceDao.insertObjectResource(objectResourceDo);
+		}
+
+		ObjectBo objectBo = new ObjectBo();
+		BeanUtils.copyProperties(objectDo, objectBo);
+		objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(), objectDo.getObjectId()));
+
+		// 用户countPublish +1
+		userDao.increasePublishCount(userId);
+
+		return objectBo;
+	}
+
+	@Transactional
+	public void delObject(Long userId, Long objectId) {
+		ObjectDo objectDo = objectDao.selectObjectByObjectId(objectId);
+		if (objectDo == null) {
+			throw new BusinessException(RespCode.RESP_0222);
+		}
+
+		if (!objectDo.getUserId().equals(userId)) {
+			throw new BusinessException(RespCode.RESP_0223);
+		}
+
+		objectDao.deleteObjectByObjectId(objectId);
 	}
 }

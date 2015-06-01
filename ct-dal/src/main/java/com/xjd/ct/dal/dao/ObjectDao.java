@@ -287,4 +287,8 @@ public class ObjectDao {
 
 		return launchPicDoMapper.selectByExample(example);
 	}
+
+	public int deleteObjectByObjectId(Long objectId) {
+		return objectDoMapper.deleteByPrimaryKey(objectId);
+	}
 }

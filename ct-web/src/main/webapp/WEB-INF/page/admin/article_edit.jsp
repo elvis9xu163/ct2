@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link rel="icon" href="img/favicon.jpg">
+    <link rel="icon" href="<c:url value='/img/favicon.jpg'/>">
     <title>文章编辑</title>
     <link href="<c:url value='/css/bootstrap.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/other/umeditor/themes/default/css/umeditor.css'/>" type="text/css" rel="stylesheet">
@@ -84,6 +84,11 @@
     <input type="hidden" name="link">
 </form>
 
+<form id="articleTextForm" action='<c:url value="/admin/article/edit/text/edit"/>' method="post" target="frame">
+    <input type="hidden" name="text"/>
+    <input type="hidden" name="articleId"/>
+</form>
+
 <iframe id="frame" name="frame" class="hide">
 </iframe>
 
@@ -139,10 +144,31 @@
     });
 
     $("#btnSubmit").click(function () {
-        // 保存编辑器中的信息
-
-        // 保存整个文章对象
+        if ($("input[name='contentTypeRadio']:checked").val() == 'text') {
+            // 保存编辑器中的信息
+            var articleHtml = UM.getEditor('myEditor').getAllHtml();
+            $("#articleTextForm input[name='text']").val(articleHtml);
+            $("#articleTextForm").submit();
+        } else {
+            // 保存整个文章对象
+            $("#articleForm input[name='link']").val($("#inputLink").val());
+            submitForm();
+        }
+        return false;
     });
+
+    function setLink(articleId, url) {
+        $("#articleTextForm input[name='articleId']").val(articleId);
+        $("#articleForm input[name='link']").val(url);
+        $("#inputLink").val(url);
+        submitForm();
+    }
+
+    function submitForm() {
+        $("#articleForm input[name='title']").val($("#inputTitle").val());
+        $("#articleForm input[name='summary']").val($("#inputSummary").val());
+        $("#articleForm").submit();
+    }
 </script>
 </body>
 </html>

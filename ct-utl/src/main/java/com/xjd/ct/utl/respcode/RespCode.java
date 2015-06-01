@@ -108,6 +108,10 @@ public interface RespCode {
 	String RESP_0220 = "0220";
 	/** 未找到资源 */
 	String RESP_0221 = "0221";
+	/** 对象不存在或已删除 */
+	String RESP_0222 = "0222";
+	/** 您无权操作不属于您的对象 */
+	String RESP_0223 = "0223";
 
 	// ==== 9901 ~ 9999 系统错误 ==== //
 

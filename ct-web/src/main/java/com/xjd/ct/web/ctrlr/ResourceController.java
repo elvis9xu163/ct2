@@ -32,7 +32,7 @@ public class ResourceController {
 				multipartFile, request);
 
 		map.put("appView", view);
-		return "article_img_result";
+		return "admin/article_img_result";
 	}
 
 }

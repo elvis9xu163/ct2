@@ -158,7 +158,9 @@
         <app.sign.disabled>1</app.sign.disabled>
         <resource.root>D:/tmp/resource</resource.root>
         <resource.tmp>D:/tmp/tmp</resource.tmp>
-        <resource.url.prefix>http://localhost/ct-web/10/download?resId=</resource.url.prefix>
+        <resource.url.prefix>http://www.xjdbjx.com:81/ct/</resource.url.prefix>
+        <log4j2.logger>console</log4j2.logger>
+        <log4j2.level>trace</log4j2.level>
       </properties>
     </profile>
     <profile>
@@ -168,7 +170,9 @@
         <app.sign.disabled>1</app.sign.disabled>
         <resource.root>/Users/XJD/resource/ct</resource.root>
         <resource.tmp>/Users/XJD/tmp</resource.tmp>
-        <resource.url.prefix>http://localhost:8080/ct-web/10/download?resId=</resource.url.prefix>
+        <resource.url.prefix>http://www.xjdbjx.com:81/ct/</resource.url.prefix>
+        <log4j2.logger>console</log4j2.logger>
+        <log4j2.level>trace</log4j2.level>
       </properties>
     </profile>
     <profile>
@@ -176,9 +180,13 @@
       <properties>
         <app.env>test</app.env>
         <app.sign.disabled>1</app.sign.disabled>
-        <resource.root>/data/resource/ct</resource.root>
+        <resource.root>/data/www/ct/resource</resource.root>
         <resource.tmp>/data/tmp/ct</resource.tmp>
-        <resource.url.prefix>http://www.xjdbjx.com/ct-web/10/download?resId=</resource.url.prefix>
+        <resource.url.prefix>http://www.xjdbjx.com:81/ct/resource/</resource.url.prefix>
+        <article.root>/data/www/ct/article</article.root>
+        <article.url.prefix>http://www.xjdbjx.com:81/ct/article/</article.url.prefix>
+        <log4j2.logger>console</log4j2.logger>
+        <log4j2.level>debug</log4j2.level>
       </properties>
     </profile>
     <profile>
@@ -186,9 +194,13 @@
       <properties>
         <app.env>product</app.env>
         <app.sign.disabled>1</app.sign.disabled>
-        <resource.root>/data/resource/ct</resource.root>
+        <resource.root>/data/www/ct/resource</resource.root>
         <resource.tmp>/data/tmp/ct</resource.tmp>
-        <resource.url.prefix>http://www.xjdbjx.com/ct-web/10/download?resId=</resource.url.prefix>
+        <resource.url.prefix>http://www.xjdbjx.com:81/ct/resource/</resource.url.prefix>
+        <article.root>/data/www/ct/article</article.root>
+        <article.url.prefix>http://www.xjdbjx.com:81/ct/article/</article.url.prefix>
+        <log4j2.logger>file</log4j2.logger>
+        <log4j2.level>info</log4j2.level>
       </properties>
     </profile>
   </profiles>

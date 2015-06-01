@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link rel="icon" href="img/favicon.jpg">
+    <link rel="icon" href="<c:url value='/img/favicon.jpg'/>">
     <title>爱犊后台管理系统</title>
     <link href="<c:url value='/css/bootstrap.min.css'/>" rel="stylesheet">
     <!--[if lt IE 9]>

@@ -121,6 +121,9 @@ public class ValidationBean {
 	@Date(pattern = DatePattern.yyyyMMddHHmmssSSS)
 	private String lastTime;
 
+	@NotBlank(message = RespCode.RESP_0001)
+	private String feedbackContent;
+
 	public String getTimestamp() {
 		return timestamp;
 	}
@@ -337,5 +340,13 @@ public class ValidationBean {
 
 	public void setLastTime(String lastTime) {
 		this.lastTime = lastTime;
+	}
+
+	public String getFeedbackContent() {
+		return feedbackContent;
+	}
+
+	public void setFeedbackContent(String feedbackContent) {
+		this.feedbackContent = feedbackContent;
 	}
 }
