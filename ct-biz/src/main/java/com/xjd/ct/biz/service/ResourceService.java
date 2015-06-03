@@ -131,8 +131,13 @@ public class ResourceService {
 
 	public ResourceBo queryResource(String resId) {
 		ResourceDo resourceDo = resourceDao.selectResourceByResId(resId);
+		// 直接生成URL让前端加载
+		resourceDo.setResForm(ResFormEnum.LINK.getCode());
+		resourceDo.setResPath(AppContext.getProperty(AppContext.KEY_RESOURCE_URL_PREFIX) + resourceDo.getResPath());
+
 		ResourceBo resourceBo = new ResourceBo();
 		BeanUtils.copyProperties(resourceDo, resourceBo);
+
 		return resourceBo;
 	}
 

@@ -121,13 +121,7 @@ public class ObjectQueryService {
 		for (BannerDo bannerDo : bannerDoList) {
 			BannerBo bannerBo = new BannerBo();
 			BeanUtils.copyProperties(bannerDo, bannerBo);
-
-			ResourceDo resourceDo = resourceDao.selectResourceByResId(bannerBo.getResId());
-			if (resourceDo != null) {
-				ResourceBo resourceBo = new ResourceBo();
-				BeanUtils.copyProperties(resourceDo, resourceBo);
-				bannerBo.setResource(resourceBo);
-			}
+			bannerBo.setResource(resourceService.queryResource(bannerBo.getResId()));
 			bannerBoList.add(bannerBo);
 		}
 
