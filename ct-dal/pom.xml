@@ -129,6 +129,7 @@
       <properties>
         <!-- data -->
         <data.dataSource.type>jndi</data.dataSource.type>
+        <dataSource.jndi>java:comp/env/jndi/ct</dataSource.jndi>
       </properties>
     </profile>
   </profiles>

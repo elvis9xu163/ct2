@@ -61,4 +61,27 @@ public class GatewayController10 {
 
 		return view;
 	}
+
+	@RequestMapping("/report")
+	@ResponseBody
+	public View report(@RequestParam(value = "reasonType", required = false) String reasonType,
+			@RequestParam(value = "reasonDetail", required = false) String reasonDetail,
+			@RequestParam(value = "refType", required = false) String refType,
+			@RequestParam(value = "refId", required = false) String refId) {
+		// 参数校验
+		ValidationUtil.check(ValidationUtil.REASON_TYPE, reasonType, ValidationUtil.REF_TYPE, refType,
+				ValidationUtil.REF_ID, refId);
+
+		Byte reasonTypeB = Byte.valueOf(reasonType);
+		Byte refTypeB = Byte.valueOf(refType);
+		Long refIdL = Long.valueOf(refId);
+
+		// 业务调用
+		gatewayService.report(RequestContext.checkAndGetUserId(), refTypeB, refIdL, reasonTypeB, reasonDetail);
+
+		// 结果封装
+		View view = ViewUtil.defaultView();
+
+		return view;
+	}
 }

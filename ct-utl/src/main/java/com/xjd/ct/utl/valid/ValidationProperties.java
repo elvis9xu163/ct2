@@ -28,4 +28,7 @@ public interface ValidationProperties {
 	String DATE = "date";
 	String LAST_TIME = "lastTime";
 	String FEEDBACK_CONTENT = "feedbackContent";
+	String REASON_TYPE = "reasonType";
+	String REF_TYPE = "refType";
+	String REF_ID = "refId";
 }

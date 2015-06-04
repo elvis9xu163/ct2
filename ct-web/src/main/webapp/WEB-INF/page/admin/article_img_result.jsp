@@ -14,7 +14,7 @@
         if (RespCode.RESP_0000.equals(view.getReturnCode())) {
             ResourceBody body = (ResourceBody) view.getBody();
     %>
-    parent.setImage('<%=body.getResource().getResId()%>', '<%=AppContext.getProperty(AppContext.KEY_RESOURCE_URL_PREFIX) + body.getResource().getResId()%>');
+    parent.setImage('<%=body.getResource().getResId()%>', '<%=AppContext.getProperty(AppContext.KEY_RESOURCE_URL_PREFIX) + body.getResource().getResPath()%>');
     <% } else {%>
     parent.alert("上传文件失败", '<%=view.getReturnMsg()%>');
     <% } %>

@@ -7,9 +7,7 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.xjd.ct.utl.enums.IdolOperEnum;
-import com.xjd.ct.utl.enums.OrderByEnum;
-import com.xjd.ct.utl.enums.UserSexEnum;
+import com.xjd.ct.utl.enums.*;
 import com.xjd.ct.utl.respcode.RespCode;
 import com.xjd.ct.utl.valid.constraints.Date;
 import com.xjd.ct.utl.valid.constraints.Date.DatePattern;
@@ -123,6 +121,18 @@ public class ValidationBean {
 
 	@NotBlank(message = RespCode.RESP_0001)
 	private String feedbackContent;
+
+	@NotBlank(message = RespCode.RESP_0001)
+	@com.xjd.ct.utl.valid.constraints.Enum(enumClass = ReportReasonEnum.class)
+	private String reasonType;
+
+	@NotBlank(message = RespCode.RESP_0001)
+	@com.xjd.ct.utl.valid.constraints.Enum(enumClass = EntityTypeEnum.class)
+	private String refType;
+
+	@NotBlank(message = RespCode.RESP_0001)
+	@Digits(integer = 18, fraction = 0, message = RespCode.RESP_0002)
+	private String refId;
 
 	public String getTimestamp() {
 		return timestamp;
@@ -348,5 +358,29 @@ public class ValidationBean {
 
 	public void setFeedbackContent(String feedbackContent) {
 		this.feedbackContent = feedbackContent;
+	}
+
+	public String getReasonType() {
+		return reasonType;
+	}
+
+	public void setReasonType(String reasonType) {
+		this.reasonType = reasonType;
+	}
+
+	public String getRefType() {
+		return refType;
+	}
+
+	public void setRefType(String refType) {
+		this.refType = refType;
+	}
+
+	public String getRefId() {
+		return refId;
+	}
+
+	public void setRefId(String refId) {
+		this.refId = refId;
 	}
 }

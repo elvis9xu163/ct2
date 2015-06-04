@@ -8,10 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xjd.ct.dal.dos.*;
-import com.xjd.ct.dal.map.AppVersionDoMapper;
-import com.xjd.ct.dal.map.FeedbackDoMapper;
-import com.xjd.ct.dal.map.ServiceDoMapper;
-import com.xjd.ct.dal.map.ServiceLogDoMapper;
+import com.xjd.ct.dal.map.*;
 import com.xjd.ct.utl.enums.BoolEnum;
 
 /**
@@ -33,6 +30,8 @@ public class ServiceDao {
 	AppVersionDoMapper appVersionDoMapper;
 	@Autowired
 	FeedbackDoMapper feedbackDoMapper;
+	@Autowired
+	ReportDoMapper reportDoMapper;
 
 	/**
 	 * 根据Name和Version查询接口信息
@@ -95,5 +94,9 @@ public class ServiceDao {
 
 	public int insertFeedback(FeedbackDo feedbackDo) {
 		return feedbackDoMapper.insert(feedbackDo);
+	}
+
+	public int insertReport(ReportDo reportDo) {
+		return reportDoMapper.insert(reportDo);
 	}
 }

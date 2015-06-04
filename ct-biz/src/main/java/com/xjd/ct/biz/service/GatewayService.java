@@ -13,6 +13,7 @@ import com.xjd.ct.dal.dao.SequenceDao;
 import com.xjd.ct.dal.dao.ServiceDao;
 import com.xjd.ct.dal.dos.AppVersionDo;
 import com.xjd.ct.dal.dos.FeedbackDo;
+import com.xjd.ct.dal.dos.ReportDo;
 import com.xjd.ct.dal.dos.ServiceDo;
 import com.xjd.ct.utl.DateUtil;
 import com.xjd.ct.utl.enums.BoolEnum;
@@ -110,5 +111,20 @@ public class GatewayService {
 		feedbackDo.setUpdTime(nowInMilliseconds);
 
 		serviceDao.insertFeedback(feedbackDo);
+	}
+
+	public void report(Long userId, Byte refType, Long refId, Byte reasonType, String reasonDetail) {
+		Long nowInMilliseconds = DateUtil.nowInMilliseconds();
+
+		ReportDo reportDo = new ReportDo();
+		reportDo.setReportId(sequenceDao.getSequence(SequenceDao.SEQ_REPORT_ID));
+		reportDo.setUserId(userId);
+		reportDo.setRefType(refType);
+		reportDo.setRefId(refId);
+		reportDo.setReportReasonType(reasonType);
+		reportDo.setReportReasonDetail(reasonDetail);
+		reportDo.setAddTime(nowInMilliseconds);
+		reportDo.setUpdTime(nowInMilliseconds);
+		serviceDao.insertReport(reportDo);
 	}
 }
