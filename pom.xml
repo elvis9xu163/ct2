@@ -193,15 +193,15 @@
     <profile>
       <id>product</id>
       <properties>
-        <app.env>product</app.env>
+        <app.env>test</app.env>
         <app.sign.disabled>1</app.sign.disabled>
         <resource.root>/data/www/ct/resource</resource.root>
         <resource.tmp>/data/tmp/ct</resource.tmp>
         <resource.url.prefix>http://www.xjdbjx.com:81/ct/resource/</resource.url.prefix>
         <article.root>/data/www/ct/article</article.root>
         <article.url.prefix>http://www.xjdbjx.com:81/ct/article/</article.url.prefix>
-        <log4j2.logger>file</log4j2.logger>
-        <log4j2.level>info</log4j2.level>
+        <log4j2.logger>console</log4j2.logger>
+        <log4j2.level>debug</log4j2.level>
       </properties>
     </profile>
   </profiles>
