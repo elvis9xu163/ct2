@@ -43,6 +43,8 @@ public class ObjectUpdateService {
 	UserDao userDao;
 	@Autowired
 	ResourceService resourceService;
+	@Autowired
+	UserService userService;
 
 	@Transactional
 	public ObjectBo addPublish(Long userId, String title, String content, String resources) {
@@ -107,6 +109,8 @@ public class ObjectUpdateService {
 
 		// 用户countPublish +1
 		userDao.increasePublishCount(userId);
+
+		objectBo.setUser(userService.getUserInfoSimple(userId));
 
 		return objectBo;
 	}
@@ -178,6 +182,8 @@ public class ObjectUpdateService {
 
 		// 用户countPublish +1
 		userDao.increasePublishCount(userId);
+
+		objectBo.setUser(userService.getUserInfoSimple(userId));
 
 		return objectBo;
 	}
