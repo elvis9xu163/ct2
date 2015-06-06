@@ -133,7 +133,7 @@ public class ObjectUpdateService {
 		objectDo.setTitle(title);
 		objectDo.setSummary(summary);
 		objectDo.setContentType(ObjectContentTypeEnum.LINK.getCode());
-		objectDo.setContent(null);
+		objectDo.setContent(link);
 		objectDo.setVoteFlag(BoolEnum.FALSE.getCode());
 		objectDo.setVoteMultiFlag(BoolEnum.FALSE.getCode());
 		objectDo.setLikeYesFlag(BoolEnum.TRUE.getCode());

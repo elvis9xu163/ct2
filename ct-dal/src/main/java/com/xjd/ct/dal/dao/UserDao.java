@@ -178,6 +178,10 @@ public class UserDao {
 		return userDoMapper.updateByPrimaryKey(userDo);
 	}
 
+	public int updateSelectiveByUserId(UserDo userDo) {
+		return userDoMapper.updateByPrimaryKeySelective(userDo);
+	}
+
 	public int updateUserBaby(UserBabyDo userBabyDo) {
 		return userBabyDoMapper.updateByPrimaryKey(userBabyDo);
 	}
@@ -348,5 +352,12 @@ public class UserDao {
 
 	public int insertSign(SignDo signDo) {
 		return signDoMapper.insert(signDo);
+	}
+
+	public SignDo selectSignByAddTimeBetween(Long dayBegin, Long dayEnd) {
+		SignDoExample example = new SignDoExample();
+		example.or().andAddTimeBetween(dayBegin, dayEnd);
+		List<SignDo> list = signDoMapper.selectByExample(example);
+		return list.isEmpty() ? null : list.get(0);
 	}
 }

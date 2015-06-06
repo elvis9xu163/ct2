@@ -1,11 +1,9 @@
 package com.xjd.ct.biz.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -547,15 +545,35 @@ public class UserService {
 
 	}
 
+	@Transactional
 	public SignBo sign(Long userId) {
 
-		SignDo signDo = new SignDo();
-		signDo.setSignId(sequenceDao.getSequence(SequenceDao.SEQ_SIGN_ID));
-		signDo.setUserId(userId);
-		signDo.setPont(10);
-		signDo.setAddTime(DateUtil.nowInMilliseconds());
+		Date now = DateUtil.now();
+		Long dayBegin = DateUtils.truncate(now, Calendar.DAY_OF_MONTH).getTime();
+		Long dayEnd = DateUtil.parse(DateUtil.format(now, "yyyyMMdd") + "235959999", DateUtil.PATTERN_YEAR2MILLISECOND)
+				.getTime();
+		// 判断当天是否签到
+		SignDo signDo = userDao.selectSignByAddTimeBetween(dayBegin, dayEnd);
 
-		userDao.insertSign(signDo);
+		if (signDo == null) { // 未签到 添加积分 经验和等级
+			signDo = new SignDo();
+			signDo.setSignId(sequenceDao.getSequence(SequenceDao.SEQ_SIGN_ID));
+			signDo.setUserId(userId);
+			signDo.setPont(10);
+			signDo.setAddTime(DateUtil.nowInMilliseconds());
+			userDao.insertSign(signDo);
+
+			UserDo userDo = userDao.selectUserByUserId(userId);
+			UserDo upd = new UserDo();
+			upd.setUserId(userId);
+			upd.setPoint(userDo.getPoint() + 10); // 积分加10
+			upd.setGradeExp(userDo.getGradeExp() + 100); // 经验加100
+			if (upd.getGradeExp() >= 50 * (userDo.getGradeLevel() + 1) * (userDo.getGradeLevel() + 2)) { // 等级计算公式
+				upd.setGradeLevel((byte) (userDo.getGradeLevel() + 1));
+			}
+			userDo.setUpdTime(DateUtil.nowInMilliseconds());
+			userDao.updateSelectiveByUserId(upd);
+		}
 
 		SignBo signBo = new SignBo();
 		BeanUtils.copyProperties(signDo, signBo);

@@ -194,7 +194,7 @@
       <id>product</id>
       <properties>
         <app.env>test</app.env>
-        <app.sign.disabled>1</app.sign.disabled>
+        <app.sign.disabled>0</app.sign.disabled>
         <resource.root>/data/www/ct/resource</resource.root>
         <resource.tmp>/data/tmp/ct</resource.tmp>
         <resource.url.prefix>http://www.xjdbjx.com:81/ct/resource/</resource.url.prefix>
