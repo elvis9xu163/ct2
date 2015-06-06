@@ -194,5 +194,10 @@ public class ObjectUpdateService {
 		}
 
 		objectDao.deleteObjectByObjectId(objectId);
+
+		if (ObjectTypeEnum.valueOfCode(objectDo.getObjectType()) == ObjectTypeEnum.PUBLISH) {
+			// 发果是发表，要减用户的发表数量
+			userDao.decreasePublishCount(userId);
+		}
 	}
 }
