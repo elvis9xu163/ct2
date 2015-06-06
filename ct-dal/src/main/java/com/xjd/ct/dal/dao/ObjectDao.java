@@ -249,12 +249,12 @@ public class ObjectDao {
 			uidList.add(idolDo.getIdolUserId());
 		}
 
-		idolDoExample = new IdolDoExample();
-		idolDoExample.or().andIdolUserIdEqualTo(userId);
-		idolDoList = idolDoMapper.selectByExample(idolDoExample);
-		for (IdolDo idolDo : idolDoList) {
-			uidList.add(idolDo.getIdolUserId());
-		}
+//		idolDoExample = new IdolDoExample();
+//		idolDoExample.or().andIdolUserIdEqualTo(userId);
+//		idolDoList = idolDoMapper.selectByExample(idolDoExample);
+//		for (IdolDo idolDo : idolDoList) {
+//			uidList.add(idolDo.getUserId());
+//		}
 
 		if (uidList.isEmpty()) {
 			return Collections.emptyList();
