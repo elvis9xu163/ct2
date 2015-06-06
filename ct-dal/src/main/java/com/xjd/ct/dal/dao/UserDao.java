@@ -354,9 +354,9 @@ public class UserDao {
 		return signDoMapper.insert(signDo);
 	}
 
-	public SignDo selectSignByAddTimeBetween(Long dayBegin, Long dayEnd) {
+	public SignDo selectSignByUserIdAndAddTimeBetween(Long userId, Long dayBegin, Long dayEnd) {
 		SignDoExample example = new SignDoExample();
-		example.or().andAddTimeBetween(dayBegin, dayEnd);
+		example.or().andUserIdEqualTo(userId).andAddTimeBetween(dayBegin, dayEnd);
 		List<SignDo> list = signDoMapper.selectByExample(example);
 		return list.isEmpty() ? null : list.get(0);
 	}

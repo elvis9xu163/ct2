@@ -553,7 +553,7 @@ public class UserService {
 		Long dayEnd = DateUtil.parse(DateUtil.format(now, "yyyyMMdd") + "235959999", DateUtil.PATTERN_YEAR2MILLISECOND)
 				.getTime();
 		// 判断当天是否签到
-		SignDo signDo = userDao.selectSignByAddTimeBetween(dayBegin, dayEnd);
+		SignDo signDo = userDao.selectSignByUserIdAndAddTimeBetween(userId, dayBegin, dayEnd);
 
 		if (signDo == null) { // 未签到 添加积分 经验和等级
 			signDo = new SignDo();
