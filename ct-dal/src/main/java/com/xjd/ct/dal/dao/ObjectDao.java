@@ -223,9 +223,10 @@ public class ObjectDao {
 		return bannerDoMapper.selectByExample(null);
 	}
 
-	public List<RecommendDo> selectRecommendByRecommendTime(Long date) {
+	public List<RecommendDo> selectRecommendByPageOrderByAddTimeDesc(Long offset, Integer count) {
 		RecommendDoExample example = new RecommendDoExample();
-		example.or().andRecommendTimeEqualTo(date);
+		example.setOrderByClause("ADD_TIME desc");
+		example.setOffsetAndLimit(offset - 1, count);
 
 		return recommendDoMapper.selectByExample(example);
 	}

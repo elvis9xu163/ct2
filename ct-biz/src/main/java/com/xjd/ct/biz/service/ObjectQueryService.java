@@ -9,19 +9,28 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.xjd.ct.biz.bo.*;
+import com.xjd.ct.biz.bo.BannerBo;
+import com.xjd.ct.biz.bo.LaunchPicBo;
+import com.xjd.ct.biz.bo.ObjectBo;
+import com.xjd.ct.biz.bo.UserBo;
 import com.xjd.ct.dal.dao.ObjectDao;
 import com.xjd.ct.dal.dao.ResourceDao;
-import com.xjd.ct.dal.dos.*;
+import com.xjd.ct.dal.dos.BannerDo;
+import com.xjd.ct.dal.dos.LaunchPicDo;
+import com.xjd.ct.dal.dos.ObjectDo;
+import com.xjd.ct.dal.dos.ObjectFavorDo;
+import com.xjd.ct.dal.dos.ObjectLikeDo;
+import com.xjd.ct.dal.dos.RecommendDo;
 import com.xjd.ct.utl.enums.EntityTypeEnum;
 import com.xjd.ct.utl.enums.ObjectTypeEnum;
 
 /**
  * <pre>
  * 业务对象查询服务
- *
+ * 
  * 根据不同的条件(包括订阅条件)查询数据
  * </pre>
+ * 
  * @author elvis.xu
  * @since 2015-4-30 下午6:16:07
  */
@@ -128,8 +137,8 @@ public class ObjectQueryService {
 		return bannerBoList;
 	}
 
-	public List<ObjectBo> listRecommendObjects(Long date, Long userId) {
-		List<RecommendDo> recommendDoList = objectDao.selectRecommendByRecommendTime(date);
+	public List<ObjectBo> listRecommendObjects(Long userId, Long offset, Integer count) {
+		List<RecommendDo> recommendDoList = objectDao.selectRecommendByPageOrderByAddTimeDesc(offset, count);
 
 		if (CollectionUtils.isEmpty(recommendDoList)) {
 			return Collections.emptyList();
@@ -141,6 +150,18 @@ public class ObjectQueryService {
 		}
 
 		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectIdList(objectIdList);
+
+		// 先排序
+		List<ObjectDo> orderedList = new ArrayList<ObjectDo>(objectDoList.size());
+		for (Long objId : objectIdList) {
+			for (ObjectDo objectDo : objectDoList) {
+				if (objId.equals(objectDo.getObjectId())) {
+					orderedList.add(objectDo);
+					break;
+				}
+			}
+		}
+		objectDoList = orderedList;
 
 		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
 		for (ObjectDo objectDo : objectDoList) {

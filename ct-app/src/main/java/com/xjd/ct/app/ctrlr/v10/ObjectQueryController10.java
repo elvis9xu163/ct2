@@ -214,14 +214,16 @@ public class ObjectQueryController10 {
 
 	@RequestMapping("/listRecommendObjects")
 	@ResponseBody
-	public View listRecommendObjects(@RequestParam(value = "date", required = false) String date) {
-		// 校验
-		ValidationUtil.check(ValidationUtil.DATE, date);
+	public View listRecommendObjects(@RequestParam(value = "offset", required = false) String offset,
+			@RequestParam(value = "count", required = false) String count) {
+		// 参数校验
+		ValidationUtil.check(ValidationUtil.OFFSET, offset, ValidationUtil.COUNT, count);
 
-		Long dateL = Long.valueOf(date);
+		Long offsetL = Long.valueOf(offset);
+		Integer countI = Integer.valueOf(count);
 
 		// 业务调用
-		List<ObjectBo> objectBoList = objectQueryService.listRecommendObjects(dateL, RequestContext.getUserId());
+		List<ObjectBo> objectBoList = objectQueryService.listRecommendObjects(RequestContext.getUserId(), offsetL, countI);
 
 		// 返回结果
 		List<ObjectVo> objectVoList = new ArrayList<ObjectVo>(objectBoList.size());
