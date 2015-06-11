@@ -1,6 +1,7 @@
 package com.xjd.ct.biz.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,12 +16,7 @@ import com.xjd.ct.biz.bo.ObjectBo;
 import com.xjd.ct.biz.bo.UserBo;
 import com.xjd.ct.dal.dao.ObjectDao;
 import com.xjd.ct.dal.dao.ResourceDao;
-import com.xjd.ct.dal.dos.BannerDo;
-import com.xjd.ct.dal.dos.LaunchPicDo;
-import com.xjd.ct.dal.dos.ObjectDo;
-import com.xjd.ct.dal.dos.ObjectFavorDo;
-import com.xjd.ct.dal.dos.ObjectLikeDo;
-import com.xjd.ct.dal.dos.RecommendDo;
+import com.xjd.ct.dal.dos.*;
 import com.xjd.ct.utl.enums.EntityTypeEnum;
 import com.xjd.ct.utl.enums.ObjectTypeEnum;
 
@@ -179,8 +175,8 @@ public class ObjectQueryService {
 
 	public List<ObjectBo> listArticles(Byte orderBy, Long offset, Integer count, Long userId) {
 		// 全部以时间倒序
-		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectTypeAndPageOrderByAddTimeDesc(
-				ObjectTypeEnum.ARTICLE.getCode(), offset, count);
+		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectTypeListAndPageOrderByAddTimeDesc(
+				Arrays.asList(ObjectTypeEnum.ARTICLE.getCode(), ObjectTypeEnum.TOPIC.getCode()), offset, count);
 
 		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
 		for (ObjectDo objectDo : objectDoList) {
@@ -198,8 +194,8 @@ public class ObjectQueryService {
 
 	public List<ObjectBo> listAllPublishs(Byte orderBy, Long offset, Integer count, Long userId) {
 		// 全部以时间倒序
-		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectTypeAndPageOrderByAddTimeDesc(
-				ObjectTypeEnum.PUBLISH.getCode(), offset, count);
+		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectTypeListAndPageOrderByAddTimeDesc(
+				Arrays.asList(ObjectTypeEnum.PUBLISH.getCode(), ObjectTypeEnum.TOPIC.getCode()), offset, count);
 
 		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
 		for (ObjectDo objectDo : objectDoList) {

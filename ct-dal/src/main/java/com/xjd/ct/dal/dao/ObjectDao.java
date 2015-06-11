@@ -231,9 +231,10 @@ public class ObjectDao {
 		return recommendDoMapper.selectByExample(example);
 	}
 
-	public List<ObjectDo> selectObjectByObjectTypeAndPageOrderByAddTimeDesc(byte objectType, Long offset, Integer count) {
+	public List<ObjectDo> selectObjectByObjectTypeListAndPageOrderByAddTimeDesc(List<Byte> objectTypeList, Long offset,
+			Integer count) {
 		ObjectDoExample example = new ObjectDoExample();
-		example.or().andObjectTypeEqualTo(objectType);
+		example.or().andObjectTypeIn(objectTypeList);
 		example.setOrderByClause("ADD_TIME desc");
 		example.setOffsetAndLimit(offset - 1, count);
 		return objectDoMapper.selectByExample(example);
