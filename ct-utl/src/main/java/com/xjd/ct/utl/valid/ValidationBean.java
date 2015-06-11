@@ -11,11 +11,12 @@ import com.xjd.ct.utl.enums.*;
 import com.xjd.ct.utl.respcode.RespCode;
 import com.xjd.ct.utl.valid.constraints.Date;
 import com.xjd.ct.utl.valid.constraints.Date.DatePattern;
+import com.xjd.ct.utl.valid.constraints.Timestamp;
 
 public class ValidationBean {
 
 	@NotBlank(message = RespCode.RESP_0001)
-	@DecimalMin(value = "1", message = RespCode.RESP_0002)
+	@Timestamp
 	private String timestamp;
 
 	@NotBlank(message = RespCode.RESP_0001)
@@ -116,7 +117,7 @@ public class ValidationBean {
 	private String date;
 
 	@NotBlank(message = RespCode.RESP_0001)
-	@Date(pattern = DatePattern.yyyyMMddHHmmssSSS)
+	@Timestamp
 	private String lastTime;
 
 	@NotBlank(message = RespCode.RESP_0001)
