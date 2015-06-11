@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xjd.ct.biz.bo.ObjectBo;
+import com.xjd.ct.biz.bo.UserBo;
 import com.xjd.ct.dal.dao.ObjectDao;
 import com.xjd.ct.dal.dao.ResourceDao;
 import com.xjd.ct.dal.dao.SequenceDao;
 import com.xjd.ct.dal.dao.UserDao;
 import com.xjd.ct.dal.dos.ObjectDo;
 import com.xjd.ct.dal.dos.ObjectResourceDo;
+import com.xjd.ct.dal.dos.RecommendDo;
 import com.xjd.ct.utl.DateUtil;
 import com.xjd.ct.utl.enums.*;
 import com.xjd.ct.utl.exception.BusinessException;
@@ -205,5 +207,30 @@ public class ObjectUpdateService {
 			// 发果是发表，要减用户的发表数量
 			userDao.decreasePublishCount(userId);
 		}
+	}
+
+	public void recommendObject(Long userId, Long objectId) {
+		UserBo userBo = userService.queryUserByUserId(userId);
+		if (userBo == null) {
+			throw new BusinessException(RespCode.RESP_0110);
+		}
+
+		if (UserTypeEnum.valueOfCode(userBo.getUserType()) != UserTypeEnum.ADMIN) {
+			throw new BusinessException(RespCode.RESP_0116);
+		}
+
+		ObjectDo objectDo = objectDao.selectObjectByObjectId(objectId);
+		if (objectDo == null) {
+			throw new BusinessException(RespCode.RESP_0222);
+		}
+
+		Long now = DateUtil.nowInMilliseconds();
+		RecommendDo recommendDo = new RecommendDo();
+		recommendDo.setRecommendId(sequenceDao.getSequence(SequenceDao.SEQ_RECOMMEND_ID));
+		recommendDo.setObjectId(objectId);
+		recommendDo.setRecommendTime(now);
+		recommendDo.setAddTime(now);
+		recommendDo.setUpdTime(now);
+		objectDao.insertRecommend(recommendDo);
 	}
 }

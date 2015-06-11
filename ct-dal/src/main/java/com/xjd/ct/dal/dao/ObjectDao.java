@@ -292,4 +292,8 @@ public class ObjectDao {
 	public int deleteObjectByObjectId(Long objectId) {
 		return objectDoMapper.deleteByPrimaryKey(objectId);
 	}
+
+	public int insertRecommend(RecommendDo recommendDo) {
+		return recommendDoMapper.insert(recommendDo);
+	}
 }

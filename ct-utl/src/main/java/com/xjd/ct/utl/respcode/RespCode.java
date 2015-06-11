@@ -51,6 +51,8 @@ public interface RespCode {
 	String RESP_0114 = "0114";
 	/** 怅号未被激活, 请先激活账号 */
 	String RESP_0115 = "0115";
+	/** 您没有操作权限 */
+	String RESP_0116 = "0116";
 	/** 用户名请填写手机或邮箱 */
 	String RESP_0120 = "0120";
 	/** 该手机已注册 */
