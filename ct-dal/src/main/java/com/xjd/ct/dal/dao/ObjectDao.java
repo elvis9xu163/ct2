@@ -240,6 +240,15 @@ public class ObjectDao {
 		return objectDoMapper.selectByExample(example);
 	}
 
+	public List<ObjectDo> selectObjectByObjectTypeListAndPageOrderByLikeYesCountDesc(List<Byte> objectTypeList,
+			Long offset, Integer count) {
+		ObjectDoExample example = new ObjectDoExample();
+		example.or().andObjectTypeIn(objectTypeList);
+		example.setOrderByClause("like_yes_count desc");
+		example.setOffsetAndLimit(offset - 1, count);
+		return objectDoMapper.selectByExample(example);
+	}
+
 	public List<ObjectDo> selectIdolUserPublishByPageOrderByAddTimeDesc(Long userId, Long offset, Integer count) {
 		// TODO 优化
 		List<Long> uidList = new ArrayList<Long>();

@@ -19,6 +19,7 @@ import com.xjd.ct.dal.dao.ResourceDao;
 import com.xjd.ct.dal.dos.*;
 import com.xjd.ct.utl.enums.EntityTypeEnum;
 import com.xjd.ct.utl.enums.ObjectTypeEnum;
+import com.xjd.ct.utl.enums.OrderByEnum;
 
 /**
  * <pre>
@@ -193,10 +194,16 @@ public class ObjectQueryService {
 	}
 
 	public List<ObjectBo> listAllPublishs(Byte orderBy, Long offset, Integer count, Long userId) {
-		// 全部以时间倒序
-		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectTypeListAndPageOrderByAddTimeDesc(
-				Arrays.asList(ObjectTypeEnum.PUBLISH.getCode(), ObjectTypeEnum.TOPIC.getCode()), offset, count);
-
+		OrderByEnum orderByEnum = OrderByEnum.valueOfCode(orderBy);
+		List<ObjectDo> objectDoList;
+		if (orderByEnum == OrderByEnum.HOT_DESC) { // 以热度排序
+			objectDoList = objectDao.selectObjectByObjectTypeListAndPageOrderByLikeYesCountDesc(
+					Arrays.asList(ObjectTypeEnum.PUBLISH.getCode(), ObjectTypeEnum.TOPIC.getCode()), offset, count);
+		} else {
+			// 全部以时间倒序
+			objectDoList = objectDao.selectObjectByObjectTypeListAndPageOrderByAddTimeDesc(
+					Arrays.asList(ObjectTypeEnum.PUBLISH.getCode(), ObjectTypeEnum.TOPIC.getCode()), offset, count);
+		}
 		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
 		for (ObjectDo objectDo : objectDoList) {
 			ObjectBo objectBo = new ObjectBo();
