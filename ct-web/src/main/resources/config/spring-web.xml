@@ -8,7 +8,7 @@
     http://www.springframework.org/schema/mvc
     http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 
-  <context:component-scan base-package="com.xjd.ct.web.cmpnt, com.xjd.ct.web.ctrlr" />
+  <context:component-scan base-package="com.xjd.ct.web.cmpnt, com.xjd.ct.web.ctrlr, com.xjd.ct.web.util" />
 
   <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
     <property name="converters">
@@ -31,8 +31,15 @@
   <mvc:resources location="/js/" mapping="/js/**"/>
   <mvc:resources location="/img/" mapping="/img/**"/>
   <mvc:resources location="/other/" mapping="/other/**"/>
-  <mvc:resources location="/article/" mapping="/article/**"/>
 
-  <mvc:view-controller path="/index" view-name="index" />
+  <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    <property name="defaultEncoding" value="UTF-8"/>
+    <property name="cacheSeconds" value="60"/>
+    <property name="basenames">
+      <list>
+        <value>i18n/messages</value>
+      </list>
+    </property>
+  </bean>
 
 </beans>

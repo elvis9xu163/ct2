@@ -233,4 +233,64 @@ public class ObjectUpdateService {
 		recommendDo.setUpdTime(now);
 		objectDao.insertRecommend(recommendDo);
 	}
+
+	@Transactional
+	public ObjectBo addTopic(Long userId, String title, String summary, String listImg) {
+		ObjectDo objectDo = new ObjectDo();
+		objectDo.setObjectId(generateObjectId());
+		objectDo.setUserId(userId);
+		objectDo.setObjectType(ObjectTypeEnum.TOPIC.getCode());
+		objectDo.setTitle(title);
+		objectDo.setSummary(summary);
+		objectDo.setContentType(ObjectContentTypeEnum.TEXT.getCode());
+		objectDo.setContent("");
+		objectDo.setVoteFlag(BoolEnum.FALSE.getCode());
+		objectDo.setVoteMultiFlag(BoolEnum.FALSE.getCode());
+		objectDo.setLikeYesFlag(BoolEnum.TRUE.getCode());
+		objectDo.setLikeYesCount(0);
+		objectDo.setLikeNoFlag(BoolEnum.FALSE.getCode());
+		objectDo.setLikeNoCount(0);
+		objectDo.setCommentFlag(BoolEnum.TRUE.getCode());
+		objectDo.setCommentCount(0);
+		objectDo.setFavorFlag(BoolEnum.TRUE.getCode());
+		objectDo.setFavorCount(0);
+		Long now = DateUtil.nowInMilliseconds();
+		objectDo.setAddTime(now);
+		objectDo.setUpdTime(now);
+
+		List<ObjectResourceDo> objectResourceDoList = new ArrayList<ObjectResourceDo>();
+		if (StringUtils.isNotBlank(listImg)) {
+			// 校验资源ID是否存在
+			if (resourceDao.selectResourceByResId(listImg) == null) {
+				throw new BusinessException(RespCode.RESP_0221, new Object[] { listImg });
+			}
+
+			ObjectResourceDo objectResourceDo = new ObjectResourceDo();
+			objectResourceDo.setResId(listImg);
+			objectResourceDo.setEntityType(EntityTypeEnum.OBJECT.getCode());
+			objectResourceDo.setEntityId(objectDo.getObjectId());
+			objectResourceDo.setForClass(ResForClassEnum.LIST_IMG.getCode());
+			objectResourceDo.setForSubclass("");
+			objectResourceDo.setFinishProcess(BoolEnum.TRUE.getCode());
+			objectResourceDo.setAddTime(now);
+			objectResourceDo.setUpdTime(now);
+			objectResourceDoList.add(objectResourceDo);
+		}
+
+		objectDao.insertObject(objectDo);
+		for (ObjectResourceDo objectResourceDo : objectResourceDoList) {
+			resourceDao.insertObjectResource(objectResourceDo);
+		}
+
+		ObjectBo objectBo = new ObjectBo();
+		BeanUtils.copyProperties(objectDo, objectBo);
+		objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(), objectDo.getObjectId()));
+
+		// 用户countPublish +1
+		userDao.increasePublishCount(userId);
+
+		objectBo.setUser(userService.getUserInfoSimple(userId));
+
+		return objectBo;
+	}
 }

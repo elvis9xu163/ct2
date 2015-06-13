@@ -65,7 +65,7 @@ public class AdminController {
 			return PAGE_LOGIN;
 		}
 
-		return "redirect:/admin";
+		return "admin/index";
 	}
 
 	@RequestMapping("/logout")
@@ -74,9 +74,5 @@ public class AdminController {
 		return "redirect:/login";
 	}
 
-	@RequestMapping({"/",""})
-	public String admin() {
-		return "admin/index";
-	}
 
 }
