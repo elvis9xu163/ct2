@@ -16,6 +16,7 @@
                 <li id="nav_article"><a href="<c:url value='/admin/article/edit/input'/>">文章编辑</a></li>
                 <li id="nav_topic"><a href="<c:url value='/admin/topic/edit/input'/>">话题编辑</a></li>
                 <li id="nav_launchpic"><a href="<c:url value='/admin/launchpic/edit/input'/>">启动图设置</a></li>
+                <li id="nav_banner"><a href="<c:url value='/admin/banner/edit/input'/>">Banner添加</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-user"></span><%=SessionContextUtil.getUser().getMobile()%></a></li>

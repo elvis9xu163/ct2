@@ -314,4 +314,8 @@ public class ObjectDao {
 	public int insertLaunchPic(LaunchPicDo launchPicDo) {
 		return launchPicDoMapper.insert(launchPicDo);
 	}
+
+	public int insertBanner(BannerDo bannerDo) {
+		return bannerDoMapper.insert(bannerDo);
+	}
 }

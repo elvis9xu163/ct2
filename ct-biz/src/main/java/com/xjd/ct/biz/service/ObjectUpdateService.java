@@ -15,10 +15,7 @@ import com.xjd.ct.dal.dao.ObjectDao;
 import com.xjd.ct.dal.dao.ResourceDao;
 import com.xjd.ct.dal.dao.SequenceDao;
 import com.xjd.ct.dal.dao.UserDao;
-import com.xjd.ct.dal.dos.LaunchPicDo;
-import com.xjd.ct.dal.dos.ObjectDo;
-import com.xjd.ct.dal.dos.ObjectResourceDo;
-import com.xjd.ct.dal.dos.RecommendDo;
+import com.xjd.ct.dal.dos.*;
 import com.xjd.ct.utl.DateUtil;
 import com.xjd.ct.utl.enums.*;
 import com.xjd.ct.utl.exception.BusinessException;
@@ -322,5 +319,17 @@ public class ObjectUpdateService {
 		objectResourceDo.setAddTime(now);
 		objectResourceDo.setUpdTime(now);
 		resourceDao.insertObjectResource(objectResourceDo);
+	}
+
+	public void addBanner(Long userId, String url, String img) {
+		Long now = DateUtil.nowInMilliseconds();
+		BannerDo bannerDo = new BannerDo();
+		bannerDo.setBannerId(sequenceDao.getSequence(SequenceDao.SEQ_BANNER_ID));
+		bannerDo.setResId(img);
+		bannerDo.setBannerType((byte)2);
+		bannerDo.setBannerContent(url);
+		bannerDo.setAddTime(now);
+		bannerDo.setUpdTime(now);
+		objectDao.insertBanner(bannerDo);
 	}
 }
