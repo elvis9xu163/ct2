@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
 @Retention(RUNTIME)
 @Documented
-@Constraint(validatedBy = { DateConstraintValidator.class })
+@Constraint(validatedBy = { TimestampConstraintValidator.class })
 public @interface Timestamp {
 
 	String message() default RespCode.RESP_0002;

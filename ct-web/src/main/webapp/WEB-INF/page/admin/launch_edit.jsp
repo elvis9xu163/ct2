@@ -9,7 +9,7 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="icon" href="<c:url value='/img/favicon.jpg'/>">
-    <title>话题编辑</title>
+    <title>启动图设置</title>
     <link href="<c:url value='/css/bootstrap.min.css'/>" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -23,19 +23,10 @@
 
 <div class="container">
     <div class="page-header">
-        <h3>新增话题</h3>
+        <h3>设置启动图</h3>
     </div>
     <div class="row">
         <div class="col-md-5">
-            <div class="form-group">
-                <label for="inputTitle">标&nbsp;题</label>
-                <input type="text" class="form-control" id="inputTitle" placeholder="请输入标题">
-            </div>
-            <div class="form-group">
-                <label for="inputSummary">摘&nbsp;要</label>
-                <input type="text" class="form-control" id="inputSummary" placeholder="请输入摘要">
-            </div>
-
             <div class="form-group">
                 <form id="imgForm" target="frame" enctype="multipart/form-data" method="post"
                       action='<c:url value="/admin/resource/uploadArticleImg"/> '>
@@ -52,9 +43,7 @@
     <button id="btnSubmit" type="button" class="btn btn-default btn-lg">提&nbsp;交</button>
 </div>
 
-<form id="articleForm" action="<c:url value='/admin/topic/edit'/>" method="post">
-    <input type="hidden" name="title">
-    <input type="hidden" name="summary">
+<form id="articleForm" action="<c:url value='/admin/launchpic/edit'/>" method="post">
     <input type="hidden" name="img">
 </form>
 
@@ -69,8 +58,8 @@
         $(this).removeClass("active");
     });
 
-    $("#nav_topic").addClass("active");
-    $("#nav_topic").children("a").attr("href", "javascript:void(0)");
+    $("#nav_launchpic").addClass("active");
+    $("#nav_launchpic").children("a").attr("href", "javascript:void(0)");
 
     $("#inputImg").change(function () {
         var f = $(this).val();
@@ -93,8 +82,6 @@
     }
 
     $("#btnSubmit").click(function () {
-        $("#articleForm input[name='title']").val($("#inputTitle").val());
-        $("#articleForm input[name='summary']").val($("#inputSummary").val());
         $("#articleForm").submit();
     });
 

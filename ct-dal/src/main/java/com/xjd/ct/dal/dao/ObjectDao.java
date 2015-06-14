@@ -306,4 +306,12 @@ public class ObjectDao {
 	public int insertRecommend(RecommendDo recommendDo) {
 		return recommendDoMapper.insert(recommendDo);
 	}
+
+	public int deleteAllLaunchPic() {
+		return launchPicDoMapper.deleteByExample(null);
+	}
+
+	public int insertLaunchPic(LaunchPicDo launchPicDo) {
+		return launchPicDoMapper.insert(launchPicDo);
+	}
 }

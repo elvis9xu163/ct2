@@ -15,6 +15,7 @@ import com.xjd.ct.dal.dao.ObjectDao;
 import com.xjd.ct.dal.dao.ResourceDao;
 import com.xjd.ct.dal.dao.SequenceDao;
 import com.xjd.ct.dal.dao.UserDao;
+import com.xjd.ct.dal.dos.LaunchPicDo;
 import com.xjd.ct.dal.dos.ObjectDo;
 import com.xjd.ct.dal.dos.ObjectResourceDo;
 import com.xjd.ct.dal.dos.RecommendDo;
@@ -292,5 +293,34 @@ public class ObjectUpdateService {
 		objectBo.setUser(userService.getUserInfoSimple(userId));
 
 		return objectBo;
+	}
+
+	@Transactional
+	public void setLaunchPic(Long userId, String img) {
+		resourceDao.deleteObjectResourceByEntityType(EntityTypeEnum.LAUNCH_PIC.getCode());
+		objectDao.deleteAllLaunchPic();
+
+		Long now = DateUtil.nowInMilliseconds();
+		LaunchPicDo launchPicDo = new LaunchPicDo();
+		launchPicDo.setLaunchId(1L);
+		launchPicDo.setAddTime(now);
+		launchPicDo.setUpdTime(now);
+		objectDao.insertLaunchPic(launchPicDo);
+
+		// 校验资源ID是否存在
+		if (resourceDao.selectResourceByResId(img) == null) {
+			throw new BusinessException(RespCode.RESP_0221, new Object[] { img });
+		}
+
+		ObjectResourceDo objectResourceDo = new ObjectResourceDo();
+		objectResourceDo.setResId(img);
+		objectResourceDo.setEntityType(EntityTypeEnum.LAUNCH_PIC.getCode());
+		objectResourceDo.setEntityId(launchPicDo.getLaunchId());
+		objectResourceDo.setForClass(ResForClassEnum.LIST_IMG.getCode());
+		objectResourceDo.setForSubclass("");
+		objectResourceDo.setFinishProcess(BoolEnum.TRUE.getCode());
+		objectResourceDo.setAddTime(now);
+		objectResourceDo.setUpdTime(now);
+		resourceDao.insertObjectResource(objectResourceDo);
 	}
 }

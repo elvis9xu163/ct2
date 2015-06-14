@@ -84,4 +84,11 @@ public class ResourceDao {
 	public int insertUserResource(UserResourceDo userResourceDo) {
 		return userResourceDoMapper.insert(userResourceDo);
 	}
+
+	public int deleteObjectResourceByEntityType(Byte entityType) {
+		ObjectResourceDoExample example = new ObjectResourceDoExample();
+		example.or().andEntityTypeEqualTo(entityType);
+
+		return objectResourceDoMapper.deleteByExample(example);
+	}
 }

@@ -1,13 +1,8 @@
 package com.xjd.ct.web.ctrlr;
 
-import com.xjd.ct.biz.service.ObjectUpdateService;
-import com.xjd.ct.utl.DateUtil;
-import com.xjd.ct.utl.constant.AppConstant;
-import com.xjd.ct.utl.context.AppContext;
-import com.xjd.ct.utl.exception.BusinessException;
-import com.xjd.ct.utl.respcode.RespCode;
-import com.xjd.ct.web.util.I18NUtil;
-import com.xjd.ct.web.util.SessionContextUtil;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,14 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.Date;
-import java.util.Map;
+import com.xjd.ct.biz.service.ObjectUpdateService;
+import com.xjd.ct.utl.exception.BusinessException;
+import com.xjd.ct.utl.respcode.RespCode;
+import com.xjd.ct.web.util.I18NUtil;
+import com.xjd.ct.web.util.SessionContextUtil;
 
 /**
  * @author elvis.xu
@@ -45,7 +39,8 @@ public class TopicController {
     public String edit(@RequestParam(value = "id", required = false) String id,
                        @RequestParam(value = "title", required = false) String title,
                        @RequestParam(value = "summary", required = false) String summary,
-                       @RequestParam(value = "img", required = false) String img) {
+                       @RequestParam(value = "img", required = false) String img,
+					   RedirectAttributes redirectAttributes) {
 
         String errCode, errMsg;
         try {
@@ -68,6 +63,12 @@ public class TopicController {
             }
         }
 
-        return "admin/topic_edit";
+		redirectAttributes.addAttribute("errCode", errCode);
+		try {
+			redirectAttributes.addAttribute("errMsg", URLEncoder.encode(errMsg, "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			throw new BusinessException(RespCode.RESP_9999, e);
+		}
+		return "redirect:/admin/topic/edit/input";
     }
 }
