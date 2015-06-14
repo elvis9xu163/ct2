@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.xjd.ct.biz.bo.TokenBo;
 import com.xjd.ct.biz.bo.UserBo;
 import com.xjd.ct.biz.service.UserService;
+import com.xjd.ct.utl.enums.UserTypeEnum;
 import com.xjd.ct.utl.exception.BusinessException;
 import com.xjd.ct.utl.respcode.RespCode;
 import com.xjd.ct.web.util.HttpRequestUtil;
@@ -45,8 +46,11 @@ public class AdminController {
 
 		try {
 			TokenBo token = userService.signin(username, password, ip, null);
-			SessionContextUtil.putToken(token);
 			UserBo userBo = userService.getUserInfoSimple(token.getUserId());
+			if (UserTypeEnum.valueOfCode(userBo.getUserType()) != UserTypeEnum.ADMIN) {
+				throw new BusinessException(RespCode.RESP_0116);
+			}
+			SessionContextUtil.putToken(token);
 			SessionContextUtil.putUser(userBo);
 		} catch (BusinessException e) {
 			model.put("errorCode", e.getCode());
