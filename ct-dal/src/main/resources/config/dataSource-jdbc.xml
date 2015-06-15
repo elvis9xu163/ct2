@@ -19,12 +19,27 @@
                        http://mybatis.org/schema/mybatis-spring.xsd">
 
 
-  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+  <!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
     <property name="driverClass" value="${data.jdbc.driverClass}" />
     <property name="jdbcUrl" value="${data.jdbc.url}" />
     <property name="user" value="${data.jdbc.username}" />
     <property name="password" value="${data.jdbc.password}" />
     <property name="minPoolSize" value="2" />
     <property name="maxPoolSize" value="300" />
-  </bean>
+  </bean> -->
+  
+  <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+		<property name="driverClass" value="${data.jdbc.driverClass}" />
+		<property name="jdbcUrl" value="${data.jdbc.url}" />
+		<property name="username" value="${data.jdbc.username}" />
+		<property name="password" value="${data.jdbc.password}" />
+		<property name="idleConnectionTestPeriod" value="60" />
+		<property name="idleMaxAge" value="240" />
+		<property name="maxConnectionsPerPartition" value="200" />
+		<property name="minConnectionsPerPartition" value="2" />
+		<property name="partitionCount" value="3" />
+		<property name="acquireIncrement" value="4" />
+		<property name="statementsCacheSize" value="500" />
+		<property name="releaseHelperThreads" value="3" />
+	</bean>
 </beans>
