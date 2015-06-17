@@ -48,4 +48,16 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
 
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>SSL</web-resource-name>
+      <url-pattern>/10/getToken</url-pattern>
+      <url-pattern>/10/signin</url-pattern>
+      <url-pattern>/10/signup</url-pattern>
+      <url-pattern>/10/changePassword</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
 </web-app>
