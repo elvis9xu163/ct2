@@ -8,14 +8,14 @@
     http://www.springframework.org/schema/mvc
     http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 
-  <context:component-scan base-package="com.xjd.ct.web.cmpnt, com.xjd.ct.web.ctrlr" />
+  <context:component-scan base-package="com.xjd.ct.console" />
 
   <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
-    <!-- <property name="converters">
+    <property name="converters">
       <set>
-        <bean class="com.xjd.ct.web.cmpnt.StringToTrimmedStringConverter" />
+        <bean class="com.xjd.ct.console.cmpnt.StringToTrimmedStringConverter" />
       </set>
-    </property> -->
+    </property>
   </bean>
 
   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
