@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
   <Appenders>
-    <File name="file" fileName="/data/log/ct-app/ct-app.log" append="true">
-      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p (%F:%L) - %m%n" />
-    </File>
     <Console name="console" target="SYSTEM_OUT">
       <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p (%F:%L) - %m%n" />
     </Console>
+    <RollingFile name="file" fileName="/data/log/ct-app.log" bufferSize="1024"
+      filePattern="/data/log/$${date:yyyy-MM}/ct-app-%d{yyyy-MM-dd}-%i.log.gz">
+      <PatternLayout>
+        <Pattern>%d{HH:mm:ss.SSS} %5p (%F:%L) - %m%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <TimeBasedTriggeringPolicy/>
+        <SizeBasedTriggeringPolicy size="250 MB"/>
+      </Policies>
+    </RollingFile>
   </Appenders>
   <Loggers>
     <Logger name="com.xjd" level="${log4j2.level}" />

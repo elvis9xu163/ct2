@@ -37,7 +37,6 @@
     <org.apache.logging.log4j-version>2.1</org.apache.logging.log4j-version>
 
     <org.springframework-version>4.1.3.RELEASE</org.springframework-version>
-    <!--<org.springframework-version>3.1.4.RELEASE</org.springframework-version> -->
 
     <junit-version>4.12</junit-version>
     <org.unitils-version>3.3</org.unitils-version>
@@ -150,7 +149,7 @@
   </build>
   <profiles>
     <profile>
-      <id>develop-windows</id>
+      <id>dev-win</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
@@ -162,25 +161,38 @@
         <resource.url.prefix>http://www.xjdbjx.com:81/ct/</resource.url.prefix>
         <log4j2.logger>console</log4j2.logger>
         <log4j2.level>trace</log4j2.level>
+
+        <!-- data -->
+        <data.dataSource.type>jdbc</data.dataSource.type>
+        <data.jdbc.driverClass>com.mysql.jdbc.Driver</data.jdbc.driverClass>
+        <data.jdbc.url>jdbc:mysql://118.193.133.209:3306/ct2?useUnicode=true&amp;amp;characterEncoding=utf-8&amp;amp;autoReconnect=true</data.jdbc.url>
+        <data.jdbc.username>xjd</data.jdbc.username>
+        <data.jdbc.password>Elvis9xu</data.jdbc.password>
       </properties>
     </profile>
     <profile>
-      <id>develop-mac</id>
+      <id>dev-mac</id>
       <properties>
         <app.env>test</app.env>
         <app.sign.disabled>1</app.sign.disabled>
-        <resource.root>/Users/XJD/resource/ct</resource.root>
-        <resource.tmp>/Users/XJD/tmp</resource.tmp>
+        <resource.root>/data/data/www/ct/resource</resource.root>
+        <resource.tmp>/data/tmp/ct</resource.tmp>
         <resource.url.prefix>http://www.xjdbjx.com:81/ct/</resource.url.prefix>
+        <article.root>/data/data/www/ct/article</article.root>
+        <article.url.prefix>http://www.xjdbjx.com:81/ct/article/</article.url.prefix>
         <log4j2.logger>console</log4j2.logger>
         <log4j2.level>trace</log4j2.level>
+
+        <!-- data -->
+        <data.dataSource.type>jdbc</data.dataSource.type>
+        <data.jdbc.driverClass>com.mysql.jdbc.Driver</data.jdbc.driverClass>
+        <data.jdbc.url>jdbc:mysql://118.193.133.209:3306/ct2?useUnicode=true&amp;amp;characterEncoding=utf-8&amp;amp;autoReconnect=true</data.jdbc.url>
+        <data.jdbc.username>xjd</data.jdbc.username>
+        <data.jdbc.password>Elvis9xu</data.jdbc.password>
       </properties>
     </profile>
     <profile>
       <id>test</id>
-      <activation>
-      	<activeByDefault>true</activeByDefault>
-      </activation>
       <properties>
         <app.env>test</app.env>
         <app.sign.disabled>1</app.sign.disabled>
@@ -191,6 +203,13 @@
         <article.url.prefix>http://www.xjdbjx.com:81/ct/article/</article.url.prefix>
         <log4j2.logger>console</log4j2.logger>
         <log4j2.level>debug</log4j2.level>
+
+        <!-- data -->
+        <data.dataSource.type>jdbc</data.dataSource.type>
+        <data.jdbc.driverClass>com.mysql.jdbc.Driver</data.jdbc.driverClass>
+        <data.jdbc.url>jdbc:mysql://118.193.133.209:3306/ct2?useUnicode=true&amp;amp;characterEncoding=utf-8&amp;amp;autoReconnect=true</data.jdbc.url>
+        <data.jdbc.username>xjd</data.jdbc.username>
+        <data.jdbc.password>Elvis9xu</data.jdbc.password>
       </properties>
     </profile>
     <profile>
@@ -205,6 +224,10 @@
         <article.url.prefix>http://120.25.253.225/ct/article/</article.url.prefix>
         <log4j2.logger>file</log4j2.logger>
         <log4j2.level>info</log4j2.level>
+
+        <!-- data -->
+        <data.dataSource.type>jndi</data.dataSource.type>
+        <dataSource.jndi>java:comp/env/jndi/ct</dataSource.jndi>
       </properties>
     </profile>
   </profiles>
