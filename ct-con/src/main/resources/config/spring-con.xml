@@ -29,9 +29,7 @@
   <mvc:resources location="/css/" mapping="/css/**"/>
   <mvc:resources location="/fonts/" mapping="/fonts/**"/>
   <mvc:resources location="/js/" mapping="/js/**"/>
-  <mvc:resources location="/img/" mapping="/img/**"/>
   <mvc:resources location="/other/" mapping="/other/**"/>
-  <mvc:resources location="/article/" mapping="/article/**"/>
   <mvc:resources location="/page/" mapping="/page/**"/>
 
   <mvc:view-controller path="/index" view-name="index" />

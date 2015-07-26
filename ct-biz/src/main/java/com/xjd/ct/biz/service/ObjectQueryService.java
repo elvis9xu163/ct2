@@ -134,6 +134,14 @@ public class ObjectQueryService {
 		return bannerBoList;
 	}
 
+	/**
+	 * 1.0老接口服务, 在强升后去除
+	 * 
+	 * @param userId
+	 * @param offset
+	 * @param count
+	 * @return
+	 */
 	public List<ObjectBo> listRecommendObjects(Long userId, Long offset, Integer count) {
 		List<RecommendDo> recommendDoList = objectDao.selectRecommendByPageOrderByAddTimeDesc(offset, count);
 
@@ -159,6 +167,13 @@ public class ObjectQueryService {
 			}
 		}
 		objectDoList = orderedList;
+
+		// 争对老接口, 去除学校类型
+		for (int i = objectDoList.size() - 1; i >= 0; i--) {
+			if (ObjectTypeEnum.valueOfCode(objectDoList.get(i).getObjectType()) == ObjectTypeEnum.SCHOOL) {
+				objectDoList.remove(i);
+			}
+		}
 
 		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
 		for (ObjectDo objectDo : objectDoList) {
@@ -314,5 +329,62 @@ public class ObjectQueryService {
 		}
 
 		return objectBoList;
+	}
+
+	public List<ObjectBo> listRecommendObjects11(Long userId, Long offset, Integer count) {
+		// 查出推荐对象
+		List<RecommendDo> recommendDoList = objectDao.selectRecommendByPageOrderByAddTimeDesc(offset, count);
+
+		if (CollectionUtils.isEmpty(recommendDoList)) {
+			return Collections.emptyList();
+		}
+
+		// 根据推荐对象去取Object
+		List<Long> objectIdList = new ArrayList<Long>(recommendDoList.size());
+		for (RecommendDo recommendDo : recommendDoList) {
+			objectIdList.add(recommendDo.getObjectId());
+		}
+
+		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectIdList(objectIdList);
+
+		// 与推荐顺序一致
+		List<ObjectDo> orderedList = new ArrayList<ObjectDo>(objectDoList.size());
+		for (Long objId : objectIdList) {
+			for (ObjectDo objectDo : objectDoList) {
+				if (objId.equals(objectDo.getObjectId())) {
+					orderedList.add(objectDo);
+					break;
+				}
+			}
+		}
+		objectDoList = orderedList;
+
+		// 处理Object对象
+		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
+		for (ObjectDo objectDo : objectDoList) {
+			ObjectBo objectBo = new ObjectBo();
+			BeanUtils.copyProperties(objectDo, objectBo);
+			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
+					objectDo.getObjectId()));
+			processLikeFavor(userId, objectBo);
+			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
+			objectBoList.add(objectBo);
+		}
+
+		return objectBoList;
+	}
+
+	protected void processAllForObjectList(Long userId, List<ObjectBo> objectBoList) {
+		if (CollectionUtils.isNotEmpty(objectBoList)) {
+			for (ObjectBo objectBo : objectBoList) {
+				processAllForObject(userId, objectBo);
+			}
+		}
+	}
+
+	protected void processAllForObject(Long userId, ObjectBo objectBo) {
+		objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(), objectBo.getObjectId()));
+		processLikeFavor(userId, objectBo);
+		objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
 	}
 }
