@@ -8,7 +8,7 @@ package com.xjd.ct.utl.enums;
  */
 public enum ObjectTypeEnum {
 
-	ARTICLE((byte) 1, "文章"), PUBLISH((byte) 2, "用户发表"), TOPIC((byte) 3, "话题"), USER((byte) 4, "用户");
+	ARTICLE((byte) 1, "文章"), PUBLISH((byte) 2, "用户发表"), TOPIC((byte) 3, "话题"), USER((byte) 4, "用户"), SCHOOL((byte) 5, "学校");
 
 	byte code;
 	String desc;

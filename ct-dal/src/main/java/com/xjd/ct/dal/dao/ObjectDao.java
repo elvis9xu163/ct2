@@ -318,4 +318,34 @@ public class ObjectDao {
 	public int insertBanner(BannerDo bannerDo) {
 		return bannerDoMapper.insert(bannerDo);
 	}
+
+	/**
+	 * 找出objectId周边(上翻则找出>objectId的记录, 下翻则找出<objectId的记录)
+	 * 注: 无论上翻还是下翻找出的都是最靠近objectId的count条记录，排序也是不一样的，越靠近objectId的记录越靠前
+	 * @param objectTypeList
+	 * @param objectId
+	 * @param count
+	 * @param turnDown
+	 * @return
+	 */
+	public List<ObjectDo> selectObjectPageByObjectId(List<Byte> objectTypeList, Long objectId, Integer count, Boolean turnDown) {
+		ObjectDoExample example = new ObjectDoExample();
+		ObjectDoExample.Criteria criteria = example.or();
+		criteria.andObjectTypeIn(objectTypeList);
+
+		if (turnDown) {
+			if (objectId != null) {
+				criteria.andObjectIdLessThan(objectId);
+			}
+			example.setOrderByClause("OBJECT_ID desc");
+		} else {
+			if (objectId != null) {
+				criteria.andObjectIdGreaterThan(objectId);
+			}
+			example.setOrderByClause("OBJECT_ID");
+		}
+		example.setOffsetAndLimit(0, count);
+
+		return objectDoMapper.selectByExample(example);
+	}
 }

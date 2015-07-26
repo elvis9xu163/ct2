@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjd.ct.dal.map.SchoolDoMapper" >
+  <resultMap id="BaseResultMap" type="com.xjd.ct.dal.dos.SchoolDo" >
+    <id column="OBJECT_ID" property="objectId" jdbcType="BIGINT" />
+    <result column="SCHOOL_SHORT_NAME" property="schoolShortName" jdbcType="VARCHAR" />
+    <result column="SCHOOL_NAME" property="schoolName" jdbcType="VARCHAR" />
+    <result column="SCHOOL_PHONE" property="schoolPhone" jdbcType="VARCHAR" />
+    <result column="SCHOOL_ADDRESS" property="schoolAddress" jdbcType="VARCHAR" />
+    <result column="SCHOOL_LON" property="schoolLon" jdbcType="DOUBLE" />
+    <result column="SCHOOL_LAT" property="schoolLat" jdbcType="DOUBLE" />
+    <result column="SCHOOL_REGION" property="schoolRegion" jdbcType="VARCHAR" />
+    <result column="SCHOOL_NATURE" property="schoolNature" jdbcType="TINYINT" />
+    <result column="SCHOOL_GRADE" property="schoolGrade" jdbcType="TINYINT" />
+    <result column="SCHOOL_INTRO" property="schoolIntro" jdbcType="VARCHAR" />
+    <result column="SCHOOL_TEACHER" property="schoolTeacher" jdbcType="VARCHAR" />
+    <result column="SCHOOL_COST" property="schoolCost" jdbcType="VARCHAR" />
+    <result column="SCHOOL_COURSE" property="schoolCourse" jdbcType="VARCHAR" />
+    <result column="SCHOOL_RATE" property="schoolRate" jdbcType="VARCHAR" />
+    <result column="SCHOOL_REQUISITION" property="schoolRequisition" jdbcType="VARCHAR" />
+    <result column="SCHOOL_FLOW" property="schoolFlow" jdbcType="VARCHAR" />
+    <result column="AUDIT_STATUS" property="auditStatus" jdbcType="TINYINT" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="ADD_TIME" property="addTime" jdbcType="BIGINT" />
+    <result column="UPD_TIME" property="updTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    OBJECT_ID, SCHOOL_SHORT_NAME, SCHOOL_NAME, SCHOOL_PHONE, SCHOOL_ADDRESS, SCHOOL_LON, 
+    SCHOOL_LAT, SCHOOL_REGION, SCHOOL_NATURE, SCHOOL_GRADE, SCHOOL_INTRO, SCHOOL_TEACHER, 
+    SCHOOL_COST, SCHOOL_COURSE, SCHOOL_RATE, SCHOOL_REQUISITION, SCHOOL_FLOW, AUDIT_STATUS, 
+    STATUS, ADD_TIME, UPD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xjd.ct.dal.dos.SchoolDoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_school
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlPageSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_school
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_school
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xjd.ct.dal.dos.SchoolDoExample" >
+    delete from t_school
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xjd.ct.dal.dos.SchoolDo" >
+    insert into t_school (OBJECT_ID, SCHOOL_SHORT_NAME, SCHOOL_NAME, 
+      SCHOOL_PHONE, SCHOOL_ADDRESS, SCHOOL_LON, 
+      SCHOOL_LAT, SCHOOL_REGION, SCHOOL_NATURE, 
+      SCHOOL_GRADE, SCHOOL_INTRO, SCHOOL_TEACHER, 
+      SCHOOL_COST, SCHOOL_COURSE, SCHOOL_RATE, 
+      SCHOOL_REQUISITION, SCHOOL_FLOW, AUDIT_STATUS, 
+      STATUS, ADD_TIME, UPD_TIME
+      )
+    values (#{objectId,jdbcType=BIGINT}, #{schoolShortName,jdbcType=VARCHAR}, #{schoolName,jdbcType=VARCHAR}, 
+      #{schoolPhone,jdbcType=VARCHAR}, #{schoolAddress,jdbcType=VARCHAR}, #{schoolLon,jdbcType=DOUBLE}, 
+      #{schoolLat,jdbcType=DOUBLE}, #{schoolRegion,jdbcType=VARCHAR}, #{schoolNature,jdbcType=TINYINT}, 
+      #{schoolGrade,jdbcType=TINYINT}, #{schoolIntro,jdbcType=VARCHAR}, #{schoolTeacher,jdbcType=VARCHAR}, 
+      #{schoolCost,jdbcType=VARCHAR}, #{schoolCourse,jdbcType=VARCHAR}, #{schoolRate,jdbcType=VARCHAR}, 
+      #{schoolRequisition,jdbcType=VARCHAR}, #{schoolFlow,jdbcType=VARCHAR}, #{auditStatus,jdbcType=TINYINT}, 
+      #{status,jdbcType=TINYINT}, #{addTime,jdbcType=BIGINT}, #{updTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xjd.ct.dal.dos.SchoolDo" >
+    insert into t_school
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="objectId != null" >
+        OBJECT_ID,
+      </if>
+      <if test="schoolShortName != null" >
+        SCHOOL_SHORT_NAME,
+      </if>
+      <if test="schoolName != null" >
+        SCHOOL_NAME,
+      </if>
+      <if test="schoolPhone != null" >
+        SCHOOL_PHONE,
+      </if>
+      <if test="schoolAddress != null" >
+        SCHOOL_ADDRESS,
+      </if>
+      <if test="schoolLon != null" >
+        SCHOOL_LON,
+      </if>
+      <if test="schoolLat != null" >
+        SCHOOL_LAT,
+      </if>
+      <if test="schoolRegion != null" >
+        SCHOOL_REGION,
+      </if>
+      <if test="schoolNature != null" >
+        SCHOOL_NATURE,
+      </if>
+      <if test="schoolGrade != null" >
+        SCHOOL_GRADE,
+      </if>
+      <if test="schoolIntro != null" >
+        SCHOOL_INTRO,
+      </if>
+      <if test="schoolTeacher != null" >
+        SCHOOL_TEACHER,
+      </if>
+      <if test="schoolCost != null" >
+        SCHOOL_COST,
+      </if>
+      <if test="schoolCourse != null" >
+        SCHOOL_COURSE,
+      </if>
+      <if test="schoolRate != null" >
+        SCHOOL_RATE,
+      </if>
+      <if test="schoolRequisition != null" >
+        SCHOOL_REQUISITION,
+      </if>
+      <if test="schoolFlow != null" >
+        SCHOOL_FLOW,
+      </if>
+      <if test="auditStatus != null" >
+        AUDIT_STATUS,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="objectId != null" >
+        #{objectId,jdbcType=BIGINT},
+      </if>
+      <if test="schoolShortName != null" >
+        #{schoolShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolName != null" >
+        #{schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolPhone != null" >
+        #{schoolPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolAddress != null" >
+        #{schoolAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolLon != null" >
+        #{schoolLon,jdbcType=DOUBLE},
+      </if>
+      <if test="schoolLat != null" >
+        #{schoolLat,jdbcType=DOUBLE},
+      </if>
+      <if test="schoolRegion != null" >
+        #{schoolRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolNature != null" >
+        #{schoolNature,jdbcType=TINYINT},
+      </if>
+      <if test="schoolGrade != null" >
+        #{schoolGrade,jdbcType=TINYINT},
+      </if>
+      <if test="schoolIntro != null" >
+        #{schoolIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolTeacher != null" >
+        #{schoolTeacher,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolCost != null" >
+        #{schoolCost,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolCourse != null" >
+        #{schoolCourse,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolRate != null" >
+        #{schoolRate,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolRequisition != null" >
+        #{schoolRequisition,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolFlow != null" >
+        #{schoolFlow,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStatus != null" >
+        #{auditStatus,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xjd.ct.dal.dos.SchoolDoExample" resultType="java.lang.Integer" >
+    select count(*) from t_school
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_school
+    <set >
+      <if test="record.objectId != null" >
+        OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.schoolShortName != null" >
+        SCHOOL_SHORT_NAME = #{record.schoolShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolName != null" >
+        SCHOOL_NAME = #{record.schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolPhone != null" >
+        SCHOOL_PHONE = #{record.schoolPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolAddress != null" >
+        SCHOOL_ADDRESS = #{record.schoolAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolLon != null" >
+        SCHOOL_LON = #{record.schoolLon,jdbcType=DOUBLE},
+      </if>
+      <if test="record.schoolLat != null" >
+        SCHOOL_LAT = #{record.schoolLat,jdbcType=DOUBLE},
+      </if>
+      <if test="record.schoolRegion != null" >
+        SCHOOL_REGION = #{record.schoolRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolNature != null" >
+        SCHOOL_NATURE = #{record.schoolNature,jdbcType=TINYINT},
+      </if>
+      <if test="record.schoolGrade != null" >
+        SCHOOL_GRADE = #{record.schoolGrade,jdbcType=TINYINT},
+      </if>
+      <if test="record.schoolIntro != null" >
+        SCHOOL_INTRO = #{record.schoolIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolTeacher != null" >
+        SCHOOL_TEACHER = #{record.schoolTeacher,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolCost != null" >
+        SCHOOL_COST = #{record.schoolCost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolCourse != null" >
+        SCHOOL_COURSE = #{record.schoolCourse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolRate != null" >
+        SCHOOL_RATE = #{record.schoolRate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolRequisition != null" >
+        SCHOOL_REQUISITION = #{record.schoolRequisition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolFlow != null" >
+        SCHOOL_FLOW = #{record.schoolFlow,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditStatus != null" >
+        AUDIT_STATUS = #{record.auditStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updTime != null" >
+        UPD_TIME = #{record.updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_school
+    set OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      SCHOOL_SHORT_NAME = #{record.schoolShortName,jdbcType=VARCHAR},
+      SCHOOL_NAME = #{record.schoolName,jdbcType=VARCHAR},
+      SCHOOL_PHONE = #{record.schoolPhone,jdbcType=VARCHAR},
+      SCHOOL_ADDRESS = #{record.schoolAddress,jdbcType=VARCHAR},
+      SCHOOL_LON = #{record.schoolLon,jdbcType=DOUBLE},
+      SCHOOL_LAT = #{record.schoolLat,jdbcType=DOUBLE},
+      SCHOOL_REGION = #{record.schoolRegion,jdbcType=VARCHAR},
+      SCHOOL_NATURE = #{record.schoolNature,jdbcType=TINYINT},
+      SCHOOL_GRADE = #{record.schoolGrade,jdbcType=TINYINT},
+      SCHOOL_INTRO = #{record.schoolIntro,jdbcType=VARCHAR},
+      SCHOOL_TEACHER = #{record.schoolTeacher,jdbcType=VARCHAR},
+      SCHOOL_COST = #{record.schoolCost,jdbcType=VARCHAR},
+      SCHOOL_COURSE = #{record.schoolCourse,jdbcType=VARCHAR},
+      SCHOOL_RATE = #{record.schoolRate,jdbcType=VARCHAR},
+      SCHOOL_REQUISITION = #{record.schoolRequisition,jdbcType=VARCHAR},
+      SCHOOL_FLOW = #{record.schoolFlow,jdbcType=VARCHAR},
+      AUDIT_STATUS = #{record.auditStatus,jdbcType=TINYINT},
+      STATUS = #{record.status,jdbcType=TINYINT},
+      ADD_TIME = #{record.addTime,jdbcType=BIGINT},
+      UPD_TIME = #{record.updTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xjd.ct.dal.dos.SchoolDo" >
+    update t_school
+    <set >
+      <if test="schoolShortName != null" >
+        SCHOOL_SHORT_NAME = #{schoolShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolName != null" >
+        SCHOOL_NAME = #{schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolPhone != null" >
+        SCHOOL_PHONE = #{schoolPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolAddress != null" >
+        SCHOOL_ADDRESS = #{schoolAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolLon != null" >
+        SCHOOL_LON = #{schoolLon,jdbcType=DOUBLE},
+      </if>
+      <if test="schoolLat != null" >
+        SCHOOL_LAT = #{schoolLat,jdbcType=DOUBLE},
+      </if>
+      <if test="schoolRegion != null" >
+        SCHOOL_REGION = #{schoolRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolNature != null" >
+        SCHOOL_NATURE = #{schoolNature,jdbcType=TINYINT},
+      </if>
+      <if test="schoolGrade != null" >
+        SCHOOL_GRADE = #{schoolGrade,jdbcType=TINYINT},
+      </if>
+      <if test="schoolIntro != null" >
+        SCHOOL_INTRO = #{schoolIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolTeacher != null" >
+        SCHOOL_TEACHER = #{schoolTeacher,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolCost != null" >
+        SCHOOL_COST = #{schoolCost,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolCourse != null" >
+        SCHOOL_COURSE = #{schoolCourse,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolRate != null" >
+        SCHOOL_RATE = #{schoolRate,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolRequisition != null" >
+        SCHOOL_REQUISITION = #{schoolRequisition,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolFlow != null" >
+        SCHOOL_FLOW = #{schoolFlow,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStatus != null" >
+        AUDIT_STATUS = #{auditStatus,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updTime != null" >
+        UPD_TIME = #{updTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xjd.ct.dal.dos.SchoolDo" >
+    update t_school
+    set SCHOOL_SHORT_NAME = #{schoolShortName,jdbcType=VARCHAR},
+      SCHOOL_NAME = #{schoolName,jdbcType=VARCHAR},
+      SCHOOL_PHONE = #{schoolPhone,jdbcType=VARCHAR},
+      SCHOOL_ADDRESS = #{schoolAddress,jdbcType=VARCHAR},
+      SCHOOL_LON = #{schoolLon,jdbcType=DOUBLE},
+      SCHOOL_LAT = #{schoolLat,jdbcType=DOUBLE},
+      SCHOOL_REGION = #{schoolRegion,jdbcType=VARCHAR},
+      SCHOOL_NATURE = #{schoolNature,jdbcType=TINYINT},
+      SCHOOL_GRADE = #{schoolGrade,jdbcType=TINYINT},
+      SCHOOL_INTRO = #{schoolIntro,jdbcType=VARCHAR},
+      SCHOOL_TEACHER = #{schoolTeacher,jdbcType=VARCHAR},
+      SCHOOL_COST = #{schoolCost,jdbcType=VARCHAR},
+      SCHOOL_COURSE = #{schoolCourse,jdbcType=VARCHAR},
+      SCHOOL_RATE = #{schoolRate,jdbcType=VARCHAR},
+      SCHOOL_REQUISITION = #{schoolRequisition,jdbcType=VARCHAR},
+      SCHOOL_FLOW = #{schoolFlow,jdbcType=VARCHAR},
+      AUDIT_STATUS = #{auditStatus,jdbcType=TINYINT},
+      STATUS = #{status,jdbcType=TINYINT},
+      ADD_TIME = #{addTime,jdbcType=BIGINT},
+      UPD_TIME = #{updTime,jdbcType=BIGINT}
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </update>
+  <sql id="MysqlPageSuffix" >
+    <if test="page != null" >
+      <![CDATA[ limit #{page.offset}, #{page.limit} ]]>
+    </if>
+  </sql>
+</mapper>

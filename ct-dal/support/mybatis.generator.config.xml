@@ -70,8 +70,9 @@
     <table tableName="t_report" domainObjectName="ReportDo" />
     <table tableName="t_sign" domainObjectName="SignDo" />
     <table tableName="t_user" domainObjectName="UserDo" />
-    -->
     <table tableName="T_LAUNCH_PIC" domainObjectName="LaunchPicDo" />
+    -->
+    <table tableName="T_SCHOOL" domainObjectName="SchoolDo" />
 
   </context>
 

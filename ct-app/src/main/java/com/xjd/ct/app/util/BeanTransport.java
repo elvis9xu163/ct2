@@ -105,6 +105,14 @@ public abstract class BeanTransport {
 			copyTo(bo.getUser(), userInfoSimplest);
 			vo.setUser(userInfoSimplest);
 		}
+		if (bo instanceof SchoolObjectBo && vo instanceof SchoolObjectVo) {
+			SchoolBo sbo = ((SchoolObjectBo) bo).getSchool();
+			if (sbo != null) {
+				SchoolVo svo = new SchoolVo();
+				BeanUtils.copyProperties(sbo, svo);
+				((SchoolObjectVo) vo).setSchool(svo);
+			}
+		}
 	}
 
 	public static void copyTo(BannerBo bo, BannerVo vo) {

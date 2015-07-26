@@ -60,9 +60,9 @@ public class ValidationBean {
 	private String offset;
 
 	@NotBlank(message = RespCode.RESP_0001)
-	@DecimalMin(value = "1", message = RespCode.RESP_0002)
-	@DecimalMax(value = "100", message = RespCode.RESP_0002)
-	@Digits(integer = 2, fraction = 0, message = RespCode.RESP_0002)
+	@DecimalMin(value = "1", message = RespCode.RESP_0004)
+	@DecimalMax(value = "100", message = RespCode.RESP_0004)
+	@Digits(integer = 3, fraction = 0, message = RespCode.RESP_0002)
 	private String count;
 
 	@NotBlank(message = RespCode.RESP_0001)
@@ -134,6 +134,10 @@ public class ValidationBean {
 	@NotBlank(message = RespCode.RESP_0001)
 	@Digits(integer = 18, fraction = 0, message = RespCode.RESP_0002)
 	private String refId;
+
+	@NotBlank(message = RespCode.RESP_0001)
+	@Pattern(regexp = "0|1", message = RespCode.RESP_0003)
+	private String turn;
 
 	public String getTimestamp() {
 		return timestamp;
@@ -383,5 +387,13 @@ public class ValidationBean {
 
 	public void setRefId(String refId) {
 		this.refId = refId;
+	}
+
+	public String getTurn() {
+		return turn;
+	}
+
+	public void setTurn(String turn) {
+		this.turn = turn;
 	}
 }

@@ -20,6 +20,7 @@ import com.xjd.ct.app.view.body.ObjectListBody;
 import com.xjd.ct.app.view.vo.BannerVo;
 import com.xjd.ct.app.view.vo.LaunchPicVo;
 import com.xjd.ct.app.view.vo.ObjectVo;
+import com.xjd.ct.app.view.vo.SchoolObjectVo;
 import com.xjd.ct.biz.bo.BannerBo;
 import com.xjd.ct.biz.bo.LaunchPicBo;
 import com.xjd.ct.biz.bo.ObjectBo;
@@ -372,6 +373,46 @@ public class ObjectQueryController10 {
 
 		LaunchPicListBody body = new LaunchPicListBody();
 		body.setLaunchPicList(voList);
+
+		View view = ViewUtil.defaultView();
+		view.setBody(body);
+		return view;
+	}
+
+	@RequestMapping("/listSchools")
+	@ResponseBody
+	public View listSchools(@RequestParam(value = "objectId", required = false) String objectId,
+			@RequestParam(value = "turn", required = false) String turn,
+			@RequestParam(value = "count", required = false) String count) {
+		// 参数校验
+		objectId = StringUtils.trimToNull(objectId);
+		if (objectId != null) {
+			ValidationUtil.check(ValidationUtil.OBJECT_ID, objectId);
+		}
+
+		ValidationUtil.check(ValidationUtil.TURN, turn, ValidationUtil.COUNT, count);
+
+		Long objectIdL = null;
+		if (objectId != null) {
+			objectIdL = Long.valueOf(objectId);
+		}
+		Boolean turnDown = "0".equals(turn);
+		Integer countI = Integer.valueOf(count);
+
+		// 业务调用
+		List<ObjectBo> objectBoList = objectQueryService.listSchools(RequestContext.getUserId(), objectIdL, countI,
+				turnDown);
+
+		// 返回结果
+		List<ObjectVo> objectVoList = new ArrayList<ObjectVo>(objectBoList.size());
+		for (ObjectBo objectBo : objectBoList) {
+			ObjectVo objectVo = new SchoolObjectVo();
+			BeanTransport.copyTo(objectBo, objectVo);
+			objectVoList.add(objectVo);
+		}
+
+		ObjectListBody body = new ObjectListBody();
+		body.setObjectList(objectVoList);
 
 		View view = ViewUtil.defaultView();
 		view.setBody(body);

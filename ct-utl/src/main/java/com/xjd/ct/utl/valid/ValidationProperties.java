@@ -31,4 +31,5 @@ public interface ValidationProperties {
 	String REASON_TYPE = "reasonType";
 	String REF_TYPE = "refType";
 	String REF_ID = "refId";
+	String TURN = "turn";
 }

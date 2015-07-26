@@ -291,4 +291,28 @@ public class ObjectQueryService {
 		}
 		return boList;
 	}
+
+	public List<ObjectBo> listSchools(Long userId, Long objectId, Integer count, Boolean turnDown) {
+		List<ObjectDo> objectDoList = objectDao.selectObjectPageByObjectId(
+				Arrays.asList(ObjectTypeEnum.SCHOOL.getCode(), ObjectTypeEnum.TOPIC.getCode()), objectId, count,
+				turnDown);
+
+		// 全部以ID倒序
+		if (!turnDown) {
+			Collections.reverse(objectDoList);
+		}
+
+		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
+		for (ObjectDo objectDo : objectDoList) {
+			ObjectBo objectBo = new ObjectBo();
+			BeanUtils.copyProperties(objectDo, objectBo);
+			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
+					objectDo.getObjectId()));
+			processLikeFavor(userId, objectBo);
+			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
+			objectBoList.add(objectBo);
+		}
+
+		return objectBoList;
+	}
 }
