@@ -10,10 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.xjd.ct.biz.bo.BannerBo;
-import com.xjd.ct.biz.bo.LaunchPicBo;
-import com.xjd.ct.biz.bo.ObjectBo;
-import com.xjd.ct.biz.bo.UserBo;
+import com.xjd.ct.biz.bo.*;
 import com.xjd.ct.dal.dao.ObjectDao;
 import com.xjd.ct.dal.dao.ResourceDao;
 import com.xjd.ct.dal.dos.*;
@@ -143,47 +140,13 @@ public class ObjectQueryService {
 	 * @return
 	 */
 	public List<ObjectBo> listRecommendObjects(Long userId, Long offset, Integer count) {
-		List<RecommendDo> recommendDoList = objectDao.selectRecommendByPageOrderByAddTimeDesc(offset, count);
+		List<ObjectBo> objectBoList = listRecommendObjects11(userId, offset, count);
 
-		if (CollectionUtils.isEmpty(recommendDoList)) {
-			return Collections.emptyList();
-		}
-
-		List<Long> objectIdList = new ArrayList<Long>(recommendDoList.size());
-		for (RecommendDo recommendDo : recommendDoList) {
-			objectIdList.add(recommendDo.getObjectId());
-		}
-
-		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectIdList(objectIdList);
-
-		// 先排序
-		List<ObjectDo> orderedList = new ArrayList<ObjectDo>(objectDoList.size());
-		for (Long objId : objectIdList) {
-			for (ObjectDo objectDo : objectDoList) {
-				if (objId.equals(objectDo.getObjectId())) {
-					orderedList.add(objectDo);
-					break;
-				}
+		for (int i = objectBoList.size() - 1; i >= 0; i--) {
+			ObjectBo objectBo = objectBoList.get(i);
+			if (ObjectTypeEnum.valueOfCode(objectBo.getObjectType()) == ObjectTypeEnum.SCHOOL) {
+				objectBoList.remove(i);
 			}
-		}
-		objectDoList = orderedList;
-
-		// 争对老接口, 去除学校类型
-		for (int i = objectDoList.size() - 1; i >= 0; i--) {
-			if (ObjectTypeEnum.valueOfCode(objectDoList.get(i).getObjectType()) == ObjectTypeEnum.SCHOOL) {
-				objectDoList.remove(i);
-			}
-		}
-
-		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
-		for (ObjectDo objectDo : objectDoList) {
-			ObjectBo objectBo = new ObjectBo();
-			BeanUtils.copyProperties(objectDo, objectBo);
-			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
-					objectDo.getObjectId()));
-			processLikeFavor(userId, objectBo);
-			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
-			objectBoList.add(objectBo);
 		}
 
 		return objectBoList;
@@ -270,6 +233,126 @@ public class ObjectQueryService {
 		return objectBoList;
 	}
 
+	public List<LaunchPicBo> getLaunchPic(Long lastTime) {
+		List<LaunchPicDo> doList = objectDao.selectLaunchPicNewerThen(lastTime);
+
+		List<LaunchPicBo> boList = new ArrayList<LaunchPicBo>(doList.size());
+		for (LaunchPicDo picDo : doList) {
+			LaunchPicBo bo = new LaunchPicBo();
+			BeanUtils.copyProperties(picDo, bo);
+			bo.setResourceList(resourceService.listResource(EntityTypeEnum.LAUNCH_PIC.getCode(), picDo.getLaunchId()));
+			boList.add(bo);
+		}
+		return boList;
+	}
+
+	public List<ObjectBo> listSchools(Long userId, Long objectId, Integer count, Boolean turnDown) {
+		List<ObjectDo> objectDoList = objectDao.selectObjectPageByObjectId(
+				Arrays.asList(ObjectTypeEnum.SCHOOL.getCode()), objectId, count, turnDown);
+
+		// 全部以ID倒序
+		if (!turnDown) {
+			Collections.reverse(objectDoList);
+		}
+		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
+		for (ObjectDo objectDo : objectDoList) {
+			ObjectBo objectBo = new ObjectBo();
+			BeanUtils.copyProperties(objectDo, objectBo);
+			objectBo = processObjectWithAllInfo(objectBo, userId);
+			objectBoList.add(objectBo);
+		}
+		return objectBoList;
+	}
+
+	public List<ObjectBo> listRecommendObjects11(Long userId, Long offset, Integer count) {
+		// 查出推荐对象
+		List<RecommendDo> recommendDoList = objectDao.selectRecommendByPageOrderByAddTimeDesc(offset, count);
+		if (CollectionUtils.isEmpty(recommendDoList)) {
+			return Collections.emptyList();
+		}
+
+		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(recommendDoList.size());
+		for (RecommendDo recommendDo : recommendDoList) {
+			objectBoList.add(getObjectWithAllInfo(recommendDo.getObjectId(), userId));
+		}
+
+		return objectBoList;
+	}
+
+	public ObjectBo getObjectWithAllInfo(Long objectId, Long userId) {
+		return getObject(objectId, userId, Boolean.TRUE, Boolean.TRUE, Boolean.TRUE);
+	}
+
+	public ObjectBo processObjectWithAllInfo(ObjectBo objectBo, Long userId) {
+		return processObject(objectBo, userId, Boolean.TRUE, Boolean.TRUE, Boolean.TRUE);
+	}
+
+	/**
+	 * 获取对象
+	 * 
+	 * @param objectId
+	 * @param userId 非空时表示要查询对象与用户的关系(是否点赞、是否收藏等)
+	 * @param withResource 是否查询对象资源
+	 * @param withUser 是否查询对象所有者
+	 * @param withBizInfo 是否查询对象业务信息
+	 * @return
+	 */
+	public ObjectBo getObject(Long objectId, Long userId, Boolean withResource, Boolean withUser, Boolean withBizInfo) {
+		ObjectDo objectDo = objectDao.selectObjectByObjectId(objectId);
+		if (objectDo == null) {
+			return null;
+		}
+		ObjectBo objectBo = new ObjectBo();
+		BeanUtils.copyProperties(objectDo, objectBo);
+
+		objectBo = processObject(objectBo, userId, withResource, withUser, withBizInfo);
+		return objectBo;
+	}
+
+	/**
+	 *
+	 * @param objectBo
+	 * @param userId 非空时表示要查询对象与用户的关系(是否点赞、是否收藏等)
+	 * @param withResource 是否查询对象资源
+	 * @param withUser 是否查询对象所有者
+	 * @param withBizInfo 是否查询对象业务信息
+	 * @return
+	 */
+	public ObjectBo processObject(ObjectBo objectBo, Long userId, Boolean withResource, Boolean withUser,
+			Boolean withBizInfo) {
+		if (objectBo == null) {
+			return objectBo;
+		}
+
+		// 转换成指定的业务对象
+		if (ObjectTypeEnum.valueOfCode(objectBo.getObjectType()) == ObjectTypeEnum.SCHOOL) {
+			SchoolObjectBo schoolBo = new SchoolObjectBo();
+			BeanUtils.copyProperties(objectBo, schoolBo);
+			objectBo = schoolBo;
+		}
+		// 查询用户与对象的关系信息
+		if (userId != null) {
+			processLikeFavor(userId, objectBo);
+		}
+		// 查询对象的资源信息
+		if (withResource != null && withResource) {
+			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
+					objectBo.getObjectId()));
+		}
+		// 查询对象的所有者信息
+		if (withUser != null && withUser) {
+			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
+		}
+		// 查询对象的具体业务属性
+		if (withBizInfo != null && withBizInfo) {
+			if (objectBo instanceof SchoolObjectBo) { // 学校业务对象
+				SchoolObjectBo schoolObjectBo = (SchoolObjectBo) objectBo;
+				schoolObjectBo.setSchool(getSchoolByObjectId(schoolObjectBo.getObjectId()));
+			}
+		}
+		return objectBo;
+	}
+
 	protected void processLikeFavor(Long userId, ObjectBo objectBo) {
 		if (userId != null) {
 			objectBo.setLiked(isLike(userId, objectBo.getObjectId()) ? (byte) 1 : (byte) 0);
@@ -294,97 +377,18 @@ public class ObjectQueryService {
 		return false;
 	}
 
-	public List<LaunchPicBo> getLaunchPic(Long lastTime) {
-		List<LaunchPicDo> doList = objectDao.selectLaunchPicNewerThen(lastTime);
-
-		List<LaunchPicBo> boList = new ArrayList<LaunchPicBo>(doList.size());
-		for (LaunchPicDo picDo : doList) {
-			LaunchPicBo bo = new LaunchPicBo();
-			BeanUtils.copyProperties(picDo, bo);
-			bo.setResourceList(resourceService.listResource(EntityTypeEnum.LAUNCH_PIC.getCode(), picDo.getLaunchId()));
-			boList.add(bo);
+	/**
+	 *
+	 * @param objectId
+	 * @return
+	 */
+	public SchoolBo getSchoolByObjectId(Long objectId) {
+		SchoolDo schoolDo = objectDao.selectSchoolByObjectId(objectId);
+		if (schoolDo != null) {
+			SchoolBo schoolBo = new SchoolBo();
+			BeanUtils.copyProperties(schoolDo, schoolBo);
+			return schoolBo;
 		}
-		return boList;
-	}
-
-	public List<ObjectBo> listSchools(Long userId, Long objectId, Integer count, Boolean turnDown) {
-		List<ObjectDo> objectDoList = objectDao.selectObjectPageByObjectId(
-				Arrays.asList(ObjectTypeEnum.SCHOOL.getCode(), ObjectTypeEnum.TOPIC.getCode()), objectId, count,
-				turnDown);
-
-		// 全部以ID倒序
-		if (!turnDown) {
-			Collections.reverse(objectDoList);
-		}
-
-		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
-		for (ObjectDo objectDo : objectDoList) {
-			ObjectBo objectBo = new ObjectBo();
-			BeanUtils.copyProperties(objectDo, objectBo);
-			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
-					objectDo.getObjectId()));
-			processLikeFavor(userId, objectBo);
-			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
-			objectBoList.add(objectBo);
-		}
-
-		return objectBoList;
-	}
-
-	public List<ObjectBo> listRecommendObjects11(Long userId, Long offset, Integer count) {
-		// 查出推荐对象
-		List<RecommendDo> recommendDoList = objectDao.selectRecommendByPageOrderByAddTimeDesc(offset, count);
-
-		if (CollectionUtils.isEmpty(recommendDoList)) {
-			return Collections.emptyList();
-		}
-
-		// 根据推荐对象去取Object
-		List<Long> objectIdList = new ArrayList<Long>(recommendDoList.size());
-		for (RecommendDo recommendDo : recommendDoList) {
-			objectIdList.add(recommendDo.getObjectId());
-		}
-
-		List<ObjectDo> objectDoList = objectDao.selectObjectByObjectIdList(objectIdList);
-
-		// 与推荐顺序一致
-		List<ObjectDo> orderedList = new ArrayList<ObjectDo>(objectDoList.size());
-		for (Long objId : objectIdList) {
-			for (ObjectDo objectDo : objectDoList) {
-				if (objId.equals(objectDo.getObjectId())) {
-					orderedList.add(objectDo);
-					break;
-				}
-			}
-		}
-		objectDoList = orderedList;
-
-		// 处理Object对象
-		List<ObjectBo> objectBoList = new ArrayList<ObjectBo>(objectDoList.size());
-		for (ObjectDo objectDo : objectDoList) {
-			ObjectBo objectBo = new ObjectBo();
-			BeanUtils.copyProperties(objectDo, objectBo);
-			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
-					objectDo.getObjectId()));
-			processLikeFavor(userId, objectBo);
-			objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
-			objectBoList.add(objectBo);
-		}
-
-		return objectBoList;
-	}
-
-	protected void processAllForObjectList(Long userId, List<ObjectBo> objectBoList) {
-		if (CollectionUtils.isNotEmpty(objectBoList)) {
-			for (ObjectBo objectBo : objectBoList) {
-				processAllForObject(userId, objectBo);
-			}
-		}
-	}
-
-	protected void processAllForObject(Long userId, ObjectBo objectBo) {
-		objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(), objectBo.getObjectId()));
-		processLikeFavor(userId, objectBo);
-		objectBo.setUser(userService.getUserInfoSimple(objectBo.getUserId()));
+		return null;
 	}
 }

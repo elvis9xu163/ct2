@@ -36,6 +36,8 @@ public class ObjectDao {
 	IdolDoMapper idolDoMapper;
 	@Autowired
 	LaunchPicDoMapper launchPicDoMapper;
+	@Autowired
+	SchoolDoMapper schoolDoMapper;
 
 	public List<ObjectDo> selectObjectByUserIdAndPage(Long userId, long offset, int count) {
 		ObjectDoExample example = new ObjectDoExample();
@@ -347,5 +349,13 @@ public class ObjectDao {
 		example.setOffsetAndLimit(0, count);
 
 		return objectDoMapper.selectByExample(example);
+	}
+
+	/**
+	 * @param objectId
+	 * @return
+	 */
+	public SchoolDo selectSchoolByObjectId(Long objectId) {
+		return schoolDoMapper.selectByPrimaryKey(objectId);
 	}
 }
