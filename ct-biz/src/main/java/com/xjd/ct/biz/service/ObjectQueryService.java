@@ -331,9 +331,8 @@ public class ObjectQueryService {
 			objectBo = schoolBo;
 		}
 		// 查询用户与对象的关系信息
-		if (userId != null) {
-			processLikeFavor(userId, objectBo);
-		}
+		processLikeFavor(userId, objectBo);
+
 		// 查询对象的资源信息
 		if (withResource != null && withResource) {
 			objectBo.setResourceList(resourceService.listResource(EntityTypeEnum.OBJECT.getCode(),
@@ -390,5 +389,9 @@ public class ObjectQueryService {
 			return schoolBo;
 		}
 		return null;
+	}
+
+	public List<ObjectBo> listAllSchools() {
+		return listSchools(null, null, 1000, true);
 	}
 }

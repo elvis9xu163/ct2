@@ -8,7 +8,7 @@ package com.xjd.ct.utl.enums;
  */
 public enum ReportReasonEnum {
 
-	OHTER((byte) 0, "其它"), SEX((byte) 1, "色情"), POLITICS((byte) 2, "政治"), EMBEZZLE((byte) 3, "盗用");
+	OHTER((byte) 0, "其它"), SEX((byte) 1, "色情"), POLITICS((byte) 2, "政治"), EMBEZZLE((byte) 3, "盗用"), ERROR_RECOVER((byte) 4, "纠错");
 
 	byte code;
 	String desc;

@@ -358,4 +358,16 @@ public class ObjectDao {
 	public SchoolDo selectSchoolByObjectId(Long objectId) {
 		return schoolDoMapper.selectByPrimaryKey(objectId);
 	}
+
+	public int insertSchool(SchoolDo schoolDo) {
+		return schoolDoMapper.insert(schoolDo);
+	}
+
+	public int updateObjectByObjectIdSelective(ObjectDo objectDo) {
+		return objectDoMapper.updateByPrimaryKeySelective(objectDo);
+	}
+
+	public int updateSchoolByObjectIdSelective(SchoolDo schoolDo) {
+		return schoolDoMapper.updateByPrimaryKeySelective(schoolDo);
+	}
 }

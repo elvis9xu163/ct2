@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xjd.ct.biz.bo.ObjectBo;
+import com.xjd.ct.biz.bo.SchoolBo;
 import com.xjd.ct.biz.bo.UserBo;
 import com.xjd.ct.dal.dao.ObjectDao;
 import com.xjd.ct.dal.dao.ResourceDao;
@@ -331,5 +332,93 @@ public class ObjectUpdateService {
 		bannerDo.setAddTime(now);
 		bannerDo.setUpdTime(now);
 		objectDao.insertBanner(bannerDo);
+	}
+
+	@Transactional
+	public void addSchool(Long userId, SchoolBo schoolBo, List<String> pics) {
+		ObjectDo objectDo = new ObjectDo();
+		objectDo.setObjectId(generateObjectId());
+		objectDo.setUserId(userId);
+		objectDo.setObjectType(ObjectTypeEnum.SCHOOL.getCode());
+		objectDo.setContentType(ObjectContentTypeEnum.TEXT.getCode());
+		objectDo.setContent("");
+		objectDo.setVoteFlag(BoolEnum.FALSE.getCode());
+		objectDo.setVoteMultiFlag(BoolEnum.FALSE.getCode());
+		objectDo.setLikeYesFlag(BoolEnum.TRUE.getCode());
+		objectDo.setLikeYesCount(0);
+		objectDo.setLikeNoFlag(BoolEnum.FALSE.getCode());
+		objectDo.setLikeNoCount(0);
+		objectDo.setCommentFlag(BoolEnum.TRUE.getCode());
+		objectDo.setCommentCount(0);
+		objectDo.setFavorFlag(BoolEnum.TRUE.getCode());
+		objectDo.setFavorCount(0);
+		Long now = DateUtil.nowInMilliseconds();
+		objectDo.setAddTime(now);
+		objectDo.setUpdTime(now);
+
+		objectDao.insertObject(objectDo);
+
+		SchoolDo schoolDo = new SchoolDo();
+		BeanUtils.copyProperties(schoolBo, schoolDo);
+		schoolDo.setObjectId(objectDo.getObjectId());
+		schoolDo.setStatus((byte) 0);
+		schoolDo.setAddTime(now);
+		schoolDo.setUpdTime(now);
+		objectDao.insertSchool(schoolDo);
+
+		for (int i = 0; i < pics.size(); i++) {
+			String pic = pics.get(i);
+			if (StringUtils.isNotBlank(pic)) {
+				ObjectResourceDo ord = new ObjectResourceDo();
+				ord.setResId(pic);
+				ord.setEntityId(objectDo.getObjectId());
+				ord.setEntityType(EntityTypeEnum.OBJECT.getCode());
+				ord.setForClass(i == 0 ? ResForClassEnum.LIST_IMG.getCode() : ResForClassEnum.DETAIL_IMG.getCode());
+				ord.setForSubclass("");
+				ord.setFinishProcess(BoolEnum.TRUE.getCode());
+				ord.setAddTime(now);
+				ord.setUpdTime(now);
+				resourceDao.insertObjectResource(ord);
+			}
+		}
+	}
+
+	public void updateSchool(Long userId, SchoolBo schoolBo, List<String> pics) {
+		ObjectDo objectDo = new ObjectDo();
+		objectDo.setObjectId(schoolBo.getObjectId());
+		objectDo.setUserId(userId);
+		Long now = DateUtil.nowInMilliseconds();
+		objectDo.setUpdTime(now);
+		objectDao.updateObjectByObjectIdSelective(objectDo);
+
+		SchoolDo schoolDo = new SchoolDo();
+		BeanUtils.copyProperties(schoolBo, schoolDo);
+		schoolDo.setUpdTime(now);
+		objectDao.updateSchoolByObjectIdSelective(schoolDo);
+
+		for (int i = pics.size() - 1; i >= 0; i--) {
+			if (StringUtils.isBlank(pics.get(i))) {
+				pics.remove(i);
+			}
+		}
+		if (pics.size() > 0) {
+			resourceDao.deleteObjectResourceByEntityTypeAndEntityIdAndForClass(EntityTypeEnum.OBJECT.getCode(), schoolBo.getObjectId(), ResForClassEnum.LIST_IMG.getCode());
+			resourceDao.deleteObjectResourceByEntityTypeAndEntityIdAndForClass(EntityTypeEnum.OBJECT.getCode(), schoolBo.getObjectId(), ResForClassEnum.DETAIL_IMG.getCode());
+			for (int i = 0; i < pics.size(); i++) {
+				String pic = pics.get(i);
+				if (StringUtils.isNotBlank(pic)) {
+					ObjectResourceDo ord = new ObjectResourceDo();
+					ord.setResId(pic);
+					ord.setEntityId(schoolBo.getObjectId());
+					ord.setEntityType(EntityTypeEnum.OBJECT.getCode());
+					ord.setForClass(i == 0 ? ResForClassEnum.LIST_IMG.getCode() : ResForClassEnum.DETAIL_IMG.getCode());
+					ord.setForSubclass("");
+					ord.setFinishProcess(BoolEnum.TRUE.getCode());
+					ord.setAddTime(now);
+					ord.setUpdTime(now);
+					resourceDao.insertObjectResource(ord);
+				}
+			}
+		}
 	}
 }
