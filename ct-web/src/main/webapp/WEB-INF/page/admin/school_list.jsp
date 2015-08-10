@@ -28,6 +28,7 @@
 <div class="container">
     <div class="page-header">
         <h3>学校列表</h3>
+        <a href="<c:url value='/admin/school/edit/input'/>" class="btn btn-default btn-sm">新增学校</a>
     </div>
     <div class="row">
         <div class="col-sm-12">
