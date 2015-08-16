@@ -16,6 +16,7 @@
     <module>ct-app</module>
     <module>ct-web</module>
     <module>ct-con</module>
+    <module>ct-stc</module>
   </modules>
 
   <developers>

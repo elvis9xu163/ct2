@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container">
+    <div class="thumbnail">
+        <h3>Table horizontal</h3>
+
+        <form role="form" class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-sm-2">Focused</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" placeholder="click me to focus"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Disabled</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" disabled placeholder="Disabled"/>
+                </div>
+            </div>
+            <fieldset disabled>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Disabled Fieldset</label>
+
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" value="Disabled Fieldset"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Disabled Fieldset</label>
+
+                    <div class="col-sm-6">
+                        <select class="form-control">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group has-success has-feedback">
+                <label class="col-sm-2 control-label">Input with success and icon</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="form-control"/>
+                    <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-warning has-feedback">
+                <label class="col-sm-2 control-label">Input with warning and icon</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="form-control"/>
+                    <span class="glyphicon glyphicon-warning-sign form-control-feedback"/>
+                </div>
+            </div>
+            <div class="form-group has-error has-feedback">
+                <label class="col-sm-2 control-label">Input with error and icon</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="form-control"/>
+                    <span class="glyphicon glyphicon-remove form-control-feedback"/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="thumbnail">
+        <h3>Table Default</h3>
+
+        <form role="form">
+            <div class="form-group">
+                <label>Disabled</label>
+                <input type="text" class="form-control" disabled/>
+            </div>
+            <div class="form-group has-success has-feedback">
+                <label>Success</label>
+                <input type="text" class="form-control"/>
+                <span class="glyphicon glyphicon-ok form-control-feedback"/>
+            </div>
+            <div class="form-group has-warning has-feedback">
+                <label>Warning</label>
+                <select class="form-control">
+                    <option>1</option>
+                </select>
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback"/>
+            </div>
+            <div class="form-group has-error has-feedback">
+                <label>Error</label>
+                <textarea class="form-control" rows="5"></textarea>
+                <span class="glyphicon glyphicon-remove form-control-feedback"/>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="../../js/jquery-1.11.2.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+</body>
+</html>
